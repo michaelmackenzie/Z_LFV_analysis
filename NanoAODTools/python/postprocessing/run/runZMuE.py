@@ -19,21 +19,13 @@ ROOT.PyConfig.IgnoreCommandLineOptions = True
 #import argparse
 from os import listdir
 from os.path import isfile, join
-from signal_files import fsignal
 
-#parser = argparse.ArgumentParser(description='run Higgs to ZMET f/w')
-#parser.add_argument('--prod',dest='production',default=False,action='store_true',help='an integer for the accumulator')
-#parser.add_argument('--run_signal',dest='run_signal',default=True,action='store_false',help='adds specific branches H->ZZ')
-#parser.add_argument('-o',dest='outputFolder',default="test_HtoZZ_2MuMET",type=str,help='an integer for the accumulator')
-
-#args = parser.parse_args()
 #cfg in txt because crab helper is not perfect (to be mild)
 production=False
 outputFolder="id_Jet" #used only for non-production
 build_GenSignalDecay_ZMuE=True
 build_GenSignalDecay_ZMuTau=False
 build_GenSignalDecay_ZETau=False
-load_signal_from_file=False
 maxEntries=None #deactivate(use all evts): None
 
 
@@ -73,8 +65,6 @@ fnames=[
 
 ]
 
-if load_signal_from_file:
-   fnames=fsignal()
 
 # only read the branches in this file - for speed deactivate unescairy stuff
 branchsel_in ="keep_and_drop_in.txt"
