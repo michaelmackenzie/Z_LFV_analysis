@@ -1,0 +1,21 @@
+# this isp a comment
+drop * # start with all
+keep Tau*
+keep Muon*
+keep Electron*
+keep Jet*
+keep PV*
+keep nMuon
+keep nElectron
+keep nTau
+keep nJet
+keep MET_*
+keep GenJet_*
+keep Gen*
+keep gen*
+keep event
+keep HLT_*
+keep HLT_Mu*
+keep HLT_IsoMu*
+keep HLT_Ele*_WPTight_Gsf
+

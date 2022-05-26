@@ -1,0 +1,785 @@
+DEBUG 2021-07-15 21:39:39.503 UTC: 	 CRAB Client version: v3.210610
+DEBUG 2021-07-15 21:39:39.503 UTC: 	 Running on: Linux lxplus795.cern.ch 3.10.0-1160.31.1.el7.x86_64 #1 SMP Thu Jun 10 13:32:12 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-07-15 21:39:39.503 UTC: 	 Executing command: 'submit'
+DEBUG 2021-07-15 21:39:39.509 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+INFO 2021-07-15 21:39:39.510 UTC: 	 Will use CRAB configuration file crab_cfg.py
+DEBUG 2021-07-15 21:39:39.510 UTC: 	 Loading CRAB configuration file.
+DEBUG 2021-07-15 21:39:39.511 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+ERROR 2021-07-15 21:39:39.511 UTC: 	 Working area '/afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/NanoTest/crab_NanoTest' already exists 
+Please change the requestName in the config file
+ERROR 2021-07-15 21:39:39.512 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210610.01/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210610.01/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210610.01/lib/CRABClient/Commands/submit.py", line 34, in __init__
+    SubCommand.__init__(self, logger, cmdargs, disable_interspersed_args=True)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210610.01/lib/CRABClient/Commands/SubCommand.py", line 315, in __init__
+    getattr(self.configuration.General, 'requestName', None))
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210610.01/lib/CRABClient/ClientUtilities.py", line 394, in createWorkArea
+    raise ConfigException("Working area '%s' already exists \nPlease change the requestName in the config file" % fullpath)
+ConfigException: Working area '/afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/NanoTest/crab_NanoTest' already exists 
+Please change the requestName in the config file
+INFO 2021-07-15 21:39:39.515 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab.log
+DEBUG 2021-09-08 19:51:07.430 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 19:51:07.431 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 19:51:07.431 UTC: 	 Executing command: 'submit'
+DEBUG 2021-09-08 19:51:07.431 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-09-08 19:51:07.432 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-09-08 19:51:07.923 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 19:51:07.923 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 19:51:07.923 UTC: 	 Executing command: 'submit'
+DEBUG 2021-09-08 19:51:07.923 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-09-08 19:51:07.924 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-09-08 19:51:08.320 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 19:51:08.321 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 19:51:08.321 UTC: 	 Executing command: 'submit'
+DEBUG 2021-09-08 19:51:08.321 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-09-08 19:51:08.322 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-09-08 19:51:08.736 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 19:51:08.737 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 19:51:08.737 UTC: 	 Executing command: 'submit'
+DEBUG 2021-09-08 19:51:08.737 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-09-08 19:51:08.738 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-09-08 19:51:09.099 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 19:51:09.099 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 19:51:09.099 UTC: 	 Executing command: 'submit'
+DEBUG 2021-09-08 19:51:09.100 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-09-08 19:51:09.101 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-09-08 19:51:09.484 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 19:51:09.485 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 19:51:09.485 UTC: 	 Executing command: 'submit'
+DEBUG 2021-09-08 19:51:09.485 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-09-08 19:51:09.486 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-09-08 19:51:09.831 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 19:51:09.832 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 19:51:09.832 UTC: 	 Executing command: 'submit'
+DEBUG 2021-09-08 19:51:09.832 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-09-08 19:51:09.833 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-09-08 19:51:10.194 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 19:51:10.194 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 19:51:10.194 UTC: 	 Executing command: 'submit'
+DEBUG 2021-09-08 19:51:10.194 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-09-08 19:51:10.195 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-09-08 19:51:10.610 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 19:51:10.611 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 19:51:10.611 UTC: 	 Executing command: 'submit'
+DEBUG 2021-09-08 19:51:10.611 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-09-08 19:51:10.612 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-09-08 19:51:10.969 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 19:51:10.969 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 19:51:10.969 UTC: 	 Executing command: 'submit'
+DEBUG 2021-09-08 19:51:10.969 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-09-08 19:51:10.970 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-09-08 19:51:11.319 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 19:51:11.319 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 19:51:11.319 UTC: 	 Executing command: 'submit'
+DEBUG 2021-09-08 19:51:11.319 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-09-08 19:51:11.321 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-09-08 19:51:11.796 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 19:51:11.796 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 19:51:11.796 UTC: 	 Executing command: 'submit'
+DEBUG 2021-09-08 19:51:11.797 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-09-08 19:51:11.798 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-09-08 23:29:32.002 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 23:29:32.002 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 23:29:32.002 UTC: 	 Executing command: 'status'
+DEBUG 2021-09-08 23:29:32.002 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-09-08 23:29:32.005 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_TTJets_SingleLeptFromT_1_2021Sep09
+ERROR 2021-09-08 23:29:32.005 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_TTJets_SingleLeptFromT_1_2021Sep09
+INFO 2021-09-08 23:29:32.036 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-09-08 23:29:32.405 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 23:29:32.406 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 23:29:32.406 UTC: 	 Executing command: 'status'
+DEBUG 2021-09-08 23:29:32.406 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-09-08 23:29:32.408 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_TTJets_SingleLeptFromT_2_2021Sep09
+ERROR 2021-09-08 23:29:32.408 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_TTJets_SingleLeptFromT_2_2021Sep09
+INFO 2021-09-08 23:29:32.410 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-09-08 23:29:32.799 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 23:29:32.800 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 23:29:32.800 UTC: 	 Executing command: 'status'
+DEBUG 2021-09-08 23:29:32.800 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-09-08 23:29:32.803 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_TTJets_SingleLeptFromTbar_1_2021Sep09
+ERROR 2021-09-08 23:29:32.803 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_TTJets_SingleLeptFromTbar_1_2021Sep09
+INFO 2021-09-08 23:29:32.806 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-09-08 23:29:33.160 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 23:29:33.160 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 23:29:33.160 UTC: 	 Executing command: 'status'
+DEBUG 2021-09-08 23:29:33.161 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-09-08 23:29:33.163 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_TTJets_SingleLeptFromTbar_2_2021Sep09
+ERROR 2021-09-08 23:29:33.163 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_TTJets_SingleLeptFromTbar_2_2021Sep09
+INFO 2021-09-08 23:29:33.165 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-09-08 23:29:33.606 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 23:29:33.607 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 23:29:33.607 UTC: 	 Executing command: 'status'
+DEBUG 2021-09-08 23:29:33.607 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-09-08 23:29:33.613 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT100to200_2021Sep09
+ERROR 2021-09-08 23:29:33.613 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT100to200_2021Sep09
+INFO 2021-09-08 23:29:33.616 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-09-08 23:29:34.055 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 23:29:34.056 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 23:29:34.056 UTC: 	 Executing command: 'status'
+DEBUG 2021-09-08 23:29:34.056 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-09-08 23:29:34.060 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT1200to2500_2021Sep09
+ERROR 2021-09-08 23:29:34.060 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT1200to2500_2021Sep09
+INFO 2021-09-08 23:29:34.063 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-09-08 23:29:34.505 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 23:29:34.505 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 23:29:34.505 UTC: 	 Executing command: 'status'
+DEBUG 2021-09-08 23:29:34.505 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-09-08 23:29:34.508 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT200to400_2021Sep09
+ERROR 2021-09-08 23:29:34.508 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT200to400_2021Sep09
+INFO 2021-09-08 23:29:34.511 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-09-08 23:29:34.899 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 23:29:34.900 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 23:29:34.900 UTC: 	 Executing command: 'status'
+DEBUG 2021-09-08 23:29:34.900 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-09-08 23:29:34.902 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT2500toInf_2021Sep09
+ERROR 2021-09-08 23:29:34.903 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT2500toInf_2021Sep09
+INFO 2021-09-08 23:29:34.905 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-09-08 23:29:35.294 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 23:29:35.294 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 23:29:35.294 UTC: 	 Executing command: 'status'
+DEBUG 2021-09-08 23:29:35.294 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-09-08 23:29:35.296 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT400to600_2021Sep09
+ERROR 2021-09-08 23:29:35.296 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT400to600_2021Sep09
+INFO 2021-09-08 23:29:35.298 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-09-08 23:29:35.699 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 23:29:35.700 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 23:29:35.700 UTC: 	 Executing command: 'status'
+DEBUG 2021-09-08 23:29:35.700 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-09-08 23:29:35.706 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT600to800_2021Sep09
+ERROR 2021-09-08 23:29:35.707 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT600to800_2021Sep09
+INFO 2021-09-08 23:29:35.709 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-09-08 23:29:36.093 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 23:29:36.093 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 23:29:36.093 UTC: 	 Executing command: 'status'
+DEBUG 2021-09-08 23:29:36.093 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-09-08 23:29:36.096 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT70to100_2021Sep09
+ERROR 2021-09-08 23:29:36.096 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT70to100_2021Sep09
+INFO 2021-09-08 23:29:36.099 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-09-08 23:29:36.478 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 23:29:36.479 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 23:29:36.479 UTC: 	 Executing command: 'status'
+DEBUG 2021-09-08 23:29:36.479 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-09-08 23:29:36.482 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT800to1200_2021Sep09
+ERROR 2021-09-08 23:29:36.482 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT800to1200_2021Sep09
+INFO 2021-09-08 23:29:36.484 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-09-08 23:30:07.008 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-08 23:30:07.009 UTC: 	 Running on: Linux lxplus748.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-08 23:30:07.009 UTC: 	 Executing command: 'status'
+DEBUG 2021-09-08 23:30:07.009 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-09-08 23:30:07.010 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT800to1200_2021Sep09
+ERROR 2021-09-08 23:30:07.010 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.00/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_2021Sep09/Nano_WJetsToLNuHT800to1200_2021Sep09
+INFO 2021-09-08 23:30:07.012 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-09-10 03:00:35.095 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-10 03:00:35.096 UTC: 	 Running on: Linux lxplus794.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-10 03:00:35.096 UTC: 	 Executing command: 'submit'
+DEBUG 2021-09-10 03:00:35.096 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-09-10 03:00:35.097 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-09-10 03:00:35.509 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-09-10 03:00:35.510 UTC: 	 Running on: Linux lxplus794.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-09-10 03:00:35.510 UTC: 	 Executing command: 'submit'
+DEBUG 2021-09-10 03:00:35.510 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-09-10 03:00:35.511 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-11-17 23:54:11.194 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-17 23:54:11.194 UTC: 	 Running on: Linux lxplus739.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-17 23:54:11.194 UTC: 	 Executing command: 'submit'
+DEBUG 2021-11-17 23:54:11.194 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-11-17 23:54:11.195 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-11-17 23:54:11.626 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-17 23:54:11.627 UTC: 	 Running on: Linux lxplus739.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-17 23:54:11.627 UTC: 	 Executing command: 'submit'
+DEBUG 2021-11-17 23:54:11.627 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-11-17 23:54:11.628 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-11-17 23:54:11.961 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-17 23:54:11.961 UTC: 	 Running on: Linux lxplus739.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-17 23:54:11.961 UTC: 	 Executing command: 'submit'
+DEBUG 2021-11-17 23:54:11.961 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-11-17 23:54:11.963 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-11-18 02:08:49.258 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-18 02:08:49.258 UTC: 	 Running on: Linux lxplus739.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-18 02:08:49.258 UTC: 	 Executing command: 'status'
+DEBUG 2021-11-18 02:08:49.259 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-11-18 02:08:49.268 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_WWto2L2Nu_2021Nov18
+ERROR 2021-11-18 02:08:49.268 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.01/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.01/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.01/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.01/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.01/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.01/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_WWto2L2Nu_2021Nov18
+INFO 2021-11-18 02:08:49.288 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-11-27 06:58:35.431 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-27 06:58:35.432 UTC: 	 Running on: Linux lxplus766.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-27 06:58:35.432 UTC: 	 Executing command: 'submit'
+DEBUG 2021-11-27 06:58:35.432 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-11-27 06:58:35.433 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-11-27 06:58:35.785 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-27 06:58:35.786 UTC: 	 Running on: Linux lxplus766.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-27 06:58:35.786 UTC: 	 Executing command: 'submit'
+DEBUG 2021-11-27 06:58:35.786 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-11-27 06:58:35.787 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-11-27 06:58:36.029 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-27 06:58:36.029 UTC: 	 Running on: Linux lxplus766.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-27 06:58:36.029 UTC: 	 Executing command: 'submit'
+DEBUG 2021-11-27 06:58:36.029 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-11-27 06:58:36.030 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-11-27 07:00:41.953 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-27 07:00:41.954 UTC: 	 Running on: Linux lxplus766.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-27 07:00:41.954 UTC: 	 Executing command: 'status'
+DEBUG 2021-11-27 07:00:41.954 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-11-27 07:00:41.955 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_GluGluZZto2L2Nu_2021Nov27/crab_Nano_GluGluZZto2L2Nu_2021Nov27
+ERROR 2021-11-27 07:00:41.955 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_GluGluZZto2L2Nu_2021Nov27/crab_Nano_GluGluZZto2L2Nu_2021Nov27
+INFO 2021-11-27 07:00:41.957 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-11-27 07:01:23.454 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-27 07:01:23.455 UTC: 	 Running on: Linux lxplus766.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-27 07:01:23.455 UTC: 	 Executing command: 'status'
+DEBUG 2021-11-27 07:01:23.455 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-11-27 07:01:23.456 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_ZZto2L2Nu_2021Nov27/crab_Nano_ZZto2L2Nu_2021Nov27
+ERROR 2021-11-27 07:01:23.456 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_ZZto2L2Nu_2021Nov27/crab_Nano_ZZto2L2Nu_2021Nov27
+INFO 2021-11-27 07:01:23.458 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-11-27 07:02:01.209 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-27 07:02:01.210 UTC: 	 Running on: Linux lxplus766.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-27 07:02:01.210 UTC: 	 Executing command: 'status'
+DEBUG 2021-11-27 07:02:01.210 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-11-27 07:02:01.211 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_WWto2L2Nu_2021Nov27/crab_Nano_WWto2L2Nu_2021Nov27
+ERROR 2021-11-27 07:02:01.211 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/bin/crab", line 136, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/lib/CRABClient/Commands/status.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/lib/CRABClient/Commands/SubCommand.py", line 270, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/lib/CRABClient/Commands/SubCommand.py", line 650, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210825.05/lib/CRABClient/Commands/SubCommand.py", line 512, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_WWto2L2Nu_2021Nov27/crab_Nano_WWto2L2Nu_2021Nov27
+INFO 2021-11-27 07:02:01.213 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2021-11-27 07:05:46.028 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-27 07:05:46.028 UTC: 	 Running on: Linux lxplus766.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-27 07:05:46.028 UTC: 	 Executing command: 'submit'
+DEBUG 2021-11-27 07:05:46.028 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-11-27 07:05:46.029 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-11-27 07:08:40.162 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-27 07:08:40.162 UTC: 	 Running on: Linux lxplus766.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-27 07:08:40.162 UTC: 	 Executing command: 'submit'
+DEBUG 2021-11-27 07:08:40.162 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-11-27 07:08:40.163 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-11-27 07:08:40.386 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-27 07:08:40.386 UTC: 	 Running on: Linux lxplus766.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-27 07:08:40.386 UTC: 	 Executing command: 'submit'
+DEBUG 2021-11-27 07:08:40.386 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-11-27 07:08:40.387 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-11-27 07:08:40.611 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-27 07:08:40.611 UTC: 	 Running on: Linux lxplus766.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-27 07:08:40.611 UTC: 	 Executing command: 'submit'
+DEBUG 2021-11-27 07:08:40.611 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-11-27 07:08:40.612 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-11-27 07:08:40.833 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-27 07:08:40.833 UTC: 	 Running on: Linux lxplus766.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-27 07:08:40.833 UTC: 	 Executing command: 'submit'
+DEBUG 2021-11-27 07:08:40.834 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-11-27 07:08:40.834 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-11-27 07:08:41.062 UTC: 	 CRAB Client version: v3.210825
+DEBUG 2021-11-27 07:08:41.062 UTC: 	 Running on: Linux lxplus766.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-11-27 07:08:41.062 UTC: 	 Executing command: 'submit'
+DEBUG 2021-11-27 07:08:41.062 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2021-11-27 07:08:41.063 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-12-09 08:38:07.063 UTC: 	 CRAB Client version: v3.211130
+DEBUG 2021-12-09 08:38:07.064 UTC: 	 Running on: Linux lxplus717.cern.ch 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-12-09 08:38:07.064 UTC: 	 Executing command: 'status'
+DEBUG 2021-12-09 08:38:07.064 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2021-12-09 08:38:07.065 UTC: 	 Error: Nano_WZto3LNu_2021Dec08/Nano_WZto2L2Q_2021Dec08 is not a valid CRAB project directory.
+ERROR 2021-12-09 08:38:07.065 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.211130.00/bin/crab.py", line 149, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.211130.00/bin/crab.py", line 134, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.211130.00/lib/CRABClient/Commands/status.py", line 47, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.211130.00/lib/CRABClient/Commands/SubCommand.py", line 269, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.211130.00/lib/CRABClient/Commands/SubCommand.py", line 636, in validateOptions
+    raise ConfigurationException(msg)
+ConfigurationException: [91mError[0m: Nano_WZto3LNu_2021Dec08/Nano_WZto2L2Q_2021Dec08 is not a valid CRAB project directory.
+INFO 2021-12-09 08:38:07.120 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2022-01-04 17:39:46.003 UTC: 	 CRAB Client version: v3.211130
+DEBUG 2022-01-04 17:39:46.003 UTC: 	 Running on: Linux lxplus711.cern.ch 3.10.0-1160.49.1.el7.x86_64 #1 SMP Tue Nov 30 15:51:32 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-01-04 17:39:46.003 UTC: 	 Executing command: 'submit'
+DEBUG 2022-01-04 17:39:46.003 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-01-04 17:39:46.004 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-01-04 18:27:53.756 UTC: 	 CRAB Client version: v3.211130
+DEBUG 2022-01-04 18:27:53.757 UTC: 	 Running on: Linux lxplus711.cern.ch 3.10.0-1160.49.1.el7.x86_64 #1 SMP Tue Nov 30 15:51:32 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-01-04 18:27:53.757 UTC: 	 Executing command: 'submit'
+DEBUG 2022-01-04 18:27:53.758 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-01-04 18:27:53.777 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-01-04 18:27:54.065 UTC: 	 CRAB Client version: v3.211130
+DEBUG 2022-01-04 18:27:54.065 UTC: 	 Running on: Linux lxplus711.cern.ch 3.10.0-1160.49.1.el7.x86_64 #1 SMP Tue Nov 30 15:51:32 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-01-04 18:27:54.065 UTC: 	 Executing command: 'submit'
+DEBUG 2022-01-04 18:27:54.065 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-01-04 18:27:54.066 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-01-04 18:27:54.374 UTC: 	 CRAB Client version: v3.211130
+DEBUG 2022-01-04 18:27:54.374 UTC: 	 Running on: Linux lxplus711.cern.ch 3.10.0-1160.49.1.el7.x86_64 #1 SMP Tue Nov 30 15:51:32 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-01-04 18:27:54.374 UTC: 	 Executing command: 'submit'
+DEBUG 2022-01-04 18:27:54.375 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-01-04 18:27:54.375 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-01-04 18:28:06.837 UTC: 	 CRAB Client version: v3.211130
+DEBUG 2022-01-04 18:28:06.837 UTC: 	 Running on: Linux lxplus711.cern.ch 3.10.0-1160.49.1.el7.x86_64 #1 SMP Tue Nov 30 15:51:32 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-01-04 18:28:06.838 UTC: 	 Executing command: 'submit'
+DEBUG 2022-01-04 18:28:06.838 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-01-04 18:28:06.838 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-01-04 18:28:07.108 UTC: 	 CRAB Client version: v3.211130
+DEBUG 2022-01-04 18:28:07.109 UTC: 	 Running on: Linux lxplus711.cern.ch 3.10.0-1160.49.1.el7.x86_64 #1 SMP Tue Nov 30 15:51:32 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-01-04 18:28:07.109 UTC: 	 Executing command: 'submit'
+DEBUG 2022-01-04 18:28:07.109 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-01-04 18:28:07.110 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-01-12 13:24:37.321 UTC: 	 CRAB Client version: v3.211130
+DEBUG 2022-01-12 13:24:37.322 UTC: 	 Running on: Linux lxplus787.cern.ch 3.10.0-1160.49.1.el7.x86_64 #1 SMP Tue Nov 30 15:51:32 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-01-12 13:24:37.322 UTC: 	 Executing command: 'status'
+DEBUG 2022-01-12 13:24:37.322 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2022-01-12 13:24:37.323 UTC: 	 Error: Nano_Run2018A_2022Jan11/crab_Nano_Run2018B_2022Jan11/ is not a valid CRAB project directory.
+ERROR 2022-01-12 13:24:37.323 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.211130.01/bin/crab.py", line 149, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.211130.01/bin/crab.py", line 134, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.211130.01/lib/CRABClient/Commands/status.py", line 47, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.211130.01/lib/CRABClient/Commands/SubCommand.py", line 269, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.211130.01/lib/CRABClient/Commands/SubCommand.py", line 636, in validateOptions
+    raise ConfigurationException(msg)
+ConfigurationException: [91mError[0m: Nano_Run2018A_2022Jan11/crab_Nano_Run2018B_2022Jan11/ is not a valid CRAB project directory.
+INFO 2022-01-12 13:24:37.392 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2022-01-13 08:57:50.453 UTC: 	 CRAB Client version: v3.211130
+DEBUG 2022-01-13 08:57:50.454 UTC: 	 Running on: Linux lxplus733.cern.ch 3.10.0-1160.49.1.el7.x86_64 #1 SMP Tue Nov 30 15:51:32 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-01-13 08:57:50.454 UTC: 	 Executing command: 'status'
+DEBUG 2022-01-13 08:57:50.454 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2022-01-13 08:57:50.454 UTC: 	 Error: Nano_Run2018C_2022Jan12/crab_Nano_Run2018D_2022Jan12/ is not a valid CRAB project directory.
+ERROR 2022-01-13 08:57:50.455 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.211130.01/bin/crab.py", line 149, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.211130.01/bin/crab.py", line 134, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.211130.01/lib/CRABClient/Commands/status.py", line 47, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.211130.01/lib/CRABClient/Commands/SubCommand.py", line 269, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.211130.01/lib/CRABClient/Commands/SubCommand.py", line 636, in validateOptions
+    raise ConfigurationException(msg)
+ConfigurationException: [91mError[0m: Nano_Run2018C_2022Jan12/crab_Nano_Run2018D_2022Jan12/ is not a valid CRAB project directory.
+INFO 2022-01-13 08:57:50.564 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2022-03-15 18:49:56.614 UTC: 	 CRAB Client version: v3.220210
+DEBUG 2022-03-15 18:49:56.614 UTC: 	 Running on: Linux lxplus747.cern.ch 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-03-15 18:49:56.614 UTC: 	 Executing command: 'submit'
+DEBUG 2022-03-15 18:49:56.615 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-03-15 18:49:56.616 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-03-15 18:50:25.251 UTC: 	 CRAB Client version: v3.220210
+DEBUG 2022-03-15 18:50:25.252 UTC: 	 Running on: Linux lxplus747.cern.ch 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-03-15 18:50:25.252 UTC: 	 Executing command: 'submit'
+DEBUG 2022-03-15 18:50:25.252 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-03-15 18:50:25.253 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-03-15 18:52:48.541 UTC: 	 CRAB Client version: v3.220210
+DEBUG 2022-03-15 18:52:48.542 UTC: 	 Running on: Linux lxplus747.cern.ch 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-03-15 18:52:48.542 UTC: 	 Executing command: 'submit'
+DEBUG 2022-03-15 18:52:48.542 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-03-15 18:52:48.543 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-03-15 19:01:03.199 UTC: 	 CRAB Client version: v3.220210
+DEBUG 2022-03-15 19:01:03.200 UTC: 	 Running on: Linux lxplus747.cern.ch 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-03-15 19:01:03.200 UTC: 	 Executing command: 'submit'
+DEBUG 2022-03-15 19:01:03.200 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-03-15 19:01:03.201 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-03-15 19:02:00.356 UTC: 	 CRAB Client version: v3.220210
+DEBUG 2022-03-15 19:02:00.356 UTC: 	 Running on: Linux lxplus747.cern.ch 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-03-15 19:02:00.356 UTC: 	 Executing command: 'submit'
+DEBUG 2022-03-15 19:02:00.357 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-03-15 19:02:00.357 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-03-15 19:02:58.589 UTC: 	 CRAB Client version: v3.220210
+DEBUG 2022-03-15 19:02:58.590 UTC: 	 Running on: Linux lxplus747.cern.ch 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-03-15 19:02:58.590 UTC: 	 Executing command: 'submit'
+DEBUG 2022-03-15 19:02:58.590 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-03-15 19:02:58.591 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-03-15 19:04:33.327 UTC: 	 CRAB Client version: v3.220210
+DEBUG 2022-03-15 19:04:33.328 UTC: 	 Running on: Linux lxplus747.cern.ch 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-03-15 19:04:33.328 UTC: 	 Executing command: 'submit'
+DEBUG 2022-03-15 19:04:33.328 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-03-15 19:04:33.329 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-03-15 19:16:53.416 UTC: 	 CRAB Client version: v3.220210
+DEBUG 2022-03-15 19:16:53.417 UTC: 	 Running on: Linux lxplus747.cern.ch 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-03-15 19:16:53.417 UTC: 	 Executing command: 'submit'
+DEBUG 2022-03-15 19:16:53.417 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-03-15 19:16:53.418 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-03-18 20:12:17.977 UTC: 	 CRAB Client version: v3.220210
+DEBUG 2022-03-18 20:12:17.978 UTC: 	 Running on: Linux lxplus7111.cern.ch 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-03-18 20:12:17.978 UTC: 	 Executing command: 'submit'
+DEBUG 2022-03-18 20:12:17.978 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-03-18 20:12:17.979 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-03-30 15:25:56.849 UTC: 	 CRAB Client version: v3.220210
+DEBUG 2022-03-30 15:25:56.850 UTC: 	 Running on: Linux lxplus769.cern.ch 3.10.0-1160.53.1.el7.x86_64 #1 SMP Fri Jan 14 13:59:45 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-03-30 15:25:56.850 UTC: 	 Executing command: 'submit'
+DEBUG 2022-03-30 15:25:56.850 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-03-30 15:25:56.851 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-05-10 22:05:42.542 UTC: 	 CRAB Client version: v3.220323
+DEBUG 2022-05-10 22:05:42.542 UTC: 	 Running on: Linux lxplus724.cern.ch 3.10.0-1160.59.1.el7.x86_64 #1 SMP Wed Feb 23 16:47:03 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-05-10 22:05:42.542 UTC: 	 Executing command: 'kill'
+DEBUG 2022-05-10 22:05:42.542 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2022-05-10 22:05:42.543 UTC: 	 Error: Nano_Run2018C_2022May10/crab_Nano_Run2018B_2022May10/ is not a valid CRAB project directory.
+ERROR 2022-05-10 22:05:42.543 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/bin/crab.py", line 159, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/bin/crab.py", line 144, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/lib/CRABClient/Commands/SubCommand.py", line 275, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/lib/CRABClient/Commands/SubCommand.py", line 642, in validateOptions
+    raise ConfigurationException(msg)
+ConfigurationException: [91mError[0m: Nano_Run2018C_2022May10/crab_Nano_Run2018B_2022May10/ is not a valid CRAB project directory.
+INFO 2022-05-10 22:05:42.568 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2022-05-10 22:05:51.170 UTC: 	 CRAB Client version: v3.220323
+DEBUG 2022-05-10 22:05:51.170 UTC: 	 Running on: Linux lxplus724.cern.ch 3.10.0-1160.59.1.el7.x86_64 #1 SMP Wed Feb 23 16:47:03 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-05-10 22:05:51.170 UTC: 	 Executing command: 'kill'
+DEBUG 2022-05-10 22:05:51.170 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2022-05-10 22:05:51.171 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_Run2018C_2022May10/crab_Nano_Run2018C_2022May10
+ERROR 2022-05-10 22:05:51.171 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/bin/crab.py", line 159, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/bin/crab.py", line 144, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/lib/CRABClient/Commands/SubCommand.py", line 275, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/lib/CRABClient/Commands/SubCommand.py", line 646, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/lib/CRABClient/Commands/SubCommand.py", line 508, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_Run2018C_2022May10/crab_Nano_Run2018C_2022May10
+INFO 2022-05-10 22:05:51.172 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2022-05-10 22:17:51.258 UTC: 	 CRAB Client version: v3.220323
+DEBUG 2022-05-10 22:17:51.258 UTC: 	 Running on: Linux lxplus724.cern.ch 3.10.0-1160.59.1.el7.x86_64 #1 SMP Wed Feb 23 16:47:03 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-05-10 22:17:51.258 UTC: 	 Executing command: 'kill'
+DEBUG 2022-05-10 22:17:51.258 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2022-05-10 22:17:51.258 UTC: 	 Error: Nano_Run2018B_2022May10/crab_Nano_Run2018B_2022May10/ is not a valid CRAB project directory.
+ERROR 2022-05-10 22:17:51.258 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/bin/crab.py", line 159, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/bin/crab.py", line 144, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/lib/CRABClient/Commands/SubCommand.py", line 275, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/lib/CRABClient/Commands/SubCommand.py", line 642, in validateOptions
+    raise ConfigurationException(msg)
+ConfigurationException: [91mError[0m: Nano_Run2018B_2022May10/crab_Nano_Run2018B_2022May10/ is not a valid CRAB project directory.
+INFO 2022-05-10 22:17:51.259 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2022-05-10 22:18:11.049 UTC: 	 CRAB Client version: v3.220323
+DEBUG 2022-05-10 22:18:11.049 UTC: 	 Running on: Linux lxplus724.cern.ch 3.10.0-1160.59.1.el7.x86_64 #1 SMP Wed Feb 23 16:47:03 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-05-10 22:18:11.049 UTC: 	 Executing command: 'kill'
+DEBUG 2022-05-10 22:18:11.049 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2022-05-10 22:18:11.050 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_Run2018B_2022May11/crab_Nano_Run2018B_2022May11
+ERROR 2022-05-10 22:18:11.050 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/bin/crab.py", line 159, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/bin/crab.py", line 144, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/lib/CRABClient/Commands/SubCommand.py", line 275, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/lib/CRABClient/Commands/SubCommand.py", line 646, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/lib/CRABClient/Commands/SubCommand.py", line 508, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_Run2018B_2022May11/crab_Nano_Run2018B_2022May11
+INFO 2022-05-10 22:18:11.051 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2022-05-11 09:41:36.037 UTC: 	 CRAB Client version: v3.220323
+DEBUG 2022-05-11 09:41:36.037 UTC: 	 Running on: Linux lxplus740.cern.ch 3.10.0-1160.59.1.el7.x86_64 #1 SMP Wed Feb 23 16:47:03 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-05-11 09:41:36.037 UTC: 	 Executing command: 'submit'
+DEBUG 2022-05-11 09:41:36.037 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-05-11 09:41:36.038 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-05-11 20:56:07.025 UTC: 	 CRAB Client version: v3.220323
+DEBUG 2022-05-11 20:56:07.026 UTC: 	 Running on: Linux lxplus780.cern.ch 3.10.0-1160.59.1.el7.x86_64 #1 SMP Wed Feb 23 16:47:03 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-05-11 20:56:07.026 UTC: 	 Executing command: 'submit'
+DEBUG 2022-05-11 20:56:07.027 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-05-11 20:56:07.050 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-05-11 20:56:07.667 UTC: 	 CRAB Client version: v3.220323
+DEBUG 2022-05-11 20:56:07.667 UTC: 	 Running on: Linux lxplus780.cern.ch 3.10.0-1160.59.1.el7.x86_64 #1 SMP Wed Feb 23 16:47:03 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-05-11 20:56:07.667 UTC: 	 Executing command: 'submit'
+DEBUG 2022-05-11 20:56:07.667 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-05-11 20:56:07.668 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-05-11 20:56:08.000 UTC: 	 CRAB Client version: v3.220323
+DEBUG 2022-05-11 20:56:08.000 UTC: 	 Running on: Linux lxplus780.cern.ch 3.10.0-1160.59.1.el7.x86_64 #1 SMP Wed Feb 23 16:47:03 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-05-11 20:56:08.000 UTC: 	 Executing command: 'submit'
+DEBUG 2022-05-11 20:56:08.000 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-05-11 20:56:08.001 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-05-11 20:58:20.229 UTC: 	 CRAB Client version: v3.220323
+DEBUG 2022-05-11 20:58:20.230 UTC: 	 Running on: Linux lxplus780.cern.ch 3.10.0-1160.59.1.el7.x86_64 #1 SMP Wed Feb 23 16:47:03 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-05-11 20:58:20.230 UTC: 	 Executing command: 'submit'
+DEBUG 2022-05-11 20:58:20.230 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-05-11 20:58:20.231 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-05-11 21:23:15.015 UTC: 	 CRAB Client version: v3.220323
+DEBUG 2022-05-11 21:23:15.016 UTC: 	 Running on: Linux lxplus780.cern.ch 3.10.0-1160.59.1.el7.x86_64 #1 SMP Wed Feb 23 16:47:03 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-05-11 21:23:15.016 UTC: 	 Executing command: 'submit'
+DEBUG 2022-05-11 21:23:15.016 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-05-11 21:23:15.017 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-05-11 21:30:12.529 UTC: 	 CRAB Client version: v3.220323
+DEBUG 2022-05-11 21:30:12.530 UTC: 	 Running on: Linux lxplus780.cern.ch 3.10.0-1160.59.1.el7.x86_64 #1 SMP Wed Feb 23 16:47:03 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-05-11 21:30:12.530 UTC: 	 Executing command: 'submit'
+DEBUG 2022-05-11 21:30:12.530 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-05-11 21:30:12.531 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-05-11 21:49:35.682 UTC: 	 CRAB Client version: v3.220323
+DEBUG 2022-05-11 21:49:35.682 UTC: 	 Running on: Linux lxplus780.cern.ch 3.10.0-1160.59.1.el7.x86_64 #1 SMP Wed Feb 23 16:47:03 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-05-11 21:49:35.682 UTC: 	 Executing command: 'submit'
+DEBUG 2022-05-11 21:49:35.691 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+DEBUG 2022-05-11 21:49:35.692 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2022-05-12 09:15:43.430 UTC: 	 CRAB Client version: v3.220323
+DEBUG 2022-05-12 09:15:43.430 UTC: 	 Running on: Linux lxplus7118.cern.ch 3.10.0-1160.62.1.el7.x86_64 #1 SMP Tue Apr 5 16:57:59 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-05-12 09:15:43.430 UTC: 	 Executing command: 'status'
+DEBUG 2022-05-12 09:15:43.431 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
+ERROR 2022-05-12 09:15:43.478 UTC: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_BkgDYJets_2022May12/crab_Nano_BkgDYJets_2022May12
+ERROR 2022-05-12 09:15:43.478 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/bin/crab.py", line 159, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/bin/crab.py", line 144, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/lib/CRABClient/Commands/status.py", line 48, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/lib/CRABClient/Commands/SubCommand.py", line 275, in __init__
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/lib/CRABClient/Commands/SubCommand.py", line 646, in validateOptions
+    self.loadLocalCache()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.220323.00/lib/CRABClient/Commands/SubCommand.py", line 508, in loadLocalCache
+    raise ex
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/Nano_BkgDYJets_2022May12/crab_Nano_BkgDYJets_2022May12
+INFO 2022-05-12 09:15:43.506 UTC: 	 Log file is /afs/cern.ch/work/g/gkaratha/private/Analysis/DispJets/Analyzer/CMSSW_10_2_16_UL/src/PhysicsTools/NanoAODTools/crab/crab.log
+DEBUG 2022-05-17 12:55:09.469 UTC: 	 CRAB Client version: v3.220323
+DEBUG 2022-05-17 12:55:09.470 UTC: 	 Running on: Linux lxplus721.cern.ch 3.10.0-1160.59.1.el7.x86_64 #1 SMP Wed Feb 23 16:47:03 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2022-05-17 12:55:09.470 UTC: 	 Executing command: 'resubmit'
+DEBUG 2022-05-17 12:55:09.470 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkaratha/.crab3
