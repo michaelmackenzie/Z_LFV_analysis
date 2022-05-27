@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonSkimmer import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.HTSkimmer import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetSkimmer import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetLepCleaner import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenAnalyzer import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenIdenticalMothersDiscriminator import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenRecoMatcher import *
+from Z_LFV_analysis.NanoAODTools.postprocessing.modules.CUmodules.LeptonSkimmer import *
+from Z_LFV_analysis.NanoAODTools.postprocessing.modules.CUmodules.HTSkimmer import *
+from Z_LFV_analysis.NanoAODTools.postprocessing.modules.CUmodules.JetSkimmer import *
+from Z_LFV_analysis.NanoAODTools.postprocessing.modules.CUmodules.JetLepCleaner import *
+from Z_LFV_analysis.NanoAODTools.postprocessing.modules.CUmodules.GenAnalyzer import *
+from Z_LFV_analysis.NanoAODTools.postprocessing.modules.CUmodules.GenIdenticalMothersDiscriminator import *
+from Z_LFV_analysis.NanoAODTools.postprocessing.modules.CUmodules.GenRecoMatcher import *
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 from PhysicsTools.NanoAODTools.postprocessing.framework.crabhelper import inputFiles
 
@@ -72,7 +72,7 @@ branchsel_in ="keep_and_drop_in.txt"
 # only write the branches in this file in ADDITION of what is produce by module
 branchsel_out ="keep_and_drop_out.txt"
 #TriggerCuts="HL"
-TriggerCuts="HLT_IsoMu24 && nMuon>0 && nElectron>0"
+TriggerCuts="(HLT_IsoMu24 || HLT_Ele27_WPTight_Gsf) && nMuon>0 && nElectron>0"
 #TriggerCuts="(HLT_Mu27_Ele37_CaloIdL_MW || HLT_Mu37_Ele27_CaloIdL_MW || HLT_IsoMu24) && nMuon>0 && nElectron>0"
 #TriggerCuts=""
 #MuonSelection = lambda l : l.pt>10 and l.mediumPromptId==True and abs(l.eta)<2.4 and l.pfRelIso03_all<0.3 and  abs(l.dz)<1.0 and abs(l.dxy)<0.5
@@ -91,7 +91,7 @@ ZttBuilder=GenAnalyzer(
                   decay='23->15,-15',
                   motherName='GenZTauTau',
                   daughterNames=['GenTau','GenAntiTau'],
-                  variables=['pt','eta','phi','pdgId'],
+                  variables=['pt','eta','phi','mass','pdgId'],
                   conjugate=True,
                   mother_has_antipart=False,
                   daughter_has_antipart=[True,True],
@@ -104,7 +104,7 @@ if build_GenSignalDecay_ZMuE:
                   decay='23->-13,11',
                   motherName='GenZMuE',
                   daughterNames=['GenMuon','GenElectron'],
-                  variables=['pt','eta','phi','pdgId'],
+                  variables=['pt','eta','phi','mass','pdgId'],
                   conjugate=True,
                   mother_has_antipart=False,
                   daughter_has_antipart=[True,True],
@@ -130,7 +130,7 @@ if build_GenSignalDecay_ZMuTau:
                   decay='23->-13,15',
                   motherName='GenZMuTau',
                   daughterNames=['GenMuon','GenTau'],
-                  variables=['pt','eta','phi','pdgId'],
+                  variables=['pt','eta','phi','mass','pdgId'],
                   conjugate=True,
                   mother_has_antipart=False,
                   daughter_has_antipart=[True,True],
@@ -170,7 +170,7 @@ if build_GenSignalDecay_ZETau:
                   decay='23->-15,11',
                   motherName='GenZETau',
                   daughterNames=['GenTau','GenElectron'],
-                  variables=['pt','eta','phi','pdgId'],
+                  variables=['pt','eta','phi','mass','pdgId'],
                   conjugate=True,
                   mother_has_antipart=False,
                   daughter_has_antipart=[True,True],
@@ -283,9 +283,11 @@ modules.append(HTCalculator)
 
 
 if not production:
-   p = PostProcessor(outputFolder, fnames, cut=TriggerCuts,  modules=modules,branchsel = branchsel_in, outputbranchsel = branchsel_out, prefetch = True, longTermCache = True, provenance=True, maxEntries=maxEntries)
+   p = PostProcessor(outputFolder, fnames, cut=TriggerCuts,  modules=modules,branchsel = branchsel_in, outputbranchsel = branchsel_out,
+                     prefetch = True, longTermCache = True, provenance=True, maxEntries=maxEntries)
 else:
-   p = PostProcessor(".", inputFiles(), cut=TriggerCuts,  modules=modules,branchsel = branchsel_in, outputbranchsel = branchsel_out, provenance=True, fwkJobReport=True)  
+   p = PostProcessor(".", inputFiles(), cut=TriggerCuts,  modules=modules,branchsel = branchsel_in, outputbranchsel = branchsel_out,
+                     provenance=True, fwkJobReport=True)  
 
 ###############RUN here######################
 p.run()

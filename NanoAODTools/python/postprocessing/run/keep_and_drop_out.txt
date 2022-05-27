@@ -23,7 +23,23 @@ keep nJet
 keep nBJet*
 keep BJet*
 keep MET_*
+keep PuppiMET*
 keep GenMET_*
 keep Gen*
-keep event
 keep *HT
+
+keep genWeight*
+
+#Pileup info
+keep PV_npvs*
+keep Pileup_nPU
+keep Pileup_nTrueInt
+keep puWeight*
+
+#Add event period information
+keep run
+keep luminosityBlock
+keep event
+
+#Add generator information
+keep LHE_*
