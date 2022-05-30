@@ -1,13 +1,15 @@
 #!/usr/bin/env python
-from Z_LFV_analysis.NanoAODTools.postprocessing.modules.CUmodules.LeptonSkimmer import *
-from Z_LFV_analysis.NanoAODTools.postprocessing.modules.CUmodules.HTSkimmer import *
-from Z_LFV_analysis.NanoAODTools.postprocessing.modules.CUmodules.JetSkimmer import *
-from Z_LFV_analysis.NanoAODTools.postprocessing.modules.CUmodules.JetLepCleaner import *
-from Z_LFV_analysis.NanoAODTools.postprocessing.modules.CUmodules.GenAnalyzer import *
-from Z_LFV_analysis.NanoAODTools.postprocessing.modules.CUmodules.GenIdenticalMothersDiscriminator import *
-from Z_LFV_analysis.NanoAODTools.postprocessing.modules.CUmodules.GenRecoMatcher import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonSkimmer import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.HTSkimmer import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetSkimmer import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetLepCleaner import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenAnalyzer import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenZllAnalyzer import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenIdenticalMothersDiscriminator import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenRecoMatcher import *
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 from PhysicsTools.NanoAODTools.postprocessing.framework.crabhelper import inputFiles
+from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
 
 
 from importlib import import_module
@@ -23,7 +25,9 @@ from os.path import isfile, join
 #cfg in txt because crab helper is not perfect (to be mild)
 production=False
 outputFolder="id_Jet" #used only for non-production
-build_GenSignalDecay_ZMuE=True
+build_GenZllDecay=True
+build_GenZttDecay=False
+build_GenSignalDecay_ZMuE=False
 build_GenSignalDecay_ZMuTau=False
 build_GenSignalDecay_ZETau=False
 maxEntries=None #deactivate(use all evts): None
@@ -31,14 +35,14 @@ maxEntries=None #deactivate(use all evts): None
 
 fnames=[
   #Data
-#  "root://cms-xrd-global.cern.ch//store/data/Run2018D/SingleMuon/NANOAOD/UL2018_MiniAODv2_NanoAODv9-v1/130000/02945FF5-75FA-D14B-ADDC-68A0F71E6F5E.root"
+   # "root://cms-xrd-global.cern.ch//store/data/Run2018D/SingleMuon/NANOAOD/UL2018_MiniAODv2_NanoAODv9-v1/130000/02945FF5-75FA-D14B-ADDC-68A0F71E6F5E.root",\
   #"root://cms-xrd-global.cern.ch//store/data/Run2018D/SingleMuon/NANOAOD/UL2018_MiniAODv2_NanoAODv9-v1/130000/02E7A5CB-7E72-DD45-A973-BA4114267C73.root"
 #  "root:://cms-xrd-global.cern.ch//store/data/Run2018D/SingleMuon/NANOAOD/UL2018_MiniAODv2_NanoAODv9-v1/130000/E4DA4798-B1EF-0C49-A4C5-B1EE627BDA97.root"
 #  "root:://cms-xrd-global.cern.ch//store/data/Run2018D/SingleMuon/NANOAOD/UL2018_MiniAODv2_NanoAODv9-v1/280000/F0C7CAE9-D602-9D40-B9EE-CCDE7C14D6A5.root"
 
 #Z->tt
-#  "root:://cms-xrd-global.cern.ch//store/mc/RunIIFall17NanoAODv7/DYJetsToTauTau_ForcedMuEleDecay_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/100000/892D0A20-8B3F-A94F-B168-FA309C3BB3C1.root"
-
+   # "root:://cms-xrd-global.cern.ch//store/mc/RunIIFall17NanoAODv7/DYJetsToTauTau_ForcedMuEleDecay_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/100000/892D0A20-8B3F-A94F-B168-FA309C3BB3C1.root",\
+   # "tmp_data/DY_2018_01.root",\
 ##ttbar
   #"root:://cms-xrd-global.cern.ch//store/mc/RunIIAutumn18NanoAODv7/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NANOAODSIM/Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/60000/BF63D9D2-AA6F-1948-86E6-ABFEA793C3D2.root"
 #  "root:://cms-xrd-global.cern.ch//store/mc/RunIIAutumn18NanoAODv7/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/NANOAODSIM/Nano02Apr2020_102X_upgrade2018_realistic_v21_ext2-v1/60000/D959CE19-AE07-3446-B6AD-B5E08740F18F.root"
@@ -78,26 +82,37 @@ TriggerCuts="(HLT_IsoMu24 || HLT_Ele27_WPTight_Gsf) && nMuon>0 && nElectron>0"
 #MuonSelection = lambda l : l.pt>10 and l.mediumPromptId==True and abs(l.eta)<2.4 and l.pfRelIso03_all<0.3 and  abs(l.dz)<1.0 and abs(l.dxy)<0.5
 #TightMuonSelection = lambda l : l.pt>10 and l.mediumPromptId==True and abs(l.eta)<2.4 and l.pfRelIso03_all<0.3 and  abs(l.dz)<1.0 and abs(l.dxy)<0.5
 #ElectronSelection = lambda l : l.pt>10 and abs(l.eta)<2.4 and l.pfRelIso03_all<0.3 and abs(l.dz)<1.25 and abs(l.dxy)<0.5  
-MuonSelection = lambda l : l.pt>5 and abs(l.eta)<2.4 and l.mediumId==True
-ElectronSelection = lambda l : l.pt>5 and abs(l.eta)<2.5 and l.mvaFall17V2noIso_WP90==True
-TauSelection = lambda l : l.pt>5 and abs(l.eta)<2.4 and l.idAntiMu>0
-JetSelection = lambda l : l.pt>20.0 and abs(l.eta)<3.0 and l.puId>4 and l.jetId>1
+MuonSelection = lambda l : l.pt>10 and abs(l.eta)<2.4 and l.mediumId==True
+ElectronSelection = lambda l : l.pt>10 and abs(l.eta)<2.5 and l.mvaFall17V2noIso_WP90==True
+TauSelection = lambda l : l.pt>20 and abs(l.eta)<2.4 and l.idDeepTau2017v2p1VSe > 10 and l.idDeepTau2017v2p1VSe > 10 and l.idDeepTau2017v2p1VSjet > 5 and l.idDecayMode
+# JetSelection = lambda l : l.pt>20.0 and abs(l.eta)<3.0 and l.puId>4 and l.jetId>1
+JetSelection = lambda l : l.pt>20 and abs(l.eta)<3.0 and l.puId>-1 and l.jetId>1
  
 
 
 modules=[]
 
-ZttBuilder=GenAnalyzer(
-                  decay='23->15,-15',
-                  motherName='GenZTauTau',
-                  daughterNames=['GenTau','GenAntiTau'],
-                  variables=['pt','eta','phi','mass','pdgId'],
-                  conjugate=True,
-                  mother_has_antipart=False,
-                  daughter_has_antipart=[True,True],
-                  skip=False,
-                  )
-#modules.append(ZttBuilder)
+if build_GenZllDecay:
+   ZllBuilder=GenZllAnalyzer(
+      variables=['pt','eta','phi','mass','pdgId'],
+      motherName='GenZll',
+      skip=False,
+      verbose=0
+   )
+   modules.append(ZllBuilder)
+
+if build_GenZttDecay:
+   ZttBuilder=GenAnalyzer(
+      decay='23->15,-15',
+      motherName='GenZTauTau',
+      daughterNames=['GenTau','GenAntiTau'],
+      variables=['pt','eta','phi','mass','pdgId'],
+      conjugate=True,
+      mother_has_antipart=False,
+      daughter_has_antipart=[True,True],
+      skip=False,
+   )
+   modules.append(ZttBuilder)
 
 if build_GenSignalDecay_ZMuE:
    ZmueBuilder=GenAnalyzer(
@@ -147,7 +162,7 @@ if build_GenSignalDecay_ZMuTau:
                   conjugate=True,
                   mother_has_antipart=True,
                   daughter_has_antipart=[True,True,True],
-                  skip=True,
+                  skip=False,
                   )
    modules.append(TauToEBuilder)
    RecoElectronMatcher=GenRecoMatcher(
@@ -174,7 +189,7 @@ if build_GenSignalDecay_ZETau:
                   conjugate=True,
                   mother_has_antipart=False,
                   daughter_has_antipart=[True,True],
-                  skip=True,
+                  skip=False,
                   )
    modules.append(ZetauBuilder)
    TauToMuBuilder=GenAnalyzer(
@@ -186,7 +201,7 @@ if build_GenSignalDecay_ZETau:
                   conjugate=True,
                   mother_has_antipart=True,
                   daughter_has_antipart=[True,True,True],
-                  skip=True,
+                  skip=False,
                   )
    modules.append(TauToMuBuilder)
    RecoElectronMatcher=GenRecoMatcher(
@@ -209,6 +224,7 @@ MuonSelector= LeptonSkimmer(
                   Selection=MuonSelection,
                   Veto=None,
                   minNlep=1,
+                  maxNlep=2,
                   verbose=False
                   )
 modules.append(MuonSelector)
@@ -217,6 +233,7 @@ ElectronSelector= LeptonSkimmer(
                   Selection=ElectronSelection,
                   Veto=None,
                   minNlep=1,
+                  maxNlep=2,
                   verbose=False
                   )
 modules.append(ElectronSelector)
@@ -225,6 +242,7 @@ TauSelector= LeptonSkimmer(
                   Selection=TauSelection,
                   Veto=None,
                   minNlep=-1,
+                  maxNlep=-1,
                   verbose=False
                   )
 modules.append(TauSelector)
@@ -284,7 +302,7 @@ modules.append(HTCalculator)
 
 if not production:
    p = PostProcessor(outputFolder, fnames, cut=TriggerCuts,  modules=modules,branchsel = branchsel_in, outputbranchsel = branchsel_out,
-                     prefetch = True, longTermCache = True, provenance=True, maxEntries=maxEntries)
+                     prefetch = False, longTermCache = False, provenance=True, maxEntries=maxEntries)
 else:
    p = PostProcessor(".", inputFiles(), cut=TriggerCuts,  modules=modules,branchsel = branchsel_in, outputbranchsel = branchsel_out,
                      provenance=True, fwkJobReport=True)  

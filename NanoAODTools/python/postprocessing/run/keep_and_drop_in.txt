@@ -4,18 +4,35 @@ keep Tau*
 keep Muon*
 keep Electron*
 keep Jet*
-keep PV*
 keep nMuon
 keep nElectron
 keep nTau
 keep nJet
 keep MET_*
+keep PuppiMET*
 keep GenJet_*
 keep Gen*
 keep gen*
-keep event
+
+keep genWeight*
+
+#Add Trigger information
 keep HLT_*
 keep HLT_Mu*
 keep HLT_IsoMu*
 keep HLT_Ele*_WPTight_Gsf
+keep TrigObj*
+#Pileup info
+keep PV*
+keep Pileup_nPU
+keep Pileup_nTrueInt
+keep puWeight*
+
+#Add event period information
+keep run
+keep luminosityBlock
+keep event
+
+#Add generator information
+keep LHE_*
 
