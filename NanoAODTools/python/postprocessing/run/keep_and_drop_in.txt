@@ -22,11 +22,11 @@ keep HLT_Mu*
 keep HLT_IsoMu*
 keep HLT_Ele*_WPTight_Gsf
 keep TrigObj*
+
 #Pileup info
 keep PV*
 keep Pileup_nPU
 keep Pileup_nTrueInt
-keep puWeight*
 
 #Add event period information
 keep run

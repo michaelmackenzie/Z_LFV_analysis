@@ -15,6 +15,7 @@ keep MET_*
 keep PuppiMET*
 keep GenMET_*
 keep Gen*
+keep nGen*
 keep *HT
 
 keep genWeight*
@@ -43,6 +44,10 @@ keep puWeight*
 keep run
 keep luminosityBlock
 keep event
+keep events
+
+#selection filter ID
+keep SelectionFilter_ID
 
 #Add generator information
 keep LHE_*

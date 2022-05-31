@@ -85,6 +85,9 @@ class GenAnalyzer(Module):
 
     def analyze(self, event):
         """process event, return True (go to next module) or False (fail, go to next event)"""
+        if not hasattr(event, "nGenPart"): #data
+            self.fillWithDefaults()
+            return True
         gens = Collection(event, "GenPart")      
         mom_cands=[]
         if self.grandmother!=None:

@@ -124,7 +124,8 @@ class GenZllAnalyzer(Module):
 
         # end particle loops
         if lepone_id < 0 or leptwo_id < 0:
-            print "GenZllAnalyzer: Two Z->ll charged leptons not found! Skipping the event"
+            if self.verbose > -1:
+                print "GenZllAnalyzer: Two Z->ll charged leptons not found! Skipping the event"
             if self.verbose > 1:
                 self.print_gen(gens)
             if self.skip:
