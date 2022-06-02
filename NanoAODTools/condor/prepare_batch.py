@@ -20,6 +20,7 @@ p.add_argument('input_dir' , help='Type e.g. input file path')
 p.add_argument('--outdir'  , help='Type e.g. output file path', default="", required=False)
 p.add_argument('--mc_data' , help='Type MC or Data for only MC or Data', default="", required=False)
 p.add_argument('--year'    , help='Specific year to process',default="", required=False)
+p.add_argument('--tag'     , help='Dataset tag to process',default="", required=False)
 p.add_argument('--dryrun'  , help='Setup merging without running', action='store_true', required=False)
 p.add_argument('--dosingle', help='Merge first dataset only', action='store_true', required=False)
 
@@ -29,8 +30,12 @@ inputpath  = args.input_dir
 outputpath = args.outdir
 mc_data    = args.mc_data
 year       = args.year
+tag        = args.tag
 dryrun     = args.dryrun
 dosingle   = args.dosingle
+
+if inputpath[-1:] != '/':
+    inputpath = inputpath + '/'
 
 if outputpath == "":
     outputpath = "lfvanalysis_rootfiles/"
@@ -70,11 +75,11 @@ process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
 stdout, stderr = process.communicate()
 list_dirs = stdout.split('\n')
 
-
 list_processed = []
 
 for dirname in list_dirs:
-
+    if dirname == "":
+        continue
     samplename = dirname.split("_")
     outputname = ""
     for index in range(len(samplename)-1):        
@@ -90,6 +95,8 @@ for dirname in list_dirs:
     if year != "" and year not in outputname:
         continue
     if outputname in list_processed:
+        continue
+    if tag != "" and tag not in outputname:
         continue
 
     list_processed.append(outputname)
@@ -123,53 +130,24 @@ for dirname in list_dirs:
             exit()
         continue
 
-    # print "Splitting output dataset selections:", outputname
-    # split_command = "root.exe -q -b \"split_output_tree.C(\\\"batch/temp_root/%s\\\",\\\"batch/temp_root/%s\\\")\"" % (tmpoutput, outputname)
-    # print split_command
-    # os.system(split_command)
-    # os.remove("batch/temp_root/%s" % (tmpoutput))
-    os.system("mv batch/temp_root/%s batch/temp_root/%s" % (tmpoutput, outputname))
+    print "Splitting output dataset selections:", outputname
+    split_command = "root.exe -q -b \"split_output_tree.C(\\\"batch/temp_root/%s\\\",\\\"batch/temp_root/%s\\\")\"" % (tmpoutput, outputname)
+    print split_command
+    os.system(split_command)
+    # os.system("mv batch/temp_root/%s batch/temp_root/%s" % (tmpoutput, outputname))
 
+    # Copy back the merged data:
+    copy_command = 'xrdcp -f batch/temp_root/' + outputname + ' root://cmseos.fnal.gov//store/user/'+user+'/'+outputpath
+    print copy_command
+    os.system(copy_command)
+    os.remove("batch/temp_root/%s" % (tmpoutput ))
+    os.remove("batch/temp_root/%s" % (outputname))
     if dosingle:
         break
+
 if dryrun:
     print "Completed dryrun!"
     exit()
 
-# Copy back the merged data:
-copy_command = 'xrdcp -f batch/temp_root/*.root root://cmseos.fnal.gov//store/user/'+user+'/'+outputpath
-print copy_command
-os.system(copy_command)
-    
-
-# print "Finishing initial merging! Now merging data run sections..."
-# # Now treat and merge samples
-# for year in ["2016", "2017", "2018"]:
-#     doSingleMu = False
-#     for dataset in list_processed:
-#         if "SingleMuonRun"+year in dataset:
-#             doSingleMu = True
-#             break
-#     doSingleEle = False
-#     for dataset in list_processed:
-#         if "SingleElectronRun"+year in dataset:
-#             doSingleEle = True
-#             break
-#     if doSingleMu:
-#         hadd_command = "date +\"%r\"; ./haddnano.py " + dir_output_data + "LFVAnalysis_SingleMu_" + year + ".root " + dir_output_data + "LFVAnalysis_SingleMuonRun" + year + "*.root"
-#         rm_command = "rm -rf " + dir_output_data + "LFVAnalysis_SingleMuonRun" + year + "*.root"
-#         print hadd_command
-#         # print rm_command
-#         os.system(hadd_command)
-#         # os.system(rm_command)
-#     if doSingleEle:
-#         hadd_command = "./haddnano.py " + dir_output_data + "LFVAnalysis_SingleEle_" + year + ".root " + dir_output_data + "LFVAnalysis_SingleElectronRun" + year + "*.root"
-#         rm_command = "rm -rf " + dir_output_data + "LFVAnalysis_SingleElectronRun" + year + "*.root"
-
-#         print hadd_command
-#         # print rm_command
-#         os.system(hadd_command)
-#         # os.system(rm_command)
-        
-        
+            
 print "All done!"

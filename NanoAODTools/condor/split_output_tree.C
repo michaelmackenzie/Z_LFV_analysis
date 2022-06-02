@@ -38,6 +38,7 @@ int split_output_tree(const char* filename_in, const char* filename_out) {
     case  5: selec = "ee"   ; break;
     default: selec = "mutau"; break;
     }
+    cout << " Copying " << selec.Data() << " tree...\n";
     TTree* EventsOut = Events->CopyTree(Form("SelectionFilter_ID == %i", iselec));
     if(!EventsOut) {
       cout << "Events tree failed to split the tree!\n";

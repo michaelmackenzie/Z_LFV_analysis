@@ -1,0 +1,25 @@
+# this isp a comment
+drop * # start with all
+
+#Branches added to the tree
+keep nMuons
+keep nElectrons
+keep event_*
+keep tag_*
+keep probe_*
+keep one_*
+keep two_*
+keep pair_*
+
+keep genWeight
+
+#Add Trigger information
+keep HLT_IsoMu24
+keep HLT_IsoMu27
+keep HLT_Ele*_WPTight_Gsf*
+
+#Add event period information
+keep run
+keep luminosityBlock
+keep event
+

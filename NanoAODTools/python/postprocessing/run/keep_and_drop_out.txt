@@ -44,7 +44,7 @@ keep puWeight*
 keep run
 keep luminosityBlock
 keep event
-keep events
+# keep events
 
 #selection filter ID
 keep SelectionFilter_ID

@@ -37,7 +37,7 @@ of.cd()
 
 for e in fileHandles[0].GetListOfKeys() :
 	name=e.GetName()
-        if name == "ParameterSets":
+        if name == "ParameterSets": #don't need this data, and can be large for some datasets
                 print "Skipping", name
                 continue
 	print "Merging" ,name
