@@ -1,13 +1,26 @@
-#:2018A:/SingleMuon/Run2018A-UL2018_MiniAODv2_NanoAODv9-v1/NANOAOD
-Run2018B:/SingleMuon/Run2018B-UL2018_MiniAODv2_NanoAODv9-v2/NANOAOD
-Run2018C:/SingleMuon/Run2018C-UL2018_MiniAODv2_NanoAODv9-v2/NANOAOD
-Run2018D:/SingleMuon/Run2018D-UL2018_MiniAODv2_NanoAODv9-v1/NANOAOD
-RunEG2018B:/EGamma/Run2018B-UL2018_MiniAODv2_NanoAODv9-v1/NANOAOD
-RunEG2018C:/EGamma/Run2018C-UL2018_MiniAODv2_NanoAODv9-v1/NANOAOD
-RunEG2018D:/EGamma/Run2018D-UL2018_MiniAODv2_NanoAODv9-v3/NANOAOD
+
+Run2018B={"Name":"Run2018B","Path":"/SingleMuon/Run2018B-UL2018_MiniAODv2_NanoAODv9-v2/NANOAOD","Units":"1","Data":True}
+Run2018C={"Name":"Run2018C","Path":"/SingleMuon/Run2018C-UL2018_MiniAODv2_NanoAODv9-v2/NANOAOD","Units":"1","Data":True}
+Run2018D={"Name":"Run2018D","Path":"/SingleMuon/Run2018D-UL2018_MiniAODv2_NanoAODv9-v1/NANOAOD","Units":"1","Data":True}
 
 
-SgnZMuE:/LFVAnalysis_ZEMu_2018_10218V1/pellicci-LFVAnalysis_NANOAOD_10218V1-a7880b551d3b12f0ed185e04212304eb/USER
+SgnZMuE={"Name":"SgnZMuE","Path":"/LFVAnalysis_ZEMu_2018_10218V1/pellicci-LFVAnalysis_NANOAOD_10218V1-a7880b551d3b12f0ed185e04212304eb/USER","Units":"5","Data":False,"GenZMuE":True,"Phys3":True}
+
+
+samples_in=[Run2018B,Run2018C,Run2018D,SgnZMuE]
+
+
+optional_keys=["GenZMuE","GenZMuTau","GenZETau","Phys3","Lumibased"]
+samples_out=[]
+for sample in samples_in:
+  for key in optional_keys:
+     if key not in sample.keys():
+        sample[key]=False
+  samples_out.append(sample)
+
+
+
+'''
 SgnZMuE2:/LFVAnalysis_ZEMu_2017_934V2/pellicci-LFVAnalysis_NANOAOD_10218V2-df769e3b6a68f1e897c86e71b2345849/USER
 SgnZMuE3:/LFVAnalysis_ZEMu_2017_934V1/pellicci-LFVAnalysis_NANOAOD_10218V1-df769e3b6a68f1e897c86e71b2345849/USER
 SgnZMuE4:/ZEMuAnalysis_10218V2/pellicci-ZEMuAnalysis_NANOAOD_10218V1-a7880b551d3b12f0ed185e04212304eb/USER
@@ -50,3 +63,4 @@ BkgZZ:/ZZ_TuneCP5_13TeV-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrad
 BkgQCD30to40:/QCD_Pt-30toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM
 BkgQCD40toInf:/QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM
 BkgQCDMu15:/QCD_Pt-20toInf_MuEnrichedPt15_TuneCUETP8M1_13TeV_pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM
+'''
