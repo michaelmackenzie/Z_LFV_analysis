@@ -21,8 +21,10 @@ p.add_argument('--outdir'  , help='Type e.g. output file path', default="", requ
 p.add_argument('--mc_data' , help='Type MC or Data for only MC or Data', default="", required=False)
 p.add_argument('--year'    , help='Specific year to process',default="", required=False)
 p.add_argument('--tag'     , help='Dataset tag to process',default="", required=False)
+p.add_argument('--veto'    , help='Dataset tag to not process',default="", required=False)
 p.add_argument('--dryrun'  , help='Setup merging without running', action='store_true', required=False)
 p.add_argument('--dosingle', help='Merge first dataset only', action='store_true', required=False)
+p.add_argument('--usedirect', help='Use the direct EOS path instead of XROOTD', action='store_true', required=False)
 
 args = p.parse_args()
 
@@ -31,8 +33,10 @@ outputpath = args.outdir
 mc_data    = args.mc_data
 year       = args.year
 tag        = args.tag
+veto       = args.veto
 dryrun     = args.dryrun
 dosingle   = args.dosingle
+usedirect  = args.usedirect
 
 if inputpath[-1:] != '/':
     inputpath = inputpath + '/'
@@ -60,8 +64,12 @@ os.makedirs("batch/temp_root")
     
 
 user = os.environ.get('USER')
-eospath = 'root://cmseos.fnal.gov//store/user/' + user + '/'
-# inputpath = eospath + inputpath
+if usedirect:
+    eospath = '/eos/uscms/store/user/' + user + '/'
+else:
+    eospath = 'root://cmseos.fnal.gov//store/user/' + user + '/'
+    
+    # inputpath = eospath + inputpath
 
 print "Processing input path", inputpath, "to output path", outputpath
 
@@ -98,20 +106,25 @@ for dirname in list_dirs:
         continue
     if tag != "" and tag not in outputname:
         continue
+    if veto != "" and veto in outputname:
+        continue
 
     list_processed.append(outputname)
     print "Processing dataset", outputname
     
     inputname  = outputname + "_*.root"
     outputname = outputname.replace("output_" ,"")
-    tmpoutput  = outputname + "-tmp.root"
+    # tmpoutput  = outputname + "-tmp.root"
     outputname = outputname + ".root"
     lscommand  = 'eos root://cmseos.fnal.gov ls ' + '/store/user/'+user+'/' + inputpath + inputname
     process = subprocess.Popen(lscommand.split(), stdout=subprocess.PIPE)
     stdout, stderr = process.communicate()
     inputlist = stdout.split('\n')
-    inputlist = ['root://cmseos.fnal.gov//store/user/'+user+'/'+inputpath+s for s in inputlist]
-    hadd_command = "../haddnano.py " + "batch/temp_root/" + tmpoutput
+    if usedirect:
+        inputlist = ['/eos/uscms/store/user/'+user+'/'+inputpath+s for s in inputlist]
+    else:
+        inputlist = ['root://cmseos.fnal.gov//store/user/'+user+'/'+inputpath+s for s in inputlist]
+    hadd_command = "../haddnano.py " + "batch/temp_root/" + outputname
     if inputlist == []:
         print "Not datafiles found for dataset", outputname
         if dosingle:
@@ -130,17 +143,17 @@ for dirname in list_dirs:
             exit()
         continue
 
-    print "Splitting output dataset selections:", outputname
-    split_command = "root.exe -q -b \"split_output_tree.C(\\\"batch/temp_root/%s\\\",\\\"batch/temp_root/%s\\\")\"" % (tmpoutput, outputname)
-    print split_command
-    os.system(split_command)
+    # print "Splitting output dataset selections:", outputname
+    # split_command = "root.exe -q -b \"split_output_tree.C(\\\"batch/temp_root/%s\\\",\\\"batch/temp_root/%s\\\")\"" % (tmpoutput, outputname)
+    # print split_command
+    # os.system(split_command)
     # os.system("mv batch/temp_root/%s batch/temp_root/%s" % (tmpoutput, outputname))
 
     # Copy back the merged data:
     copy_command = 'xrdcp -f batch/temp_root/' + outputname + ' root://cmseos.fnal.gov//store/user/'+user+'/'+outputpath
     print copy_command
     os.system(copy_command)
-    os.remove("batch/temp_root/%s" % (tmpoutput ))
+    # os.remove("batch/temp_root/%s" % (tmpoutput ))
     os.remove("batch/temp_root/%s" % (outputname))
     if dosingle:
         break

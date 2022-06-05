@@ -119,12 +119,13 @@ class JetLepCleaner(Module):
         lepton_overlap_jet_idx=[]
         jet_overlap_lepton_idx=[]
 
-        
+        #for each lepton, check if it overlaps with a jet
         for lepton in leptons:
           overlap=False
           overlap_idx=-1
           minDR=1000.
           itemp=-1
+          #find the closest jet in delta R
           for ijet,jet in enumerate(jets):
             if deltaR(lepton.eta, lepton.phi, jet.eta, jet.phi)<minDR:
                minDR=deltaR(lepton.eta, lepton.phi, jet.eta, jet.phi)
@@ -145,11 +146,13 @@ class JetLepCleaner(Module):
             lepton_overlap_jet_idx.append(overlap_idx)
         
 
+        #for each jet, check if it overlaps with a lepton
         for jet in jets:
           overlap=False
           overlap_idx=-1
           minDR=1000.
           itemp=-1
+          #find the closest lepton in delta R
           for ilep,lepton in enumerate(leptons): 
             if deltaR(lepton.eta, lepton.phi, jet.eta, jet.phi)<minDR:
                minDR=deltaR(lepton.eta, lepton.phi, jet.eta, jet.phi)

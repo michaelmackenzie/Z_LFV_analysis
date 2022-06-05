@@ -87,9 +87,16 @@ do
     python python/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}
     if [[ ! -f tree.root ]]; then
         echo "No tree file found, exit code 1, failure in processing"
-        exit 2
+        exit 1
     fi
-    mv tree.root outDir/tree_${COUNTER}.root
+    echo "Splitting the output tree into selection trees"
+    time root.exe -q -b "condor/split_output_tree.C(\"tree.root\", \"tree-split.root\")"
+    rm tree.root
+    if [[ ! -f tree-split.root ]]; then
+        echo "No split tree file found, exit code 1, failure in processing"
+        exit 1
+    fi
+    mv tree-split.root outDir/tree_${COUNTER}.root
     rm *.root
     COUNTER=$((COUNTER+1))
 

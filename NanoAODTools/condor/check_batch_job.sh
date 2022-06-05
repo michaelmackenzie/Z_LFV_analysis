@@ -1,8 +1,9 @@
 JOBNAME=$1
 CHECKFILES=$2
 RESUBMIT=$3 #"" for nothing, "dryrun" to prepare resubmission, anything else (e.g. "d") to perform resubmission
-EOSDIR=$4
-VERBOSE=$5
+TAG=$4 #dataset tag to consider
+EOSDIR=$5
+VERBOSE=$6
 
 if [[ "${EOSDIR}" == "" ]]
 then
@@ -14,6 +15,8 @@ echo "Using EOS directory ${EOSDIR}"
 if [[ "${VERBOSE}" == "" ]]
 then
     VERBOSE=0
+else
+    echo "Using verbose level ${VERBOSE}"
 fi
 
 if [[ "${JOBNAME}" == "" ]]
@@ -27,9 +30,18 @@ else
     do
         FILE=`basename ${f} | awk -F "_" '{name=""; for( i = 1; i < NF - 1; i++){ name=name $i; if(i < NF - 2) {name=name "_";}}}END{print name}'`
         JOB=`echo ${f} | awk -F "/" '{print $2}'`
-        if [ ${VERBOSE} -gt 0 ]
+        if  grep -q "${TAG}" <<< "${FILE}"
         then
-            echo "Checking file ${FILE} in job ${JOB}"
+            if [ ${VERBOSE} -gt 0 ]
+            then
+                echo "Checking file ${FILE} in job ${JOB}"
+            fi
+        else
+            if [ ${VERBOSE} -gt 0 ]
+            then
+                echo "Skipping file ${FILE} as tag ${TAG} not found"
+            fi
+            continue
         fi
         STDLOG="${f/log/stdout}"
         if [ ! -f ${STDLOG} ]
