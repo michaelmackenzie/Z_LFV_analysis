@@ -97,6 +97,8 @@ class SelectionFilter(Module):
             mutau = mutau and muons[0].pt > muon_trig_pt
         if emu:
             emu = emu and ((muonTriggered and muons[0].pt > muon_trig_pt) or (electronTriggered and electrons[0].pt > elec_trig_pt))
+            eta_sc = math.fabs(electrons[0].eta + electrons[0].deltaEtaSC)
+            emu = emu and (eta_sc < elec_gap_low or eta_sc > elec_gap_high)
         if mumu:
             mumu = mumu and muonTriggered
             mumu = mumu and (muons[0].pt > muon_trig_pt or muons[1].pt > muon_trig_pt)
