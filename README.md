@@ -51,7 +51,7 @@ python multi_submit.py
 Submit jobs:
 ```
 cd $CMSSW_BASE/src/PhysicsTools/NanoAODTools/condor/
-#configure submitBatch_Legacy.py samplesToSubmit and doYears lists
+#configure submitBatch_Legacy.py output_dir user name, samplesToSubmit, and doYears lists
 ./submitBatch_Legacy.py
 ```
 Check job statuses:
