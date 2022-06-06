@@ -1,59 +1,13 @@
 # this isp a comment
 drop * # start with all
 
-#collections
-keep nTau
-keep Tau*
-
+# keep numbers
 keep nMuon
-keep Muon*
-
+keep nTau
 keep nElectron
-keep Electron*
-
-#jets
 keep nJet
-keep Jet*
 keep nBJet*
-keep BJet*
-
-#photons
-keep nPhoton
-keep Photon_pt
-keep Photon_eta
-keep Photon_phi
-keep Photon_mass
-keep Photon_mvaID*
-keep Photon_pfRelIso03_*
-keep Photon_electronVeto
-
-#MET
-keep MET_*
-keep PuppiMET*
-
-#Gen info
-keep Gen*
-keep gen*
-keep genWeight*
-#extra drop
-drop GenJet*
-drop nGenJet
-drop GenDressed*
-drop nGenDressed*
-
-#Add Trigger information
-keep HLT_*
-keep HLT_Mu*
-keep HLT_IsoMu*
-keep HLT_Ele*_WPTight_Gsf
 keep nTrigObj
-keep TrigObj*
-
-#Pileup info
-keep PV*
-keep Pileup_nPU
-keep Pileup_nTrueInt
-
 
 #collections
 keep Tau*
@@ -74,6 +28,15 @@ keep Jet*
 #keep Jet_btagCSVV2
 #keep Jet_partonFlavour
 
+#photon
+keep Photon_pt
+keep Photon_eta
+keep Photon_phi
+keep Photon_mass
+keep Photon_mvaID*
+keep Photon_pfRelIso03_*
+keep Photon_electronVeto
+
 #MET info
 keep PuppiMET*
 keep MET_pt
@@ -93,15 +56,10 @@ keep HLT_Ele35_WPTight_Gsf*
 #Various flags
 keep Flag_*
 
-#Generator weight
-keep genWeight*
-
 #Add event period information
 keep run
 keep luminosityBlock
 keep event
 
-#Add generator information
-keep LHE_*
 
 
