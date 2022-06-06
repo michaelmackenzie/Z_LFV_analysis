@@ -30,12 +30,9 @@ keep Photon_pfRelIso03_*
 keep Photon_electronVeto
 
 #Triggers
-keep HLT_IsoMu24
-keep HLT_IsoMu27
+keep HLT_IsoMu*
 keep HLT_Mu50
-keep HLT_Ele27_WPTight_Gsf*
-keep HLT_Ele32_WPTight_Gsf*
-keep HLT_Ele35_WPTight_Gsf*
+keep HLT_Ele*_WPTight_Gsf*
 keep TrigObj_*
 
 

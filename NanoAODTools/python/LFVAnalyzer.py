@@ -8,8 +8,10 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenCount import 
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenLepCount import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenAnalyzer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenZllAnalyzer import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenIdenticalMothersDiscriminator import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenRecoMatcher import *
+# from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.TriggerAnalyzer import *
+# from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonPairCreator import *
+# from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.FunctionWrapper import *
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
 
@@ -65,22 +67,13 @@ modules=[]
 GenCounter=GenCount()
 modules.append(GenCounter)
 
-if not isData == "data":
-   ZllBuilder=GenZllAnalyzer(
-      variables=['pt','eta','phi','mass','pdgId'],
-      motherName='GenZll',
-      skip=False,
-      verbose=-1
-   )
-   modules.append(ZllBuilder)
-
-
+#lepton selection
 MuonSelector= LeptonSkimmer(
    LepFlavour='Muon',
    Selection=MuonSelection,
    Veto=None,
    minNlep=-1,
-   maxNlep=2,
+   maxNlep=-1,
    verbose=False
 )
 modules.append(MuonSelector)
@@ -89,10 +82,22 @@ ElectronSelector= LeptonSkimmer(
    Selection=ElectronSelection,
    Veto=None,
    minNlep=-1,
-   maxNlep=2,
+   maxNlep=-1,
    verbose=False
 )
 modules.append(ElectronSelector)
+
+# TriggerSelector = TriggerAnalyzer(
+#                    particlePdgId=13,
+#                    triggerBits=[1,10],
+#                    branchNames=["IsoMu24","Mu50"],
+#                    recoCollection="Muon",
+#                    maxDR=0.03,
+#                    maxRelDpt=10.
+                  
+#                    )
+# modules.append(TriggerSelector)
+
 TauSelector= LeptonSkimmer(
    LepFlavour='Tau',
    Selection=TauSelection,
@@ -121,24 +126,11 @@ TauElectronCleaner=JetLepCleaner(
 )
 modules.append(TauElectronCleaner)
 
-looseHTCalculator= HTSkimmer(
-   minJetPt=20,
-   minJetEta=4.7,
-   minJetPUid=-1,
-   minHT=-1,
-   collection="Jet",
-   HTname="looseHT"
-)
-modules.append(looseHTCalculator)
-looseCntrHTCalculator= HTSkimmer(
-   minJetPt=20,
-   minJetEta=3.0,
-   minJetPUid=-1,
-   minHT=-1,
-   collection="Jet",
-   HTname="looseCntrHT"
-)
-modules.append(looseCntrHTCalculator)
+#filter events by final state selection
+Selection= SelectionFilter(year=year,verbose=0)
+modules.append(Selection)
+
+#Add additional object cleaning
 
 JetSelector=JetSkimmer( 
    BtagWPs=[0.1274, 0.4229, 0.7813 ], 
@@ -178,7 +170,7 @@ modules.append(JetTauCleaner)
 
 HTCalculator= HTSkimmer(
    minJetPt=20,
-   minJetEta=3.0,
+   minJetEta=3.0, #FIXME: Should be max jet eta I believe
    minJetPUid=-1,
    minHT=-1,
    collection="Jet",
@@ -186,9 +178,26 @@ HTCalculator= HTSkimmer(
 )
 modules.append(HTCalculator)
 
-#filter events by final state selection
-Selection= SelectionFilter(year=year,verbose=0)
-modules.append(Selection)
+if not isData == "data":
+   ZllBuilder=GenZllAnalyzer(
+      variables=['pt','eta','phi','mass','pdgId'],
+      motherName='GenZll',
+      skip=False,
+      verbose=-1
+   )
+   modules.append(ZllBuilder)
+   # RecoElectronMatcher=GenRecoMatcher(
+   #                genParticles=['GenElectron'],
+   #                recoCollections=['Electron'],
+   #                maxDR=0.1
+   #                )
+   # modules.append(RecoElectronMatcher)
+   # RecoMuonMatcher=GenRecoMatcher(
+   #                genParticles=['GenMuon'],
+   #                recoCollections=['Muon'],
+   #                maxDR=0.1
+   #                )
+   # modules.append(RecoMuonMatcher)
 
 #record number of generator-level primary(-ish) leptons in the event
 GenTauCount= GenLepCount(Lepton="Tau")
@@ -226,18 +235,6 @@ modules.append(GenElectronCount)
 #       skip=False,
 #    )
 #    modules.append(TauToMuBuilder)
-#    RecoElectronMatcher=GenRecoMatcher(
-#    genParticles=['GenTauElectron'],
-#    recoCollections=['Electron'],
-#    maxDR=0.1
-#    )
-#    modules.append(RecoElectronMatcher)
-#    RecoMuonMatcher=GenRecoMatcher(
-#       genParticles=['GenTauMuon'],
-#       recoCollections=['Muon'],
-#       maxDR=0.1
-#    )
-#    modules.append(RecoMuonMatcher)
 
 
 
@@ -260,7 +257,7 @@ else: #data/embedding
       jsonFile="json/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt"
 
 p=PostProcessor(".", inputFile, cut = TriggerCuts, modules = modules, branchsel = branchsel_in, outputbranchsel = branchsel_out,
-                provenance = True, fwkJobReport = True, jsonInput = jsonFile, maxEntries = maxEntries, firstEntry = firstEntry)
+                provenance = True, fwkJobReport = False, jsonInput = jsonFile, maxEntries = maxEntries, firstEntry = firstEntry)
 
 ###############RUN here######################
 p.run()

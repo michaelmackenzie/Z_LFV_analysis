@@ -14,8 +14,6 @@ keep Electron*
 #jets
 keep nJet
 keep Jet*
-keep nBJet*
-keep BJet*
 
 #photons
 keep nPhoton
@@ -45,7 +43,7 @@ drop nGenDressed*
 keep HLT_*
 keep HLT_Mu*
 keep HLT_IsoMu*
-keep HLT_Ele*_WPTight_Gsf
+keep HLT_Ele*_WPTight_Gsf*
 keep nTrigObj
 keep TrigObj*
 

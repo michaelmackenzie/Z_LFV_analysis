@@ -313,7 +313,7 @@ MTelectron = FunctionWrapper(
 )
 modules.append(MTelectron)
 
-Selection= SelectionFilter(verbose=0)
+Selection= SelectionFilter(year=2016,verbose=0)
 modules.append(Selection)
 
 #record number of generator-level primary(-ish) leptons in the event

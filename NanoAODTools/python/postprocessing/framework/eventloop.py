@@ -66,6 +66,8 @@ def eventLoop(
     doneEvents = 0
     acceptedEvents = 0
     entries = inputTree.entries
+    module_times = [0 for i in range(len(modules))]
+    module_seen  = [0 for i in range(len(modules))]
     if eventRange:
         entries = len(eventRange)
     if maxEvents > 0:
@@ -78,8 +80,13 @@ def eventLoop(
         clearExtraBranches(inputTree)
         doneEvents += 1
         ret = True
+        module_index = 0
         for m in modules:
+            time_start = time.time()
             ret = m.analyze(e)
+            module_times[module_index] = module_times[module_index] + time.time() - time_start
+            module_seen [module_index] = module_seen [module_index] + 1
+            module_index = module_index + 1
             if not ret:
                 break
         if ret:
@@ -98,4 +105,7 @@ def eventLoop(
                 tlast = t1
     for m in modules:
         m.endFile(inputFile, outputFile, inputTree, wrappedOutputTree)
+    for i,m in enumerate(modules):
+        progress[1].write("Module %3i %30s summary: %10i events seen, %10.1f Hz\n" % (i, str(m.__class__).split('.')[-1].replace("'>",""),
+                                                                                        module_seen[i], module_seen[i]/module_times[i]))
     return (doneEvents, acceptedEvents, time.time() - t0)
