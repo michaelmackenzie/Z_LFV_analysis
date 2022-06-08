@@ -58,7 +58,7 @@ class SelectionFilter(Module):
         nTaus      = len(taus     )
 
         if self.verbose > 1:
-            print "SelectionFilter: N(e) = %i; N(mu) = %i; N(tau) = %i" % (nElectrons, nMuons, nTaus)
+            print "SelectionFilter Event %8i:\n N(e) = %i; N(mu) = %i; N(tau) = %i" % (self.seen, nElectrons, nMuons, nTaus)
 
         #Count the selected leptons in the event to determine possible selections
         mutau = nMuons     == 1 and nTaus  == 1
@@ -87,9 +87,17 @@ class SelectionFilter(Module):
             electronTriggered = HLT.Ele32_WPTight_Gsf
             muonTriggered     = HLT.IsoMu24
 
+        if self.verbose > 1:
+            print " Muon triggered =", muonTriggered, "(low) and", muonHighTriggered, "(high); Electron triggered =", electronTriggered
+
         #initial trigger filter
-        if not electronTriggered and not muonTriggered and not muonHighTriggered:
+        if not (electronTriggered or muonTriggered or muonHighTriggered):
             return False
+
+        if self.verbose > 1:
+            print " Event survived trigger check"
+            print " Base     selection: mutau = %i; etau = %i; emu = %i; mumu = %i; ee = %i" % (mutau, etau, emu, mumu, ee)
+
 
         #Apply some tighter selection IDs on the final leptons
         elec_gap_low  = 1.4442
@@ -116,6 +124,7 @@ class SelectionFilter(Module):
             #                  or muonHighTriggered and (muons[0].pt > 50. or muons[1].pt > 50.))
             if self.prev_ids:
                 mumu = mumu and muons[0].tightId and muons[1].tightId
+                mumu = mumu and (muons[0].pfRelIso04_all < 0.15) and (muons[1].pfRelIso04_all < 0.15)
                 mumu = mumu and nElectrons == 0
         if ee:
             # ee = ee and electronTriggered
@@ -125,7 +134,12 @@ class SelectionFilter(Module):
             ee = ee and (eta_sc_1 < elec_gap_low or eta_sc_1 > elec_gap_high)
             ee = ee and (eta_sc_2 < elec_gap_low or eta_sc_2 > elec_gap_high)
             if self.prev_ids:
+                ee = ee and electrons[0].mvaFall17V2Iso_WP80 and electrons[1].mvaFall17V2Iso_WP80
                 ee = ee and nMuons == 0
+
+
+        if self.verbose > 1:
+            print " Filtered selection: mutau = %i; etau = %i; emu = %i; mumu = %i; ee = %i" % (mutau, etau, emu, mumu, ee)
 
         #Next remove overlap between the data channels
         #FIXME: Should allow etau_h and mutau_h events, separate searches
@@ -135,6 +149,9 @@ class SelectionFilter(Module):
         if (mumu and ee) or (mutau or etau or emu):
             mumu  = False
             ee    = False
+
+        if self.verbose > 1:
+            print " Pruned   selection: mutau = %i; etau = %i; emu = %i; mumu = %i; ee = %i" % (mutau, etau, emu, mumu, ee)
 
         #Finally apply some additional event filtering
         if mutau:
@@ -165,6 +182,9 @@ class SelectionFilter(Module):
         else:
             return False
 
+        if self.verbose > 1:
+            print " Event survived selection specific filtering"
+
         #Next check the triggers
         isTriggered = False
         #check electron triggers
@@ -179,15 +199,24 @@ class SelectionFilter(Module):
         if not isTriggered:
             return False
 
+        if self.verbose > 1:
+            print " Event survived trigger threshold filtering"
+
         dilep = lep1.p4() + lep2.p4()
         #Mass filter
         if dilep.M() < 50.:
             return False
         if self.prev_ids and dilep.M() > 170.:
             return False
+        if self.verbose > 1:
+            print " Event survived di-lepton mass filtering"
+
         #Overlap filter
-        if lep1.p4().DeltaR(lep2.p4()) < 0.3:
-            return False
+        if not self.prev_ids:
+            if lep1.p4().DeltaR(lep2.p4()) < 0.3:
+                return False
+        if self.verbose > 1:
+            print " Event survived overlap filtering"
 
         #FIXME: should use bits, e.g. ID = 1*mutau + (1<<1)*etau + (1<<2)*emu + (1<<3)*mumu + (1<<4)*ee, to use events in multiple selections
         ID = 1*mutau + 2*etau + 3*emu + 4*mumu + 5*ee

@@ -230,11 +230,11 @@ class exampleProducer(Module):
             if passBit1 or passBit2:
                 if self.verbose > 9:
                     print "   Trigger object", i_trig,"passed bit check, trig pt =", trigObj.pt, "lepton pt =", lepton.pt
-                if abs(lepton.pt - trigObj.pt) < deltaPt_match*lepton.pt:
-                    deltaEta = abs(lepton.eta - trigObj.eta)
-                    deltaPhi = abs(lepton.phi - trigObj.phi)
+                if math.fabs(lepton.pt - trigObj.pt) < deltaPt_match*lepton.pt:
+                    deltaEta = math.fabs(lepton.eta - trigObj.eta)
+                    deltaPhi = math.fabs(lepton.phi - trigObj.phi)
                     if deltaPhi > math.pi:
-                        deltaPhi = abs(2*math.pi - deltaPhi)
+                        deltaPhi = math.fabs(2*math.pi - deltaPhi)
                     if self.verbose > 9:
                         print "    Trigger object passed pt check, trig eta, phi =", trigObj.eta, "," , trigObj.phi,\
                             "lepton eta, phi =", lepton.eta, ",", lepton.phi
@@ -302,7 +302,7 @@ class exampleProducer(Module):
                 if lep_mass < min_mass_cut or lep_mass > max_mass_cut:
                     continue
                 if is_mumu:
-                    if not self.muon_id(lep_1, id_id, iso_id) or not self.muon_id(lep_1, id_id, iso_id):
+                    if (not self.muon_id(lep_1, id_id, iso_id)) or (not self.muon_id(lep_2, id_id, iso_id)):
                         continue
                 else :
                     if not self.elec_id(lep_1, id_id) or not self.elec_id(lep_2, id_id):
@@ -530,10 +530,11 @@ class exampleProducer(Module):
             print "Event", self.seen, ": printing electron info..."
         for index in range(len(electrons)) :
             if(self.verbose > 9 and self.seen % 10 == 0) or self.verbose > 10:
-                print " Electron", index, "pt =", electrons[index].pt, "eta =", electrons[index].eta, "WPL =", electrons[index].mvaFall17V2Iso_WPL, \
+                print " Electron", index, "pt =", electrons[index].pt, "eta =", electrons[index].eta,\
+                    "SC eta =",  electrons[index].eta + electrons[index].deltaEtaSC, "WPL =", electrons[index].mvaFall17V2Iso_WPL, \
                     "WP80 =", electrons[index].mvaFall17V2Iso_WP80 
             ele_sc_eta = math.fabs(electrons[index].eta + electrons[index].deltaEtaSC)
-            ele_eta = math.fabs(electrons[index].eta + electrons[index].deltaEtaSC)
+            ele_eta = math.fabs(electrons[index].eta)
             if (electrons[index].pt > minelept_count and  ele_eta < max_ele_eta
                 and (ele_sc_eta < elec_eta_veto_min or ele_sc_eta > elec_eta_veto_max)
                 and self.elec_id(electrons[index], eleId_count)) :
@@ -546,10 +547,10 @@ class exampleProducer(Module):
             print "Event", self.seen, ": printing muon info..."
         for index in range(len(muons)) :
             if(self.verbose > 9 and self.seen % 10 == 0) or self.verbose > 10:
-                print " Muon", index, "pt =", muons[index].pt, "IDL =", muons[index].looseId, "IDM =", muons[index].tightId, \
+                print " Muon", index, "pt =", muons[index].pt, "eta =", muons[index].eta, "IDL =", muons[index].looseId, "IDM =", muons[index].tightId, \
                     "IDT =", muons[index].tightId, "iso = ", muons[index].pfRelIso04_all 
             if (muons[index].pt > minmupt_count and
-                abs(muons[index].eta) < max_muon_eta and
+                math.fabs(muons[index].eta) < max_muon_eta and
                 self.muon_id(muons[index], muonId_count, muonIso_count)) :
                 #FIXME: Add dxy, dz cuts
                 muon_dict[nMuons] = index
@@ -561,9 +562,9 @@ class exampleProducer(Module):
             print "Event", self.seen, ": printing tau info..."
         for index in range(len(taus)) :
             if(self.verbose > 9 and self.seen % 10 == 0) or self.verbose > 10:
-                print " Tau", index, "pt =", taus[index].pt, "AntiMu =", taus[index].idDeepTau2017v2p1VSmu, "AntiEle =", \
+                print " Tau", index, "pt =", taus[index].pt, "eta =", taus[index].eta, "AntiMu =", taus[index].idDeepTau2017v2p1VSmu, "AntiEle =", \
                     taus[index].idDeepTau2017v2p1VSe, "AntiJet =", taus[index].idDeepTau2017v2p1VSjet
-            if (taus[index].pt > mintaupt_count and abs(taus[index].eta) < max_tau_eta
+            if (taus[index].pt > mintaupt_count and math.fabs(taus[index].eta) < max_tau_eta
                 and self.tau_id(taus[index], useDeepNNTauIDs, tauAntiEle_count, tauAntiMu_count, tauAntiJet_count)) :
                 deltaRCheck = True
                 if tauDeltaR_count > 0 : #check for overlap with accepted lepton
@@ -576,6 +577,8 @@ class exampleProducer(Module):
                         if not deltaRCheck:
                             break
                 if deltaRCheck:
+                    if(self.verbose > 9 and self.seen % 10 == 0) or self.verbose > 10:
+                        print " --> Passes delta R check with leptons"
                     tau_dict[nTaus] = index
                     nTaus = nTaus + 1
 
@@ -669,6 +672,8 @@ class exampleProducer(Module):
             return False
         cut_flow.Fill(6)
         cut_flow_embed.Fill(11, embedWeight)
+        if self.verbose > 9:
+            print " Event passes lepton count filtering"
 
         ############################
         #   Check each selection   #
@@ -770,6 +775,8 @@ class exampleProducer(Module):
                 leptonOneFlavor = lep1.charge*-13
                 leptonTwoFlavor = lep2.charge*-13
                 mumu = mumu and lep1.pt > minmuptlow and lep2.pt > minmuptlow
+            elif self.verbose > 9:
+                print " Same-flavor matching failed to find a di-lepton match!"
         ############################
         #           E+E            #
         ############################
@@ -795,6 +802,9 @@ class exampleProducer(Module):
             return False
         cut_flow.Fill(7)
         cut_flow_embed.Fill(12, embedWeight)
+
+        if self.verbose > 9:
+            print " Event passes selection specific filtering"
 
         ############################
         #    Further filtering     #
@@ -827,10 +837,15 @@ class exampleProducer(Module):
         ############################
         ## Filter by mass range ##
         lep_mass = (lep1.p4() + lep2.p4()).M()
+        if self.verbose > 10:
+            print " Di-lepton mass =", lep_mass
         if lep_mass < minLepM or lep_mass > maxLepM:
             return False
         cut_flow.Fill(8)
         cut_flow_embed.Fill(13, embedWeight)
+
+        if self.verbose > 9:
+            print " Event passes lepton mass filtering"
 
         ############################
         #    Trigger filtering     #
@@ -868,8 +883,15 @@ class exampleProducer(Module):
         cut_flow.Fill(9)
         cut_flow_embed.Fill(14, embedWeight)
 
+        if self.verbose > 9:
+            print " Event passes trigger filtering"
+
+
         if vetoSameSignSameFlavor and leptonOneFlavor == leptonTwoFlavor:
             return False
+        if vetoSameSignSameFlavor and self.verbose > 9:
+            print " Event passes same-sign filtering"
+
         cut_flow.Fill(10)
         cut_flow_embed.Fill(15, embedWeight)
         if emu:
@@ -926,9 +948,8 @@ class exampleProducer(Module):
             self.out.fillBranch("leptonTwoGenPt", 0.)
             self.out.fillBranch("nGenTaus"      , 0 )
 
-        print "Event %8i: accepted" % (self.seen)
-        if not electronTriggered and not muonLowTriggered:
-            print "--> Muon high triggered event"
+        if emu:
+            print "Event %8i accepted" % (self.seen)
 
         # increment selection counts
         if emu:

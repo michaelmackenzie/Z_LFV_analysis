@@ -5,15 +5,15 @@ from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import Pos
 from PhysicsTools.NanoAODTools.legacy.runSkimModule import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
 
-#inputFile = [ sys.argv[1] ]
+inputFile = [ sys.argv[1] ]
 # inputFile = [
 #     "root://cms-xrd-global.cern.ch//store/user/pellicci/ZEMuAnalysis_2016_8028V1/ZEMuAnalysis_NANOAOD_10218V1/200211_105742/0000/ZEMuAnalysis_pythia8_NANOAOD_2016_1.root",\
 #     "root://cms-xrd-global.cern.ch//store/user/pellicci/ZEMuAnalysis_2016_8028V1/ZEMuAnalysis_NANOAOD_10218V1/200211_105742/0000/ZEMuAnalysis_pythia8_NANOAOD_2016_2.root",\
 # ]
-inputFile = [
-    "condor/tmp_data/ZEMu_2016_01.root", \
-    "condor/tmp_data/ZEMu_2016_02.root", \
-]
+# inputFile = [
+#     "condor/tmp_data/ZEMu_2016_01.root", \
+#     "condor/tmp_data/ZEMu_2016_02.root", \
+# ]
 prefetch = False
 
 isData = False

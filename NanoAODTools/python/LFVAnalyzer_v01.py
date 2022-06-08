@@ -70,13 +70,17 @@ print "Trigger cuts:", TriggerCuts
 
 #Base lepton selection
 MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.2 and l.looseId and l.pfRelIso04_all < 0.5
-ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.2 and (math.fabs(l.eta + l.deltaEtaSC) < 1.4442 or math.fabs(l.eta + l.deltaEtaSC) > 1.556) and l.mvaFall17V2Iso_WPL
-TauSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<2.2 and l.idDeepTau2017v2p1VSmu > 10 and l.idDeepTau2017v2p1VSe > 10 and l.idDeepTau2017v2p1VSjet > 5 and l.idDecayMode
+ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.2 and (math.fabs(l.eta + l.deltaEtaSC) < 1.442 or math.fabs(l.eta + l.deltaEtaSC) > 1.566) and l.mvaFall17V2Iso_WPL
+TauSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<2.2 and (l.idDeepTau2017v2p1VSmu >= 10) and (l.idDeepTau2017v2p1VSe >= 10) and (l.idDeepTau2017v2p1VSjet >= 5) and l.idDecayModeNewDMs
 
 #configure the modules
 modules=[]
 GenCounter=GenCount()
 modules.append(GenCounter)
+
+verbose_level = 0
+if maxEntries != None and maxEntries == 1:
+   verbose_level = 2
 
 #lepton selection
 MuonSelector= LeptonSkimmer(
@@ -85,7 +89,7 @@ MuonSelector= LeptonSkimmer(
    Veto=None,
    minNlep=-1,
    maxNlep=-1,
-   verbose=False
+   verbose=verbose_level
 )
 modules.append(MuonSelector)
 ElectronSelector= LeptonSkimmer(
@@ -94,7 +98,7 @@ ElectronSelector= LeptonSkimmer(
    Veto=None,
    minNlep=-1,
    maxNlep=-1,
-   verbose=False
+   verbose=verbose_level
 )
 modules.append(ElectronSelector)
 
@@ -104,7 +108,7 @@ TauSelector= LeptonSkimmer(
    Veto=None,
    minNlep=-1,
    maxNlep=-1,
-   verbose=False
+   verbose=verbose_level
 )
 modules.append(TauSelector)
 
@@ -127,7 +131,7 @@ TauElectronCleaner=JetLepCleaner(
 modules.append(TauElectronCleaner)
 
 #filter events by final state selection
-Selection= SelectionFilter(year=year,prev_ids=1,verbose=0)
+Selection= SelectionFilter(year=year,prev_ids=1,verbose=verbose_level)
 modules.append(Selection)
 
 #Add additional event info
