@@ -1,0 +1,130 @@
+# this is a comment
+drop * # start with all
+
+#Branches added to the tree
+keep M_ll
+keep lepton*
+keep z*
+keep muon*
+keep electron*
+keep nElectrons
+keep nMuons
+keep nTaus
+keep nGenTaus
+
+#Existing branches to keep
+
+#Electron info
+keep Electron_pt
+keep Electron_eta
+keep Electron_phi
+keep Electron_mass
+keep Electron_deltaEtaSC
+keep Electron_dxy*
+keep Electron_dz*
+keep Electron_charge
+keep Electron_mvaFall17V2Iso_WP*
+keep Electron_genPartFlav
+keep Electron_genPartIdx
+keep Electron_pfRelIso03*
+keep Electron_eCorr
+
+#Muon info
+keep Muon_pt
+keep Muon_eta
+keep Muon_phi
+keep Muon_mass
+keep Muon_pfRelIso04*
+keep Muon_dxy*
+keep Muon_dz*
+#keep Muon_fsrPhotonIdx
+keep Muon_charge
+keep Muon_looseId
+keep Muon_mediumId
+keep Muon_tightId
+keep Muon_genPartFlav
+keep Muon_genPartIdx
+keep Muon_nTrackerLayers
+
+#Tau info
+keep Tau_pt
+keep Tau_eta
+keep Tau_mass
+keep Tau_phi
+keep Tau_dxy*
+keep Tau_dz*
+keep Tau_idAntiEle
+keep Tau_idAntiEle2018
+keep Tau_idAntiMu
+keep Tau_idMVAnewDM2017v2
+keep Tau_idDecayMode
+keep Tau_idDecayModeNewDMs
+keep Tau_idDeepTau2017v2p1VS*
+keep Tau_decayMode
+keep Tau_charge
+keep Tau_genPartFlav
+keep Tau_genPartIdx
+
+#keep FsrPhoton_*
+
+#Gen-level particle information
+#keep GenPart_*
+#keep GenVisTau_*
+
+
+#Jet info
+keep Jet_pt
+keep Jet_eta
+keep Jet_phi
+keep Jet_mass
+keep Jet_jetId
+keep Jet_puId
+keep Jet_btagDeepB
+keep Jet_btagCMVA
+keep Jet_partonFlavour
+
+#Photon info
+keep Photon_pt
+keep Photon_eta
+keep Photon_phi
+keep Photon_mass
+keep Photon_mvaID*
+keep Photon_pfRelIso03_*
+keep Photon_electronVeto
+
+#MET info
+keep PuppiMET*
+keep MET_pt
+keep MET_phi
+keep MET_cov*
+keep MET_sumEt
+keep MET_significance
+
+#Triggers
+keep HLT_IsoMu24
+keep HLT_IsoMu27
+keep HLT_Mu50
+keep HLT_Ele27_WPTight_Gsf*
+keep HLT_Ele32_WPTight_Gsf*
+keep HLT_Ele35_WPTight_Gsf*
+keep TrigObj_*
+
+#Various flags
+keep Flag_*
+
+#Generator weight
+keep genWeight*
+
+#Pileup info
+keep PV_npvs*
+keep Pileup_nPU
+keep Pileup_nTrueInt
+keep puWeight*
+
+#Add event period information
+keep run
+keep luminosityBlock
+keep event
+
+#Add generator information
+keep LHE_*

@@ -80,13 +80,11 @@ def eventLoop(
         clearExtraBranches(inputTree)
         doneEvents += 1
         ret = True
-        module_index = 0
-        for m in modules:
+        for index, m in enumerate(modules):
             time_start = time.time()
             ret = m.analyze(e)
-            module_times[module_index] = module_times[module_index] + time.time() - time_start
-            module_seen [module_index] = module_seen [module_index] + 1
-            module_index = module_index + 1
+            module_times[index] = module_times[index] + time.time() - time_start
+            module_seen [index] = module_seen [index] + 1
             if not ret:
                 break
         if ret:
@@ -107,5 +105,5 @@ def eventLoop(
         m.endFile(inputFile, outputFile, inputTree, wrappedOutputTree)
     for i,m in enumerate(modules):
         progress[1].write("Module %3i %30s summary: %10i events seen, %10.1f Hz\n" % (i, str(m.__class__).split('.')[-1].replace("'>",""),
-                                                                                        module_seen[i], module_seen[i]/module_times[i]))
+                                                                                        module_seen[i], 0 if module_times[i] <= 0. else module_seen[i]/module_times[i]))
     return (doneEvents, acceptedEvents, time.time() - t0)

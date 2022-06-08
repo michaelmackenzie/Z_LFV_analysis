@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# Analyzer to reproduce the selection used in github.com/michaelmackenz/ZEMuAnalysis.git
+# See also legacy/LFVAnalyzer.py where this was copied to
+
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonSkimmer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.HTSkimmer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetSkimmer import *
@@ -9,9 +12,6 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenLepCount impo
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenAnalyzer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenZllAnalyzer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenRecoMatcher import *
-# from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.TriggerAnalyzer import *
-# from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonPairCreator import *
-# from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.FunctionWrapper import *
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
 
@@ -25,8 +25,6 @@ ROOT.PyConfig.IgnoreCommandLineOptions = True
 
 #read in command line arguments
 #Example: python <Analyzer> <input file> <data/MC/Embedded> <year>
-
-
 inputFile = [ sys.argv[1] ]
 isData    =   sys.argv[2]
 year      =   sys.argv[3]
@@ -42,6 +40,7 @@ prefetch  = False
 #     "condor/tmp_data/ZEMu_2016_02.root", \
 # ]
 
+
 if isData not in ["data", "MC", "Embedded"]:
    print "Unknown data flag %s" % (isData)
    exit()
@@ -52,7 +51,7 @@ if year not in ["2016", "2017", "2018"]:
    
 #debug configuration options
 maxEntries=None #deactivate(use all evts): None
-firstEntry=0 #0 to start at the first event
+firstEntry=0
 
 # branches to read in / write out
 branchsel_in  ="python/postprocessing/run/keep_and_drop_in.txt"
@@ -60,20 +59,19 @@ branchsel_out ="python/postprocessing/run/keep_and_drop_out.txt"
 
 # filter out untriggered events or with leading lepton below the trigger threshold
 if year == "2016":
-   TriggerCuts="((HLT_IsoMu24 && nMuon > 0) || (HLT_Ele27_WPTight_Gsf && nElectron > 0))"
+   TriggerCuts="((HLT_IsoMu24 || HLT_Mu50) && nMuon > 0) || (HLT_Ele27_WPTight_Gsf && nElectron > 0)"
 elif year == "2017":
-   TriggerCuts="(HLT_IsoMu27 && nMuon>0) || (HLT_Ele32_WPTight_Gsf_L1DoubleEG && nElectron>0)"
+   TriggerCuts="((HLT_IsoMu27 || HLT_Mu50) && nMuon>0) || (HLT_Ele32_WPTight_Gsf_L1DoubleEG && nElectron>0)"
 elif year == "2018":
-   TriggerCuts="(HLT_IsoMu24 && nMuon>0) || (HLT_Ele32_WPTight_Gsf && nElectron>0)"
+   TriggerCuts="((HLT_IsoMu24 || HLT_Mu50) && nMuon>0) || (HLT_Ele32_WPTight_Gsf && nElectron>0)"
 
-# TriggerCuts = None
+TriggerCuts = None
 print "Trigger cuts:", TriggerCuts
 
 #Base lepton selection
-MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.4 and l.mediumId==True
-ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.5 and l.mvaFall17V2noIso_WP90==True
-TauSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<2.3 and l.idDeepTau2017v2p1VSmu > 10 and l.idDeepTau2017v2p1VSe > 10 and l.idDeepTau2017v2p1VSjet > 5 and l.idDecayMode
-JetSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<3.0 and l.puId>-1 and l.jetId>1 
+MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.2 and l.looseId and l.pfRelIso04_all < 0.5
+ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.2 and (math.fabs(l.eta + l.deltaEtaSC) < 1.4442 or math.fabs(l.eta + l.deltaEtaSC) > 1.556) and l.mvaFall17V2Iso_WPL
+TauSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<2.2 and l.idDeepTau2017v2p1VSmu > 10 and l.idDeepTau2017v2p1VSe > 10 and l.idDeepTau2017v2p1VSjet > 5 and l.idDecayMode
 
 #configure the modules
 modules=[]
@@ -99,17 +97,6 @@ ElectronSelector= LeptonSkimmer(
    verbose=False
 )
 modules.append(ElectronSelector)
-
-# TriggerSelector = TriggerAnalyzer(
-#                    particlePdgId=13,
-#                    triggerBits=[1,10],
-#                    branchNames=["IsoMu24","Mu50"],
-#                    recoCollection="Muon",
-#                    maxDR=0.03,
-#                    maxRelDpt=10.
-                  
-#                    )
-# modules.append(TriggerSelector)
 
 TauSelector= LeptonSkimmer(
    LepFlavour='Tau',
@@ -140,57 +127,10 @@ TauElectronCleaner=JetLepCleaner(
 modules.append(TauElectronCleaner)
 
 #filter events by final state selection
-Selection= SelectionFilter(year=year,verbose=0)
+Selection= SelectionFilter(year=year,prev_ids=1,verbose=0)
 modules.append(Selection)
 
-#Add additional object cleaning
-
-JetSelector=JetSkimmer( 
-   BtagWPs=[0.1274, 0.4229, 0.7813 ], 
-   nGoodJetMin=-1, 
-   nBJetMax=20 , 
-   Selection=JetSelection,
-   Veto=None
-)
-modules.append(JetSelector)
-
-JetMuonCleaner=JetLepCleaner( 
-   Lepton='Muon',
-   Jet='Jet',
-   dRJet=0.3,
-   RemoveOverlappingJets=True, 
-   RemoveOverlappingLeptons=False
-)
-modules.append(JetMuonCleaner)   
-
-JetElectronCleaner=JetLepCleaner(
-   Lepton='Electron',
-   Jet='Jet',
-   dRJet=0.3,
-   RemoveOverlappingJets=True, 
-   RemoveOverlappingLeptons=False
-)
-modules.append(JetElectronCleaner)
-
-JetTauCleaner=JetLepCleaner( 
-   Lepton='Tau',
-   Jet='Jet',
-   dRJet=0.3,
-   RemoveOverlappingJets=True, 
-   RemoveOverlappingLeptons=False
-)
-modules.append(JetTauCleaner)   
-
-HTCalculator= HTSkimmer(
-   minJetPt=20,
-   minJetEta=3.0, #FIXME: Should be max jet eta I believe
-   minJetPUid=-1,
-   minHT=-1,
-   collection="Jet",
-   HTname="HT"
-)
-modules.append(HTCalculator)
-
+#Add additional event info
 if not isData == "data":
    ZllBuilder=GenZllAnalyzer(
       variables=['pt','eta','phi','mass','pdgId'],
@@ -199,18 +139,6 @@ if not isData == "data":
       verbose=-1
    )
    modules.append(ZllBuilder)
-   # RecoElectronMatcher=GenRecoMatcher(
-   #                genParticles=['GenElectron'],
-   #                recoCollections=['Electron'],
-   #                maxDR=0.1
-   #                )
-   # modules.append(RecoElectronMatcher)
-   # RecoMuonMatcher=GenRecoMatcher(
-   #                genParticles=['GenMuon'],
-   #                recoCollections=['Muon'],
-   #                maxDR=0.1
-   #                )
-   # modules.append(RecoMuonMatcher)
 
 #record number of generator-level primary(-ish) leptons in the event
 GenTauCount= GenLepCount(Lepton="Tau")
@@ -221,36 +149,6 @@ modules.append(GenMuonCount)
 
 GenElectronCount= GenLepCount(Lepton="Electron")
 modules.append(GenElectronCount)
-
-## FIXME: add back gen-reco matching
-# if not isData == "data":
-#    TauToEBuilder=GenAnalyzer(
-#       decay='15->11,-12,16',
-#       motherName='GenTauToE',
-#       daughterNames=['GenTauElectron','GenNeuE','GenNeuTau'],
-#       variables=['pt','eta','phi','pdgId'],
-#       grandmother="GenTau_Idx",
-#       conjugate=True,
-#       mother_has_antipart=True,
-#       daughter_has_antipart=[True,True,True],
-#       skip=False,
-#    )
-#    modules.append(TauToEBuilder)
-#    TauToMuBuilder=GenAnalyzer(
-#       decay='15->13,-14,16',
-#       motherName='GenTauToMuon',
-#       daughterNames=['GenTauMuon','GenNeuMu','GenNeuTau'],
-#       variables=['pt','eta','phi','pdgId'],
-#       grandmother="GenTau_Idx",
-#       conjugate=True,
-#       mother_has_antipart=True,
-#       daughter_has_antipart=[True,True,True],
-#       skip=False,
-#    )
-#    modules.append(TauToMuBuilder)
-
-
-
 
 #configure the pileup module and the json file filtering
 if isData == "MC":

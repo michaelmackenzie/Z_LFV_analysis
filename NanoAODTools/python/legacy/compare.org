@@ -1,0 +1,66 @@
+* Comparing previous and new ntupling
+
+** Signal samples
+inputFile = [
+    "root://cms-xrd-global.cern.ch//store/user/pellicci/ZEMuAnalysis_2016_8028V1/ZEMuAnalysis_NANOAOD_10218V1/200211_105742/0000/ZEMuAnalysis_pythia8_NANOAOD_2016_1.root",\
+    "root://cms-xrd-global.cern.ch//store/user/pellicci/ZEMuAnalysis_2016_8028V1/ZEMuAnalysis_NANOAOD_10218V1/200211_105742/0000/ZEMuAnalysis_pythia8_NANOAOD_2016_2.root",\
+]
+
+|----------+-----------+-----------+-------------------+--------|
+| Test     | Read-mode | Time (Hz) |     Relative Rate | N(emu) |
+|          |           |           | to previous+local |        |
+|----------+-----------+-----------+-------------------+--------|
+| Previous | XROOTD    |       1.1 |            0.0169 |    167 |
+|          | Prefetch  |      65.1 |            1.0000 |        |
+|          | local     |      65.1 |            1.0000 |        |
+|----------+-----------+-----------+-------------------+--------|
+| Current  | XROOTD    |       1.4 |            0.0215 |    170 |
+|          | Prefetch  |      29.3 |            0.4501 |        |
+|          | Local     |      29.3 |            0.4501 |        |
+|----------+-----------+-----------+-------------------+--------|
+| Matched  | XROOTD    |       1.5 |            0.0230 |    167 |
+|          | Prefetch  |      35.5 |            0.5453 |        |
+|          | Local     |      35.5 |            0.5453 |        |
+|----------+-----------+-----------+-------------------+--------|
+#+TBLFM: $4=$3/@5$3; %.4f
+
+*** Current example local processing times:
+
+(processing times for 1 file, preselected 148/250 events)
+Module   0                       GenCount summary:        148 events seen,    43327.8 Hz
+Module   1                  LeptonSkimmer summary:        148 events seen,      157.7 Hz
+Module   2                  LeptonSkimmer summary:        148 events seen,      371.9 Hz
+Module   3                  LeptonSkimmer summary:        148 events seen,       71.5 Hz
+Module   4                  JetLepCleaner summary:        148 events seen,     3197.1 Hz
+Module   5                  JetLepCleaner summary:        148 events seen,     3121.5 Hz
+Module   6                SelectionFilter summary:        148 events seen,     3294.5 Hz
+Module   7                     JetSkimmer summary:         80 events seen,       67.2 Hz
+Module   8                  JetLepCleaner summary:         80 events seen,     1325.5 Hz
+Module   9                  JetLepCleaner summary:         80 events seen,     2049.1 Hz
+Module  10                  JetLepCleaner summary:         80 events seen,     2247.9 Hz
+Module  11                      HTSkimmer summary:         80 events seen,    31260.0 Hz
+Module  12                 GenZllAnalyzer summary:         80 events seen,      240.4 Hz
+Module  13                    GenLepCount summary:         80 events seen,     3600.6 Hz
+Module  14                    GenLepCount summary:         80 events seen,     3334.6 Hz
+Module  15                    GenLepCount summary:         80 events seen,     3122.4 Hz
+Module  16               puWeightProducer summary:         80 events seen,     2014.0 Hz
+
+Total time 17.1 sec. to process 500 events. Rate = 29.3 Hz.
+
+*** Matched example local processing times:
+
+(processing times for 1 file, preselected 149/250 events)
+Module   0                       GenCount summary:        149 events seen,    43705.9 Hz
+Module   1                  LeptonSkimmer summary:        149 events seen,      158.7 Hz
+Module   2                  LeptonSkimmer summary:        149 events seen,      380.2 Hz
+Module   3                  LeptonSkimmer summary:        149 events seen,       89.9 Hz
+Module   4                  JetLepCleaner summary:        149 events seen,     3139.5 Hz
+Module   5                  JetLepCleaner summary:        149 events seen,     3114.1 Hz
+Module   6                SelectionFilter summary:        149 events seen,     3354.4 Hz
+Module   7                 GenZllAnalyzer summary:         75 events seen,      288.6 Hz
+Module   8                    GenLepCount summary:         75 events seen,     3634.5 Hz
+Module   9                    GenLepCount summary:         75 events seen,     3393.4 Hz
+Module  10                    GenLepCount summary:         75 events seen,     3153.0 Hz
+Module  11               puWeightProducer summary:         75 events seen,     2400.0 Hz
+
+Total time 14.1 sec. to process 500 events. Rate = 35.5 Hz.
