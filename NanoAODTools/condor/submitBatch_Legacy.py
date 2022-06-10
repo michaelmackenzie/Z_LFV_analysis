@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-import PhysicsTools.NanoAODTools.BatchMaster as bm
+import PhysicsTools.NanoAODTools.condor.BatchMaster as bm
 
 import os, sys
 
@@ -907,16 +907,17 @@ samplesDict['2018_qcd'] = [
 # -----------------------------
 # samplesToSubmit = [ "2016_signal" ]
 # samplesToSubmit = ["2016_signal", "2016_top", "2016_z", "2016_w", "2016_vv", "2016_qcd"]
+# samplesToSubmit = ["2016_embed_emu", "2016_embed_etau", "2016_embed_mutau"]
 # samplesToSubmit = ["2016_SingleElectron", "2016_SingleMuon"]
 # samplesToSubmit = ["2017_signal", "2017_top", "2017_z", "2017_w", "2017_vv", "2017_qcd"]
 # samplesToSubmit = ["2018_signal", "2018_top", "2018_z", "2018_w", "2018_vv", "2018_qcd"]
 # samplesToSubmit = ["2018_signal", "2018_top", "2018_z", "2018_w", "2018_vv", "2018_qcd", "2018_SingleElectron", "2018_SingleMuon"]
-# samplesToSubmit = ["2018_embed_emu", "2018_embed_etau", "2018_embed_mutau"]
 # samplesToSubmit = ["2016_vv", "2017_top", "2017_vv", "2017_z", "2018_top", "2018_vv", "2018_z"]
 samplesToSubmit = samplesDict.keys()
 samplesToSubmit.sort()
-doYears = ["2016"]
+doYears = ["2018"]
 # doYears = ["2017"]
+# doYears = ["2016", "2017", "2018"]
 sampleTag = ""
 configs = []
 
