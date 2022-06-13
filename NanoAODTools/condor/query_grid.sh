@@ -1,12 +1,30 @@
 #! /bin/bash
 
+Help() {
+    echo "Query condor to check for running jobs"
+    echo "Options:"
+    echo "--help    (-h): print this message"
+    echo "--summary (-s): print only the job totals in a summary line"
+}
+
 SUMMARY=""
-if [[ "$1" == "s" ]]
-then
-  SUMMARY="s"
-fi
+for var in "$@"
+do
+    if [[ "${var}" == "--help" ]] || [[ "${var}" == "-h" ]]
+    then
+        Help
+        exit
+    elif [[ "${var}" == "--summary" ]] || [[ "${var}" == "-s" ]]
+    then
+        SUMMARY="s"
+    else
+        echo "Unknown argument ${var}"
+        exit
+    fi
+done
 
 date
+
 condor_q | awk -v user=${USER} -v summary=${SUMMARY} '
 {
     if($2 == user) {

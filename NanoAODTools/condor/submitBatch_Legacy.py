@@ -915,7 +915,7 @@ samplesDict['2018_qcd'] = [
 # samplesToSubmit = ["2016_vv", "2017_top", "2017_vv", "2017_z", "2018_top", "2018_vv", "2018_z"]
 samplesToSubmit = samplesDict.keys()
 samplesToSubmit.sort()
-doYears = ["2018"]
+doYears = ["2017"]
 # doYears = ["2017"]
 # doYears = ["2016", "2017", "2018"]
 sampleTag = ""

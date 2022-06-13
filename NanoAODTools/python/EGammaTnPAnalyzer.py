@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonSkimmer import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.EmbeddingTnPFilter import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.EGammaTnPFilter import *
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 
 
@@ -33,56 +33,40 @@ firstEntry=0
 branchsel_in  ="python/postprocessing/run/embed_tnp_keep_and_drop_in.txt"
 branchsel_out ="python/postprocessing/run/embed_tnp_keep_and_drop_out.txt"
 
-# filter out untriggered events and events with less than 2 ee or mumu
+# filter out untriggered events and events with less than 2 electrons
 if year == "2016":
-   TriggerCuts="(HLT_IsoMu24 && nMuon > 1) || (HLT_Ele27_WPTight_Gsf && nElectron > 1)"
+   TriggerCuts="HLT_Ele27_WPTight_Gsf && nElectron > 1"
 elif year == "2017":
-   TriggerCuts="(HLT_IsoMu27 && nMuon > 1) || (HLT_Ele32_WPTight_Gsf_L1DoubleEG && nElectron > 1)"
+   TriggerCuts="HLT_Ele32_WPTight_Gsf_L1DoubleEG && nElectron > 1"
 elif year == "2018":
-   TriggerCuts="(HLT_IsoMu24 && nMuon > 1) || (HLT_Ele32_WPTight_Gsf && nElectron > 1)"
+   TriggerCuts="HLT_Ele32_WPTight_Gsf && nElectron > 1"
 
 # TriggerCuts = None
 print "Trigger cuts:", TriggerCuts
 
 #Base lepton selection
-MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.4
-ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.5
+ElectronSelection = lambda l : l.pt>25 and math.fabs(l.eta)<2.5 and l.mvaFall17V2noIso_WP90 and l.pfRelIso03_all < 0.15
 
 #configure the modules
 modules=[]
 
-MuonSelector= LeptonSkimmer(
-   LepFlavour='Muon',
-   Selection=MuonSelection,
-   Veto=None,
-   minNlep=-1,
-   maxNlep=2,
-   verbose=False
-)
-modules.append(MuonSelector)
 ElectronSelector= LeptonSkimmer(
    LepFlavour='Electron',
    Selection=ElectronSelection,
    Veto=None,
-   minNlep=-1,
+   minNlep=2,
    maxNlep=2,
    verbose=False
 )
 modules.append(ElectronSelector)
 
 #filter events by final state selection
-Selection= EmbeddingTnPFilter(year=year,verbose=0)
+Selection= EGammaTnPFilter(year=year,verbose=0)
 modules.append(Selection)
 
 
 #configure the pileup module and the json file filtering
 if isData == "MC":
-   if year == "2016":
-      modules.append(puAutoWeight_2016())
-   elif year == "2017":
-      modules.append(puAutoWeight_2017())
-   elif year == "2018":
-      modules.append(puAutoWeight_2018())
    jsonFile=None
 else: #data/embedding
    if year == "2016" :

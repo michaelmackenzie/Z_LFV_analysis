@@ -270,8 +270,7 @@ else: #data/embedding
       jsonFile="json/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt"
 
 p=PostProcessor(".", inputFile, cut = TriggerCuts, modules = modules, branchsel = branchsel_in, outputbranchsel = branchsel_out,
-                prefetch=prefetch, longTermCache=prefetch,
-                provenance = True, fwkJobReport = False, jsonInput = jsonFile, maxEntries = maxEntries, firstEntry = firstEntry)
+                provenance = True, fwkJobReport = True, jsonInput = jsonFile, maxEntries = maxEntries, firstEntry = firstEntry)
 
 ###############RUN here######################
 p.run()

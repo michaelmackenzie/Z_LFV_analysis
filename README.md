@@ -57,21 +57,19 @@ cd $CMSSW_BASE/src/PhysicsTools/NanoAODTools/condor/
 Check job statuses:
 ```
 cd $CMSSW_BASE/src/PhysicsTools/NanoAODTools/condor/
-./query_grid.sh
+./query_grid.sh [--summary for less information]
 ```
 When the batch job finishes, check job success:
 ```
 cd $CMSSW_BASE/src/PhysicsTools/NanoAODTools/condor/
 ./check_batch_job.sh batch/<job directory>/
 #if there are failed jobs, resubmit them with:
-./check_batch_job.sh batch/<job directory>/ "" d
-#try opening each job's root file
-./check_batch_job.sh batch/<job directory>/ d
-#Only check/resubmit jobs with names containing a tag:
-./check_batch_job.sh batch/<job directory>/ "" <"" or d for resubmit> "<tag>"
+./check_batch_job.sh batch/<job directory>/ --resubmit
+#use --help (-h) for more options
 ```
 Merge the output files into single file datasets:
 ```
 cd $CMSSW_BASE/src/PhysicsTools/NanoAODTools/condor/
 python prepare_batch.py nano_batchout/<job directory>/ <--mc_data ["MC" or "data"]> <--veto [veto tag]> <--tag [to process tag]> <--dryrun> <--year [e.g. 2016]>
+#use --help (-h) for more options
 ```
