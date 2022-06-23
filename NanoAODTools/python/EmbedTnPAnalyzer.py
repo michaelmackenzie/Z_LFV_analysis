@@ -2,6 +2,7 @@
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonSkimmer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.EmbeddingTnPFilter import *
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
+from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
 
 
 from importlib import import_module

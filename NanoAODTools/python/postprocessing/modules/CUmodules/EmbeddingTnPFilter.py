@@ -70,7 +70,7 @@ class EmbeddingTnPFilter(Module):
             else :
                 bit_1 = 1 # WPTight 1 ele
                 bit_2 = bit_1 # no second trigger
-        deltaR_match = 0.2
+        deltaR_match = 0.1
         deltaPt_match = 10 #fractional match, > ~5 --> no pT matching
         result = 0
         passedBit1 = False
@@ -300,41 +300,29 @@ class EmbeddingTnPFilter(Module):
         self.out.fillBranch("two_triggered", leptonTwoTriggered)
 
         if doMuons :
-            self.out.fillBranch("one_id1", lep1.looseId + lep1.mediumId + lep1.tightId)
+            self.out.fillBranch("one_id1", lep1.mediumId)
             self.out.fillBranch("one_id2", ((lep1.pfRelIso04_all < muonIsoVVLoose) + (lep1.pfRelIso04_all < muonIsoVLoose) +
                                             (lep1.pfRelIso04_all < muonIsoLoose )  +
                                             (lep1.pfRelIso04_all < muonIsoMedium)  + (lep1.pfRelIso04_all < muonIsoTight) +
                                             (lep1.pfRelIso04_all < muonIsoVTight)  + (lep1.pfRelIso04_all < muonIsoVVTight)))
-            self.out.fillBranch("two_id1", lep2.looseId + lep2.mediumId + lep2.tightId)
+            self.out.fillBranch("two_id1", lep2.mediumId)
             self.out.fillBranch("two_id2", ((lep2.pfRelIso04_all < muonIsoVVLoose) + (lep2.pfRelIso04_all < muonIsoVLoose) +
                                             (lep2.pfRelIso04_all < muonIsoLoose )  +
                                             (lep2.pfRelIso04_all < muonIsoMedium)  + (lep2.pfRelIso04_all < muonIsoTight) +
                                             (lep2.pfRelIso04_all < muonIsoVTight)  + (lep2.pfRelIso04_all < muonIsoVVTight)))
-            if ((lep1.tightId and (not lep1.mediumId or not lep1.looseId))
-                or (lep1.mediumId and not lep1.looseId)):
-                print "Event", seen, "Muon 1 IDs not sensible! loose ID =", lep1.looseId, "medium ID =", lep1.mediumId, "and tight ID =", lep1.tightId
-            if ((lep2.tightId and (not lep2.mediumId or not lep2.looseId))
-                or (lep2.mediumId and not lep2.looseId)):
-                print "Event", seen, "Muon 2 IDs not sensible! loose ID =", lep2.looseId, "medium ID =", lep2.mediumId, "and tight ID =", lep2.tightId
         else :
-            self.out.fillBranch("one_id1", lep1.mvaFall17V2noIso_WPL + lep1.mvaFall17V2noIso_WP90 + lep1.mvaFall17V2noIso_WP80)
+            self.out.fillBranch("one_id1", lep1.mvaFall17V2noIso_WP90)
             #use muon Iso ID flag definitions for electron iso ID
             self.out.fillBranch("one_id2", ((lep1.pfRelIso03_all < muonIsoVVLoose) + (lep1.pfRelIso03_all < muonIsoVLoose) +
                                             (lep1.pfRelIso03_all < muonIsoLoose )  +
                                             (lep1.pfRelIso03_all < muonIsoMedium)  + (lep1.pfRelIso03_all < muonIsoTight) +
                                             (lep1.pfRelIso03_all < muonIsoVTight)  + (lep1.pfRelIso03_all < muonIsoVVTight)))
-            self.out.fillBranch("two_id1", lep2.mvaFall17V2noIso_WPL + lep2.mvaFall17V2noIso_WP90 + lep2.mvaFall17V2noIso_WP80)
+            self.out.fillBranch("two_id1", lep2.mvaFall17V2noIso_WP90)
             #use muon Iso ID flag definitions for electron iso ID
             self.out.fillBranch("two_id2", ((lep2.pfRelIso03_all < muonIsoVVLoose) + (lep2.pfRelIso03_all < muonIsoVLoose) +
                                             (lep2.pfRelIso03_all < muonIsoLoose )  +
                                             (lep2.pfRelIso03_all < muonIsoMedium)  + (lep2.pfRelIso03_all < muonIsoTight) +
                                             (lep2.pfRelIso03_all < muonIsoVTight)  + (lep2.pfRelIso03_all < muonIsoVVTight)))
-            if ((lep1.mvaFall17V2noIso_WP80 and (not lep1.mvaFall17V2noIso_WPL or not lep1.mvaFall17V2noIso_WP90))
-                or (lep1.mvaFall17V2noIso_WP90 and not lep1.mvaFall17V2noIso_WPL)):
-                print "Event", seen, "electron 1 IDs not sensible! WPL =", lep1.mvaFall17V2noIso_WPL, "WP90 =", lep1.mvaFall17V2noIso_WP90, "WP80 =", lep1.mvaFall17V2noIso_WP80
-            if ((lep2.mvaFall17V2noIso_WP80 and (not lep2.mvaFall17V2noIso_WPL or not lep2.mvaFall17V2noIso_WP90))
-                or (lep2.mvaFall17V2noIso_WP90 and not lep2.mvaFall17V2noIso_WPL)):
-                print "Event", seen, "electron 2 IDs not sensible! WPL =", lep2.mvaFall17V2noIso_WPL, "WP90 =", lep2.mvaFall17V2noIso_WP90, "WP80 =", lep2.mvaFall17V2noIso_WP80
 
         # increment selection counts
         self.passed = self.passed + 1

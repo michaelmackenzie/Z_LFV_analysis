@@ -16,14 +16,14 @@ ROOT.PyConfig.IgnoreCommandLineOptions = True
 
 #---------------------------------#
 p = argparse.ArgumentParser(description='Select whether to download MC or data')
-p.add_argument('input_dir' , help='Type e.g. input file path')
-p.add_argument('--outdir'  , help='Type e.g. output file path', default="", required=False)
-p.add_argument('--mc_data' , help='Type MC or Data for only MC or Data', default="", required=False)
-p.add_argument('--year'    , help='Specific year to process',default="", required=False)
-p.add_argument('--tag'     , help='Dataset tag to process',default="", required=False)
-p.add_argument('--veto'    , help='Dataset tag to not process',default="", required=False)
-p.add_argument('--dryrun'  , help='Setup merging without running', action='store_true', required=False)
-p.add_argument('--dosingle', help='Merge first dataset only', action='store_true', required=False)
+p.add_argument('input_dir'  , help='Type e.g. input file path')
+p.add_argument('--outdir'   , help='Type e.g. output file path', default="", required=False)
+p.add_argument('--mc_data'  , help='Type MC or Data for only MC or Data', default="", required=False)
+p.add_argument('--year'     , help='Specific year to process',default="", required=False)
+p.add_argument('--tag'      , help='Dataset tag to process',default="", required=False)
+p.add_argument('--veto'     , help='Dataset tag to not process',default="", required=False)
+p.add_argument('--dryrun'   , help='Setup merging without running', action='store_true', required=False)
+p.add_argument('--dosingle' , help='Merge first dataset only', action='store_true', required=False)
 p.add_argument('--usedirect', help='Use the direct EOS path instead of XROOTD', action='store_true', required=False)
 
 args = p.parse_args()
@@ -58,10 +58,8 @@ if year != "":
 #---------------------------------#
 
 #make a directory to store merged files temporarily
-if os.path.exists("batch/temp_root/") :
-    shutil.rmtree("batch/temp_root/")
-os.makedirs("batch/temp_root")
-    
+if not os.path.exists("batch/temp_root/") :
+    os.makedirs("batch/temp_root")
 
 user = os.environ.get('USER')
 if usedirect:
@@ -143,17 +141,10 @@ for dirname in list_dirs:
             exit()
         continue
 
-    # print "Splitting output dataset selections:", outputname
-    # split_command = "root.exe -q -b \"split_output_tree.C(\\\"batch/temp_root/%s\\\",\\\"batch/temp_root/%s\\\")\"" % (tmpoutput, outputname)
-    # print split_command
-    # os.system(split_command)
-    # os.system("mv batch/temp_root/%s batch/temp_root/%s" % (tmpoutput, outputname))
-
     # Copy back the merged data:
     copy_command = 'xrdcp -f batch/temp_root/' + outputname + ' root://cmseos.fnal.gov//store/user/'+user+'/'+outputpath
     print copy_command
     os.system(copy_command)
-    # os.remove("batch/temp_root/%s" % (tmpoutput ))
     os.remove("batch/temp_root/%s" % (outputname))
     if dosingle:
         break

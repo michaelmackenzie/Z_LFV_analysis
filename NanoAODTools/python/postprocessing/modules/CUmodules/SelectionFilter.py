@@ -20,11 +20,11 @@ class SelectionFilter(Module):
         self.prev_ids = prev_ids
         self.verbose = verbose
         self.seen = 0
-        self.mutau = 0
-        self.etau = 0
-        self.emu = 0
-        self.mumu = 0
-        self.ee = 0
+        self.mutau = [0,0]
+        self.etau = [0,0]
+        self.emu = [0,0]
+        self.mumu = [0,0]
+        self.ee = [0,0]
         pass
 
     def beginJob(self):
@@ -40,7 +40,12 @@ class SelectionFilter(Module):
  
 
     def endFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
-        print "SelectionFilter: Saw %i events: N(mutau) = %i; N(etau) = %i; N(emu) = %i; N(mumu) = %i; N(ee) = %i" % (self.seen, self.mutau, self.etau, self.emu, self.mumu, self.ee)
+        print "SelectionFilter: Saw %i events: N(mutau) = %i; N(etau) = %i; N(emu) = %i; N(mumu) = %i; N(ee) = %i" % (self.seen, self.mutau[0],
+                                                                                                                      self.etau[0], self.emu[0],
+                                                                                                                      self.mumu[0], self.ee[0])
+        print "SelectionFilter: Passing tight IDs: N(mutau) = %i; N(etau) = %i; N(emu) = %i; N(mumu) = %i; N(ee) = %i" % (self.mutau[1],
+                                                                                                                          self.etau[1], self.emu[1],
+                                                                                                                          self.mumu[1], self.ee[1])
         pass
 
 
@@ -225,10 +230,22 @@ class SelectionFilter(Module):
         if self.verbose:
             print "SelectionFilter: Event %8i: mutau = %i; etau = %i; emu = %i; mumu = %i; ee = %i" % (self.seen, mutau, etau, emu, mumu, ee)
 
-        self.mutau = self.mutau + mutau
-        self.etau  = self.etau  + etau
-        self.emu   = self.emu   + emu
-        self.mumu  = self.mumu  + mumu
-        self.ee    = self.ee    + ee
+        self.mutau[0] = self.mutau[0] + mutau
+        self.etau[0]  = self.etau[0]  + etau
+        self.emu[0]   = self.emu[0]   + emu
+        self.mumu[0]  = self.mumu[0]  + mumu
+        self.ee[0]    = self.ee[0]    + ee
+
+        #removing loose ID region events
+        self.mutau[1] = self.mutau[1] + (mutau and lep1.pfRelIso04_all < 0.15 and lep2.idDeepTau2017v2p1VSjet > 50)
+        self.mumu[1]  = self.mumu[1]  + (mumu  and lep1.pfRelIso04_all < 0.15 and lep2.pfRelIso04_all < 0.15)
+        if self.prev_ids:
+            self.etau[1]  = self.etau[1]  + (etau  and lep1.mvaFall17V2Iso_WP80 and lep2.idDeepTau2017v2p1VSjet > 50)
+            self.emu[1]   = self.emu[1]   + (emu   and lep1.mvaFall17V2Iso_WP80 and lep2.pfRelIso04_all < 0.15)
+            self.ee[1]    = self.ee[1]    + (ee    and lep1.mvaFall17V2Iso_WP80 and lep2.mvaFall17V2Iso_WP80)
+        else:
+            self.etau[1]  = self.etau[1]  + (etau  and lep1.pfRelIso03_all < 0.15 and lep2.idDeepTau2017v2p1VSjet > 50)
+            self.emu[1]   = self.emu[1]   + (emu   and lep1.pfRelIso03_all < 0.15 and lep2.pfRelIso04_all < 0.15)
+            self.ee[1]    = self.ee[1]    + (ee    and lep1.pfRelIso03_all < 0.15 and lep2.pfRelIso03_all < 0.15)
 
         return (ID != 0)

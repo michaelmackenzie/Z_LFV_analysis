@@ -5,8 +5,6 @@ drop * # start with all
 keep nMuons
 keep nElectrons
 keep event_*
-keep tag_*
-keep probe_*
 keep one_*
 keep two_*
 keep pair_*
@@ -23,3 +21,4 @@ keep run
 keep luminosityBlock
 keep event
 
+keep puWeight

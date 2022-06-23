@@ -19,3 +19,4 @@ keep run
 keep luminosityBlock
 keep event
 
+keep Pileup*
