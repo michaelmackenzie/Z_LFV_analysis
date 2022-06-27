@@ -35,7 +35,11 @@ class SelectionFilter(Module):
 
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         self.out = wrappedOutputTree
-        self.out.branch("SelectionFilter_ID", 'I')
+        self.out.branch("SelectionFilter_MuTau", 'O')
+        self.out.branch("SelectionFilter_ETau" , 'O')
+        self.out.branch("SelectionFilter_EMu"  , 'O')
+        self.out.branch("SelectionFilter_MuMu" , 'O')
+        self.out.branch("SelectionFilter_EE"   , 'O')
         pass
  
 
@@ -225,7 +229,11 @@ class SelectionFilter(Module):
 
         #FIXME: should use bits, e.g. ID = 1*mutau + (1<<1)*etau + (1<<2)*emu + (1<<3)*mumu + (1<<4)*ee, to use events in multiple selections
         ID = 1*mutau + 2*etau + 3*emu + 4*mumu + 5*ee
-        self.out.fillBranch("SelectionFilter_ID", ID)
+        self.out.fillBranch("SelectionFilter_MuTau", mutau)
+        self.out.fillBranch("SelectionFilter_ETau" , etau)
+        self.out.fillBranch("SelectionFilter_EMu"  , emu)
+        self.out.fillBranch("SelectionFilter_MuMu" , mumu)
+        self.out.fillBranch("SelectionFilter_EE"   , ee)
 
         if self.verbose:
             print "SelectionFilter: Event %8i: mutau = %i; etau = %i; emu = %i; mumu = %i; ee = %i" % (self.seen, mutau, etau, emu, mumu, ee)
@@ -248,4 +256,4 @@ class SelectionFilter(Module):
             self.emu[1]   = self.emu[1]   + (emu   and lep1.pfRelIso03_all < 0.15 and lep2.pfRelIso04_all < 0.15)
             self.ee[1]    = self.ee[1]    + (ee    and lep1.pfRelIso03_all < 0.15 and lep2.pfRelIso03_all < 0.15)
 
-        return (ID != 0)
+        return (mutau or etau or emu or mumu or ee)

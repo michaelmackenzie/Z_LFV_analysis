@@ -67,7 +67,7 @@ keep luminosityBlock
 keep event
 
 #selection filter ID
-keep SelectionFilter_ID
+keep SelectionFilter_*
 
 #Add generator information
 keep LHE_*

@@ -27,19 +27,13 @@ int split_output_tree(const char* filename_in, const char* filename_out) {
 
   fileOut->Close();
 
-  for(int iselec = 1; iselec < 6; ++iselec) {
+  vector<TString> selections = {"MuTau", "ETau", "EMu", "MuMu", "EE"};
+  for(TString selec : selections) {
     fileOut = new TFile(filename_out, "UPDATE");
-    TString selec;
-    switch(iselec) {
-    case  1: selec = "mutau"; break;
-    case  2: selec = "etau" ; break;
-    case  3: selec = "emu"  ; break;
-    case  4: selec = "mumu" ; break;
-    case  5: selec = "ee"   ; break;
-    default: selec = "mutau"; break;
-    }
+    TString name = selec;
+    selec.ToLower();
     cout << " Copying " << selec.Data() << " tree...\n";
-    TTree* EventsOut = Events->CopyTree(Form("SelectionFilter_ID == %i", iselec));
+    TTree* EventsOut = Events->CopyTree(Form("SelectionFilter_%s", name.Data()));
     if(!EventsOut) {
       cout << "Events tree failed to split the tree!\n";
       fileOut->Close();
