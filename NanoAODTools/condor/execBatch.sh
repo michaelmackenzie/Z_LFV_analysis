@@ -83,8 +83,8 @@ do
     then
         ISDATA="Embedded"
     fi
-    echo "python python/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}"
-    python python/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}
+    echo "python python/analyzers/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}"
+    python python/analyzers/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}
     if [[ ! -f tree.root ]]; then
         echo "No tree file found, exit code 1, failure in processing"
         exit 1
@@ -96,6 +96,15 @@ do
         echo "No split tree file found, exit code 1, failure in processing"
         exit 1
     fi
+
+    echo "Adding event count normalization to the output tree"
+    root.exe -q -b -l "condor/add_norm.C(\"temp.root\", \"tree-split.root\")"
+    ROOTEXIT=$?
+    if [[ ${ROOTEXIT} -ne 0 ]]; then
+        echo "Normalization counting failed, exit code 1, failure in processing"
+        exit 1
+    fi
+
     mv tree-split.root outDir/tree_${COUNTER}.root
     rm *.root
     COUNTER=$((COUNTER+1))

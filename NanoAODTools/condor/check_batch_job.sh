@@ -116,10 +116,10 @@ do
             echo "Stdout file ${STDLOG} does not exist"
         fi
     else
-        XRDEXIT=`grep "exit code" ${STDLOG} | grep "xrdcp"`
+        XRDEXIT=`grep -i "exit code" ${STDLOG} | grep "xrdcp"`
         if [[ "${XRDEXIT}" != "" ]]
         then
-            echo "xrdcp failed in file ${STDOUT}: ${XRDEXIT}"
+            echo "Failure in file ${STDOUT}: status code ${XRDEXIT}"
             FAILEDJOBS="${FAILEDJOBS} ${FILE}"
             NFAILED=$((1 + $NFAILED))
         fi

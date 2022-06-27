@@ -83,8 +83,8 @@ do
     then
         ISDATA="Embedded"
     fi
-    echo "python python/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}"
-    python python/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}
+    echo "python python/analyzers/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}"
+    python python/analyzers/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}
     if [[ ! -f tree.root ]]; then
         echo "No tree file found, exit code 1, failure in processing"
         exit 1

@@ -79,8 +79,8 @@ do
         echo "No temp file found, exit code 1, failure in xrdcp"
         exit 1
     fi
-    echo "python python/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}"
-    python python/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}
+    echo "python python/analyzers/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}"
+    python python/analyzers/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}
     if [[ ! -f tree.root ]]; then
         echo "No tree file found, exit code 1, failure in processing"
         exit 1
