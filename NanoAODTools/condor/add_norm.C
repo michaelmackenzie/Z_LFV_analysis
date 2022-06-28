@@ -25,6 +25,14 @@ int add_norm(const char* file_in, const char* file_out) {
   br_nevt->Fill();
   br_nneg->Fill();
 
+  //back fill 0s for additional Runs tree entries
+  for(int index = 1; index < Runs->GetEntriesFast(); ++index) {
+    nentries = 0;
+    nnegative = 0;
+    br_nevt->Fill();
+    br_nneg->Fill();
+  }
+
   Runs->Write();
   f_out->Close();
   f_in->Close();
