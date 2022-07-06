@@ -6,9 +6,8 @@ int add_norm(const char* file_in, const char* file_out) {
   if(!f_in || !f_out) return 1;
 
   TTree* Events = (TTree*) f_in ->Get("Events");
-  TTree* Runs   = (TTree*) f_out->Get("Runs"  );
-  if(!Events || !Runs) {
-    std::cout << __func__ << ": ERROR! Events/Runs tree not found\n";
+  if(!Events) {
+    std::cout << __func__ << ": ERROR! Events tree not found\n";
     return 2;
   }
 
@@ -20,22 +19,18 @@ int add_norm(const char* file_in, const char* file_out) {
     nnegative = elist->GetN();  // number of events passing the cuts
   }
 
-  auto br_nevt = Runs->Branch("NEvents"  , &nentries );
-  auto br_nneg = Runs->Branch("NNegative", &nnegative);
-  br_nevt->Fill();
-  br_nneg->Fill();
-
-  //back fill 0s for additional Runs tree entries
-  for(int index = 1; index < Runs->GetEntriesFast(); ++index) {
-    nentries = 0;
-    nnegative = 0;
-    br_nevt->Fill();
-    br_nneg->Fill();
-  }
-
-  Runs->Write();
+  f_out->cd();
+  //Add a separate normalization tree, as updating the Runs tree had problems
+  TTree* Norm   = new TTree("Norm", "Normalization tree");
+  auto br_nevt = Norm->Branch("NEvents"  , &nentries );
+  auto br_nneg = Norm->Branch("NNegative", &nnegative);
+  Norm->Fill();
+  Norm->Write();
   f_out->Close();
   f_in->Close();
+
+  std::cout << __func__ << ": N(events) = " << nentries
+            << "; N(negative) = " << nnegative << std::endl;
 
   return 0;
 }
