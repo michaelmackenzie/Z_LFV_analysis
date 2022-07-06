@@ -15,9 +15,11 @@ _rootLeafType2rootBranchType = {
 
 
 class SelectionFilter(Module):
-    def __init__(self, year, prev_ids=0, verbose=0):
+    def __init__(self, year, min_mass=50, max_mass=-1, min_dr=0.3, verbose=0):
         self.year = year
-        self.prev_ids = prev_ids
+        self.min_mass = min_mass
+        self.max_mass = max_mass
+        self.min_dr = min_dr
         self.verbose = verbose
         self.seen = 0
         self.mutau = [0,0]
@@ -70,11 +72,28 @@ class SelectionFilter(Module):
             print "SelectionFilter Event %8i:\n N(e) = %i; N(mu) = %i; N(tau) = %i" % (self.seen, nElectrons, nMuons, nTaus)
 
         #Count the selected leptons in the event to determine possible selections
-        mutau = nMuons     == 1 and nTaus  == 1
-        etau  = nElectrons == 1 and nTaus  == 1
-        emu   = nElectrons == 1 and nMuons == 1
-        mumu  = nMuons     == 2
-        ee    = nElectrons == 2
+        mutau = nElectrons == 0 and nMuons     == 1 and nTaus  == 1
+        etau  = nElectrons == 1 and nMuons     == 0 and nTaus  == 1
+        emu   = nElectrons == 1 and nMuons     == 1
+        mumu  = nElectrons <  2 and nMuons     == 2
+        ee    = nElectrons == 2 and nMuons      < 2
+
+        if (mutau + etau + emu + mumu + ee) > 1:
+            print "SelectionFilter:: Event %8i: Error! More than one selection passed: N(e) = %i; N(mu) = %i; N(tau) = %i" % (self.seen, nElectrons, nMuons, nTaus)
+            #Enforcing exclusive categories
+            if (mutau and etau) or emu:
+                mutau = False
+                etau  = False
+            if (mumu and ee) or mutau or etau or emu:
+                mumu  = False
+                ee    = False
+
+        if self.verbose > 1:
+            print " Event survived trigger check"
+            print " Base     selection: mutau = %i; etau = %i; emu = %i; mumu = %i; ee = %i" % (mutau, etau, emu, mumu, ee)
+
+        if not (mutau or etau or emu or mumu or ee):
+            return False
 
         #Check triggers
         electronTriggered = False
@@ -83,7 +102,7 @@ class SelectionFilter(Module):
         muon_trig_pt      = 25.
 
         #FIXME: Should we consider the Mu50 trigger?
-        muonHighTriggered = HLT.Mu50 and self.prev_ids
+        muonHighTriggered = False #HLT.Mu50
         if self.year == "2016":
             electronTriggered = HLT.Ele27_WPTight_Gsf
             muonTriggered     = HLT.IsoMu24
@@ -102,65 +121,6 @@ class SelectionFilter(Module):
         #initial trigger filter
         if not (electronTriggered or muonTriggered or muonHighTriggered):
             return False
-
-        if self.verbose > 1:
-            print " Event survived trigger check"
-            print " Base     selection: mutau = %i; etau = %i; emu = %i; mumu = %i; ee = %i" % (mutau, etau, emu, mumu, ee)
-
-
-        #Apply some tighter selection IDs on the final leptons
-        elec_gap_low  = 1.4442
-        elec_gap_high = 1.556
-        if etau:
-            # etau = etau and electronTriggered
-            etau = etau and electrons[0].pt > elec_trig_pt
-            etau = etau and taus[0].idDeepTau2017v2p1VSe > 50 #tighter anti-electron tau veto
-            eta_sc = math.fabs(electrons[0].eta + electrons[0].deltaEtaSC)
-            etau = etau and (eta_sc < elec_gap_low or eta_sc > elec_gap_high)
-        if mutau:
-            # mutau = mutau and (muonTriggered or (muonHighTriggered and muons[0].pt > 50.))
-            mutau = mutau and muons[0].pt > muon_trig_pt
-            if self.prev_ids:
-                mutau = mutau and muons[0].tightId
-        if emu:
-            # emu = emu and ((muonTriggered and muons[0].pt > muon_trig_pt) or (muonHighTriggered and muons[0].pt > 50.) or (electronTriggered and electrons[0].pt > elec_trig_pt))
-            eta_sc = math.fabs(electrons[0].eta + electrons[0].deltaEtaSC)
-            emu = emu and (eta_sc < elec_gap_low or eta_sc > elec_gap_high)
-            if self.prev_ids:
-                emu = emu and muons[0].tightId
-        if mumu:
-            # mumu = mumu and ((muonTriggered and (muons[0].pt > muon_trig_pt or muons[1].pt > muon_trig_pt))
-            #                  or muonHighTriggered and (muons[0].pt > 50. or muons[1].pt > 50.))
-            if self.prev_ids:
-                mumu = mumu and muons[0].tightId and muons[1].tightId
-                mumu = mumu and (muons[0].pfRelIso04_all < 0.15) and (muons[1].pfRelIso04_all < 0.15)
-                mumu = mumu and nElectrons == 0
-        if ee:
-            # ee = ee and electronTriggered
-            # ee = ee and (electrons[0].pt > elec_trig_pt or electrons[1].pt > elec_trig_pt)
-            eta_sc_1 = math.fabs(electrons[0].eta + electrons[0].deltaEtaSC)
-            eta_sc_2 = math.fabs(electrons[1].eta + electrons[1].deltaEtaSC)
-            ee = ee and (eta_sc_1 < elec_gap_low or eta_sc_1 > elec_gap_high)
-            ee = ee and (eta_sc_2 < elec_gap_low or eta_sc_2 > elec_gap_high)
-            if self.prev_ids:
-                ee = ee and electrons[0].mvaFall17V2Iso_WP80 and electrons[1].mvaFall17V2Iso_WP80
-                ee = ee and nMuons == 0
-
-
-        if self.verbose > 1:
-            print " Filtered selection: mutau = %i; etau = %i; emu = %i; mumu = %i; ee = %i" % (mutau, etau, emu, mumu, ee)
-
-        #Next remove overlap between the data channels
-        #FIXME: Should allow etau_h and mutau_h events, separate searches
-        if (mutau and etau) or emu:
-            mutau = False
-            etau  = False
-        if (mumu and ee) or (mutau or etau or emu):
-            mumu  = False
-            ee    = False
-
-        if self.verbose > 1:
-            print " Pruned   selection: mutau = %i; etau = %i; emu = %i; mumu = %i; ee = %i" % (mutau, etau, emu, mumu, ee)
 
         #Finally apply some additional event filtering
         if mutau:
@@ -191,8 +151,19 @@ class SelectionFilter(Module):
         else:
             return False
 
-        if self.verbose > 1:
-            print " Event survived selection specific filtering"
+        #Apply some tighter selection IDs on the final leptons
+        min_mass      = self.min_mass
+        max_mass      = self.max_mass
+        min_delta_r   = self.min_dr
+
+        #Mass filter
+        lepm = (lep1.p4() + lep2.p4()).M()
+        if lepm < min_mass or (max_mass > min_mass and lepm > max_mass):
+            return False
+
+        #Delta R filter
+        if math.fabs(lep1.p4().DeltaR(lep2.p4())) < min_delta_r:
+            return False
 
         #Next check the triggers
         isTriggered = False
@@ -211,24 +182,9 @@ class SelectionFilter(Module):
         if self.verbose > 1:
             print " Event survived trigger threshold filtering"
 
-        dilep = lep1.p4() + lep2.p4()
-        #Mass filter
-        if dilep.M() < 50.:
-            return False
-        if self.prev_ids and dilep.M() > 170.:
-            return False
-        if self.verbose > 1:
-            print " Event survived di-lepton mass filtering"
 
-        #Overlap filter
-        if not self.prev_ids:
-            if lep1.p4().DeltaR(lep2.p4()) < 0.3:
-                return False
-        if self.verbose > 1:
-            print " Event survived overlap filtering"
+        #Accept event
 
-        #FIXME: should use bits, e.g. ID = 1*mutau + (1<<1)*etau + (1<<2)*emu + (1<<3)*mumu + (1<<4)*ee, to use events in multiple selections
-        ID = 1*mutau + 2*etau + 3*emu + 4*mumu + 5*ee
         self.out.fillBranch("SelectionFilter_MuTau", mutau)
         self.out.fillBranch("SelectionFilter_ETau" , etau)
         self.out.fillBranch("SelectionFilter_EMu"  , emu)
@@ -238,22 +194,18 @@ class SelectionFilter(Module):
         if self.verbose:
             print "SelectionFilter: Event %8i: mutau = %i; etau = %i; emu = %i; mumu = %i; ee = %i" % (self.seen, mutau, etau, emu, mumu, ee)
 
+        #Count the number of accepted events by category
         self.mutau[0] = self.mutau[0] + mutau
         self.etau[0]  = self.etau[0]  + etau
         self.emu[0]   = self.emu[0]   + emu
         self.mumu[0]  = self.mumu[0]  + mumu
         self.ee[0]    = self.ee[0]    + ee
 
-        #removing loose ID region events
+        #Count the number of tight ID events for debugging/reference
         self.mutau[1] = self.mutau[1] + (mutau and lep1.pfRelIso04_all < 0.15 and lep2.idDeepTau2017v2p1VSjet > 50)
         self.mumu[1]  = self.mumu[1]  + (mumu  and lep1.pfRelIso04_all < 0.15 and lep2.pfRelIso04_all < 0.15)
-        if self.prev_ids:
-            self.etau[1]  = self.etau[1]  + (etau  and lep1.mvaFall17V2Iso_WP80 and lep2.idDeepTau2017v2p1VSjet > 50)
-            self.emu[1]   = self.emu[1]   + (emu   and lep1.mvaFall17V2Iso_WP80 and lep2.pfRelIso04_all < 0.15)
-            self.ee[1]    = self.ee[1]    + (ee    and lep1.mvaFall17V2Iso_WP80 and lep2.mvaFall17V2Iso_WP80)
-        else:
-            self.etau[1]  = self.etau[1]  + (etau  and lep1.pfRelIso03_all < 0.15 and lep2.idDeepTau2017v2p1VSjet > 50)
-            self.emu[1]   = self.emu[1]   + (emu   and lep1.pfRelIso03_all < 0.15 and lep2.pfRelIso04_all < 0.15)
-            self.ee[1]    = self.ee[1]    + (ee    and lep1.pfRelIso03_all < 0.15 and lep2.pfRelIso03_all < 0.15)
+        self.etau[1]  = self.etau[1]  + (etau  and lep1.pfRelIso03_all < 0.15 and lep2.idDeepTau2017v2p1VSjet > 50)
+        self.emu[1]   = self.emu[1]   + (emu   and lep1.pfRelIso03_all < 0.15 and lep2.pfRelIso04_all < 0.15)
+        self.ee[1]    = self.ee[1]    + (ee    and lep1.pfRelIso03_all < 0.15 and lep2.pfRelIso03_all < 0.15)
 
         return (mutau or etau or emu or mumu or ee)

@@ -27,7 +27,7 @@ ROOT.PyConfig.IgnoreCommandLineOptions = True
 #Example: python <Analyzer> <input file> <data/MC/Embedded> <year>
 
 
-inputFile = [ sys.argv[1] ]
+inputFile = sys.argv[1].split(',') #[ sys.argv[1] ]
 isData    =   sys.argv[2]
 year      =   sys.argv[3]
 
@@ -70,10 +70,13 @@ elif year == "2018":
 print "Trigger cuts:", TriggerCuts
 
 #Base lepton selection
-MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.4 and l.mediumId==True
-ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.5 and l.mvaFall17V2noIso_WP90==True
+MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.4 and l.mediumId and l.pfRelIso04_all < 0.5
+ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.5 and l.mvaFall17V2noIso_WP90 and l.pfRelIso03_all < 0.5
 TauSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<2.3 and l.idDeepTau2017v2p1VSmu > 10 and l.idDeepTau2017v2p1VSe > 10 and l.idDeepTau2017v2p1VSjet > 5 and l.idDecayModeNewDMs
 JetSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<3.0 and l.puId>-1 and l.jetId>1 
+MaxMass = -1 # no cut
+MinMass = 50
+MinDeltaR = 0.3 # delta R between the leptons
 
 #configure the modules
 modules=[]
@@ -140,7 +143,11 @@ TauElectronCleaner=JetLepCleaner(
 modules.append(TauElectronCleaner)
 
 #filter events by final state selection
-Selection= SelectionFilter(year=year,verbose=0)
+Selection= SelectionFilter(year=year,
+                           min_mass = MinMass,
+                           max_mass = MaxMass,
+                           min_dr = MinDeltaR,
+                           verbose=0)
 modules.append(Selection)
 
 #Add additional object cleaning
