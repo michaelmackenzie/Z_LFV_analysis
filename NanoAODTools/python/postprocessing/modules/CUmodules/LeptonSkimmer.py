@@ -13,11 +13,12 @@ _rootLeafType2rootBranchType = {
 
 
 class LeptonSkimmer(Module):
-    def __init__(self, LepFlavour, Selection=None, Veto=None, minNlep=-1, verbose=False):
+    def __init__(self, LepFlavour, Selection=None, Veto=None, minNlep=-1, maxNlep=-1, verbose=0):
         self.LepFlavour=LepFlavour,
         self.LepSelection=Selection,
         self.LepVeto=Veto,
         self.minNlep = minNlep,
+        self.maxNlep = maxNlep,
         self.verbose = verbose,
         self.branchType = {}
         pass
@@ -73,21 +74,39 @@ class LeptonSkimmer(Module):
            print "LeptonSkimmer:  Invalid or empty Lepton name",self.LepFlavour[0],"skipping evt"
            return False
         leptons = Collection(event, self.LepFlavour[0])
-        if len(leptons)< self.minNlep[0]:
+        nbase = len(leptons)
+        if self.verbose[0] > 1:
+            print "LeptonSkimmer %s:" % (self.LepFlavour[0])
+            print " N(base) leptons = %i" % (nbase)
+        if nbase < self.minNlep[0]:
            if self.verbose[0]:
               print "LeptonSkimmer: smaller lepton number wrt threshold Nlep=",len(leptons)," thresh.=",self.minNlep[0]," - Skip evt"
            return False
+        if self.maxNlep[0] > -1 and nbase > self.maxNlep[0]:
+           if self.verbose[0]:
+              print "LeptonSkimmer: larger lepton number wrt threshold Nlep=",len(leptons)," thresh.=",self.maxNlep[0]," - Skip evt"
+           return False
         if self.LepSelection[0]!=None:
-          leptons = filter( self.LepSelection[0], leptons)       
-        if len(leptons)< self.minNlep[0]: 
+          leptons = filter( self.LepSelection[0], leptons)
+        nfiltered = len(leptons)
+        if self.verbose[0] > 1:
+            print " N(filtered) leptons = %i" % (nfiltered)
+        if nfiltered < self.minNlep[0]: 
            if self.verbose[0]:
               print "LeptonSkimmer: smaller lepton (",self.LepFlavour[0],") number that pass selection wrt threshold Nlep=",len(leptons)," thresh.=",self.minNlep[0]," - Skip evt"
+           return False
+        if self.maxNlep[0] > -1 and nfiltered > self.maxNlep[0]:
+           if self.verbose[0]:
+              print "LeptonSkimmer: larger lepton (",self.LepFlavour[0],") number that pass selection wrt threshold Nlep=",len(leptons)," thresh.=",self.maxNlep[0]," - Skip evt"
            return False
 
         veto=[]
         if self.LepVeto[0]!=None:
           veto = filter( self.LepVeto[0], leptons)
-        if len(veto)>0:
+        nveto = len(veto)
+        if self.verbose[0] > 1:
+            print " N(veto) leptons = %i" % (nveto)
+        if nveto > 0:
            if self.verbose[0]:
               print "LeptonSkimmer: failed veto - Skip evt"
            return False
