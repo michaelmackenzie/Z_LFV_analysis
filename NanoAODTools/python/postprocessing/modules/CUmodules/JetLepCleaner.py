@@ -83,9 +83,9 @@ class JetLepCleaner(Module):
                               _rootLeafType2rootBranchType[self.branchType[br]],
                               lenVar="n"+self.Lepton[0])        
 
-        self.out.branch("%s_TaggedAsRemoved" % (self.Lepton[0]),_rootLeafType2rootBranchType['Bool_t'], lenVar="n"+self.Lepton[0])
+        self.out.branch("%s_TaggedAsRemovedBy%s" % (self.Lepton[0],self.Jet[0]),_rootLeafType2rootBranchType['Bool_t'], lenVar="n"+self.Lepton[0])
         self.out.branch("%s_TaggedAsRemovedBy%s" % (self.Jet[0],self.Lepton[0]),_rootLeafType2rootBranchType['Bool_t'], lenVar="n"+self.Jet[0])
-        self.out.branch("%s_JetOverlapIdx" % (self.Lepton[0]),_rootLeafType2rootBranchType['Int_t'], lenVar="n"+self.Lepton[0])
+        self.out.branch("%s_%sOverlapIdx" % (self.Lepton[0],self.Jet[0]),_rootLeafType2rootBranchType['Int_t'], lenVar="n"+self.Lepton[0])
         self.out.branch("%s_%sOverlapIdx" % (self.Jet[0],self.Lepton[0]),_rootLeafType2rootBranchType['Int_t'], lenVar="n"+self.Jet[0])
 
 
@@ -119,12 +119,13 @@ class JetLepCleaner(Module):
         lepton_overlap_jet_idx=[]
         jet_overlap_lepton_idx=[]
 
-        
+        #for each lepton, check if it overlaps with a jet
         for lepton in leptons:
           overlap=False
           overlap_idx=-1
           minDR=1000.
           itemp=-1
+          #find the closest jet in delta R
           for ijet,jet in enumerate(jets):
             if deltaR(lepton.eta, lepton.phi, jet.eta, jet.phi)<minDR:
                minDR=deltaR(lepton.eta, lepton.phi, jet.eta, jet.phi)
@@ -145,11 +146,13 @@ class JetLepCleaner(Module):
             lepton_overlap_jet_idx.append(overlap_idx)
         
 
+        #for each jet, check if it overlaps with a lepton
         for jet in jets:
           overlap=False
           overlap_idx=-1
           minDR=1000.
           itemp=-1
+          #find the closest lepton in delta R
           for ilep,lepton in enumerate(leptons): 
             if deltaR(lepton.eta, lepton.phi, jet.eta, jet.phi)<minDR:
                minDR=deltaR(lepton.eta, lepton.phi, jet.eta, jet.phi)
@@ -186,8 +189,8 @@ class JetLepCleaner(Module):
                    out.append(getattr(obj, br))
                self.out.fillBranch("%s_%s" % (col, br), out)
 
-        self.out.fillBranch("%s_TaggedAsRemoved" % (self.Lepton[0]), tagged_leptons)
-        self.out.fillBranch("%s_JetOverlapIdx" % (self.Lepton[0]), lepton_overlap_jet_idx)
+        self.out.fillBranch("%s_TaggedAsRemovedBy%s" % (self.Lepton[0],self.Jet[0]), tagged_leptons)
+        self.out.fillBranch("%s_%sOverlapIdx" % (self.Lepton[0],self.Jet[0]), lepton_overlap_jet_idx)
         self.out.fillBranch("%s_TaggedAsRemovedBy%s" % (self.Jet[0],self.Lepton[0]), tagged_jets)
         self.out.fillBranch("%s_%sOverlapIdx" % (self.Jet[0],self.Lepton[0]), jet_overlap_lepton_idx)
         
