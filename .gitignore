@@ -1,0 +1,10 @@
+*.log
+*.save
+*~
+*.pyc
+*.swp
+*.swo
+*.root
+__init__.py
+FrameworkJobReport.xml
+batch
