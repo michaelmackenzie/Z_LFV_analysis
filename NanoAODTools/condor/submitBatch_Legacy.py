@@ -281,7 +281,7 @@ samplesDict['2018_embed_mutau'] = [
 nEvtPerJob = 2
 
 # signal
-nEvtSigPerJob = 0.008 #only 125 events per file, 40k-80k per dataset, so 5-10 jobs per signal
+nEvtSigPerJob = 0.006 #only 125 events per file, 40k-80k per dataset, so 5-10 jobs per signal
 samplesDict['2016_signal'] = [
     #### z samples ####
     bm.JobConfig( 
@@ -915,9 +915,8 @@ samplesDict['2018_qcd'] = [
 # samplesToSubmit = ["2016_vv", "2017_top", "2017_vv", "2017_z", "2018_top", "2018_vv", "2018_z"]
 samplesToSubmit = samplesDict.keys()
 samplesToSubmit.sort()
-doYears = ["2017"]
-# doYears = ["2017"]
-# doYears = ["2016", "2017", "2018"]
+doYears = ["2016"]
+doYears = ["2016", "2017", "2018"]
 sampleTag = ""
 configs = []
 
@@ -930,12 +929,13 @@ if configs == []:
     exit()
 
 batchMaster = bm.BatchMaster(
-    analyzer    = analyzer,
-    config_list = configs, 
-    stage_dir   = stage_dir,
-    output_dir  = output_dir,
-    executable  = executable,
-    location    = location
+    analyzer       = analyzer,
+    config_list    = configs,
+    stage_dir      = stage_dir,
+    output_dir     = output_dir,
+    executable     = executable,
+    location       = location,
+    maxFilesPerJob = 100
 )
 
 #ensure there's a symbolic link 'batch' to put the tarball in

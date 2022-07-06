@@ -21,7 +21,7 @@ p.add_argument('--outdir'   , help='Type e.g. output file path', default="", req
 p.add_argument('--mc_data'  , help='Type MC or Data for only MC or Data', default="", required=False)
 p.add_argument('--year'     , help='Specific year to process',default="", required=False)
 p.add_argument('--tag'      , help='Dataset tag to process',default="", required=False)
-p.add_argument('--veto'     , help='Dataset tag to not process',default="", required=False)
+p.add_argument('--veto'     , help='Comma separated list of tags to not process (e.g. DY,ttbar,Embed)',default="", required=False)
 p.add_argument('--dryrun'   , help='Setup merging without running', action='store_true', required=False)
 p.add_argument('--dosingle' , help='Merge first dataset only', action='store_true', required=False)
 p.add_argument('--usedirect', help='Use the direct EOS path instead of XROOTD', action='store_true', required=False)
@@ -33,7 +33,7 @@ outputpath = args.outdir
 mc_data    = args.mc_data
 year       = args.year
 tag        = args.tag
-veto       = args.veto
+veto       = args.veto.split(',')
 dryrun     = args.dryrun
 dosingle   = args.dosingle
 usedirect  = args.usedirect
@@ -104,7 +104,12 @@ for dirname in list_dirs:
         continue
     if tag != "" and tag not in outputname:
         continue
-    if veto != "" and veto in outputname:
+    skip_dataset = False
+    for veto_tag in veto:
+        if veto_tag != "" and veto_tag in outputname:
+            skip_dataset = True
+            break
+    if skip_dataset:
         continue
 
     list_processed.append(outputname)
