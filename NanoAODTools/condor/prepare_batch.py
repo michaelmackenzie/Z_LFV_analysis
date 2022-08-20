@@ -25,6 +25,7 @@ p.add_argument('--veto'     , help='Comma separated list of tags to not process 
 p.add_argument('--dryrun'   , help='Setup merging without running', action='store_true', required=False)
 p.add_argument('--dosingle' , help='Merge first dataset only', action='store_true', required=False)
 p.add_argument('--usedirect', help='Use the direct EOS path instead of XROOTD', action='store_true', required=False)
+p.add_argument('--jsononly' , help='Only process lumi json files', action='store_true', required=False)
 
 args = p.parse_args()
 
@@ -37,6 +38,7 @@ veto       = args.veto.split(',')
 dryrun     = args.dryrun
 dosingle   = args.dosingle
 usedirect  = args.usedirect
+jsononly   = args.jsononly
 
 if inputpath[-1:] != '/':
     inputpath = inputpath + '/'
@@ -76,7 +78,7 @@ dir_output_bkg  = outputpath + "MC/backgrounds/"
 dir_output_sig  = outputpath + "MC/signals/"
 
 #list_dirs = os.listdir(inputpath) #list all first files to get 1 per dataset
-command = 'eos root://cmseos.fnal.gov ls ' + '/store/user/'+user+'/'+inputpath
+command = 'eos root://cmseos.fnal.gov ls ' + '/store/user/'+user+'/'+inputpath+'*.root'
 process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
 stdout, stderr = process.communicate()
 list_dirs = stdout.split('\n')
@@ -95,6 +97,7 @@ for dirname in list_dirs:
 
     isSignal = "EMu_" in dirname or "ETau_" in dirname or "MuTau_" in dirname
     isData = "SingleElectron" in dirname or "SingleMuon" in dirname
+    isEmbed = "Embed-" in dirname
 
     if (doDataMC < 0 and isData) or (doDataMC > 0 and not isData):
         continue
@@ -117,40 +120,50 @@ for dirname in list_dirs:
     
     inputname  = outputname + "_*.root"
     outputname = outputname.replace("output_" ,"")
+    luminame = 'lumis_'+outputname
     # tmpoutput  = outputname + "-tmp.root"
-    outputname = outputname + ".root"
-    lscommand  = 'eos root://cmseos.fnal.gov ls ' + '/store/user/'+user+'/' + inputpath + inputname
-    process = subprocess.Popen(lscommand.split(), stdout=subprocess.PIPE)
-    stdout, stderr = process.communicate()
-    inputlist = stdout.split('\n')
-    if usedirect:
-        inputlist = ['/eos/uscms/store/user/'+user+'/'+inputpath+s for s in inputlist]
-    else:
-        inputlist = ['root://cmseos.fnal.gov//store/user/'+user+'/'+inputpath+s for s in inputlist]
-    hadd_command = "../haddnano.py " + "batch/temp_root/" + outputname
-    if inputlist == []:
-        print "Not datafiles found for dataset", outputname
-        if dosingle:
-            exit()
-        continue
-    for data_file in inputlist:
-        if ".root" in data_file:
-            hadd_command = hadd_command + " " + data_file
+    if not jsononly:
+        outputname = outputname + ".root"
+        lscommand  = 'eos root://cmseos.fnal.gov ls ' + '/store/user/'+user+'/' + inputpath + inputname
+        process = subprocess.Popen(lscommand.split(), stdout=subprocess.PIPE)
+        stdout, stderr = process.communicate()
+        inputlist = stdout.split('\n')
+        if usedirect:
+            inputlist = ['/eos/uscms/store/user/'+user+'/'+inputpath+s for s in inputlist]
+        else:
+            inputlist = ['root://cmseos.fnal.gov//store/user/'+user+'/'+inputpath+s for s in inputlist]
+        hadd_command = "../haddnano.py " + "batch/temp_root/" + outputname
+        if inputlist == []:
+            print "Not datafiles found for dataset", outputname
+            if dosingle:
+                exit()
+            continue
+        for data_file in inputlist:
+            if ".root" in data_file:
+                hadd_command = hadd_command + " " + data_file
 
-    print "Merging into output dataset", outputname
-    if not dryrun:
-        os.system(hadd_command)
-    else:
-        print hadd_command
-        if dosingle:
-            exit()
-        continue
+        print "Merging into output dataset", outputname
+        if not dryrun:
+            os.system(hadd_command)
+        else:
+            print hadd_command
+            if dosingle:
+                exit()
+            continue
 
-    # Copy back the merged data:
-    copy_command = 'xrdcp -f batch/temp_root/' + outputname + ' root://cmseos.fnal.gov//store/user/'+user+'/'+outputpath
-    print copy_command
-    os.system(copy_command)
-    os.remove("batch/temp_root/%s" % (outputname))
+        # Copy back the merged data:
+        copy_command = 'xrdcp -f batch/temp_root/' + outputname + ' root://cmseos.fnal.gov//store/user/'+user+'/'+outputpath
+        print copy_command
+        os.system(copy_command)
+        os.remove("batch/temp_root/%s" % (outputname))
+
+    # Process lumi files, if relevant
+    if isData or isEmbed:
+        lumi_command = 'python ../scripts/combine_json.py /eos/uscms/store/user/' + user + '/' + inputpath + luminame + '_'
+        lumi_command += ' --out_name /eos/uscms/store/user/' + user + '/' + outputpath + luminame + '.txt'
+        print lumi_command
+        os.system(lumi_command)
+
     if dosingle:
         break
 

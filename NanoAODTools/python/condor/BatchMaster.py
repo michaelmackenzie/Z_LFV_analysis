@@ -44,7 +44,9 @@ class JobConfig():
 
 class BatchMaster():
     '''A tool for submitting batch jobs'''
-    def __init__(self, analyzer, config_list, stage_dir, output_dir, executable='execBatch.sh', location='lpc', maxFilesPerJob = -1):
+    def __init__(self, analyzer, config_list, stage_dir, output_dir,
+                 executable='execBatch.sh', location='lpc', maxFilesPerJob = -1,
+                 memory = 4800, disk = 5000000):
         self._current     = os.path.abspath('.')
 
         self._analyzer       = analyzer
@@ -55,6 +57,8 @@ class BatchMaster():
         self._executable     = executable
         self._location       = location
         self._maxFilesPerJob = maxFilesPerJob
+        self._memory         = memory
+        self._disk           = disk
 
     
     def split_jobs_for_cfg(self, cfg):
@@ -131,8 +135,8 @@ class BatchMaster():
 
         if self._location == 'lpc':
             batch_tmp.write('Requirements          = OpSys == "LINUX"&& (Arch != "DUMMY" )\n')
-            batch_tmp.write('request_disk          = 5000000\n') # 10 GB to xrdcp temp nanoAOD instead of slow root://cmsxrootd.fnal.gov/, Ziheng 
-            batch_tmp.write('request_memory        = 5000\n') #~5GB ram
+            batch_tmp.write('request_disk          = %i\n' % (self._disk)) # 10 GB to xrdcp temp nanoAOD instead of slow root://cmsxrootd.fnal.gov/, Ziheng 
+            batch_tmp.write('request_memory        = %i\n' % (self._memory)) #~5GB ram
 
         batch_tmp.write('\n')
 
@@ -167,12 +171,13 @@ class BatchMaster():
         #  set stage dir
         print 'Running on {0}'.format(self._location)
         print 'Setting up stage directory...'
-        self._stage_dir  = '{0}/{1}_{2}'.format(self._stage_dir, self._analyzer, get_current_time())
+        current_time = get_current_time()
+        self._stage_dir  = '{0}/{1}_{2}'.format(self._stage_dir, self._analyzer, current_time)
         make_directory(self._stage_dir, clear=False)
 
         # set output dir
         print 'Setting up output directory...'
-        self._output_dir  = '{0}/{1}_{2}'.format(self._output_dir, self._analyzer, get_current_time())
+        self._output_dir  = '{0}/{1}_{2}'.format(self._output_dir, self._analyzer, current_time)
         make_directory('/eos/uscms/' + self._output_dir, clear=False)
 
         # tar cmssw 

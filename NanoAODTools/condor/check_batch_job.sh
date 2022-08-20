@@ -1,19 +1,21 @@
 Help() {
     echo "Check jobs in a single submission for failues"
     echo "Options:"
-    echo "--help      (-h): print this message"
-    echo "--resubmit  (-r): resubmit failed jobs"
-    echo "--verbose   (-v): add additional printout information"
-    echo "--dryrun        : prepare but don't submit resubmission job, with --resubmit also used"
-    echo "--eosdir        : EOS directory to search for the job output in"
-    echo "--tag           : Dataset tag to use"
-    echo "--checkfiles    : Do basic checks on the output files"
-    echo "--ignorerunning : Ignore still running jobs"
+    echo "--help       (-h) : print this message"
+    echo "--resubmit   (-r) : resubmit failed jobs"
+    echo "--verbose    (-v) : add additional printout information"
+    echo "--dryrun          : prepare but don't submit resubmission job, with --resubmit also used"
+    echo "--eosdir          : EOS directory to search for the job output in"
+    echo "--tag             : Dataset tag to use"
+    echo "--checkfiles      : Do basic checks on the output files"
+    echo "--ignorerunning   : Ignore still running jobs"
+    echo "--override-outdir : Override expected output job directory"
+    echo "--memory          : Override default job memory in resubmission"
 }
 
 if [[ $# -eq 0 ]]
 then
-    echo "No parameters passed!"
+    echo "No parameters passed! Printing help (--help) information:"
     Help
     exit
 fi
@@ -26,6 +28,8 @@ EOSDIR="nano_batchout"
 VERBOSE=0
 DRYRUN=""
 IGNORERUNNING=""
+OUTDIR=""
+MEMORY=""
 
 iarg=1
 while [ "${iarg}" -le "$#" ]
@@ -55,6 +59,16 @@ do
         iarg=$((iarg + 1))
         eval "var=\${${iarg}}"
         EOSDIR=${var}
+    elif [[ "${var}" == "--override-outdir" ]]
+    then
+        iarg=$((iarg + 1))
+        eval "var=\${${iarg}}"
+        OUTDIR=${var}
+    elif [[ "${var}" == "--memory" ]]
+    then
+        iarg=$((iarg + 1))
+        eval "var=\${${iarg}}"
+        MEMORY=${var}
     elif [[ "${var}" == "--tag" ]]
     then
         iarg=$((iarg + 1))
@@ -87,6 +101,12 @@ echo "Using EOS directory ${EOSDIR}"
 NFAILED=0
 echo "Using jobname ${JOBNAME}"
 FAILEDJOBS=""
+
+if [[ "${OUTDIR}" != "" ]]
+then
+    echo "Overriding output directory to use ${OUTDIR}"
+fi
+
 for f in `ls -d ${JOBNAME}reports/*.log`
 do
     FILE=`basename ${f} | awk -F "_" '{name=""; for( i = 1; i < NF - 1; i++){ name=name $i; if(i < NF - 2) {name=name "_";}}}END{print name}'`
@@ -124,12 +144,17 @@ do
             NFAILED=$((1 + $NFAILED))
         fi
     fi
-    ROOTFILE="/eos/uscms/store/user/${USER}/${EOSDIR}/${JOB}/output_${FILE}.root"
+    if [[ "${OUTDIR}" == "" ]]
+    then
+        ROOTFILE="/eos/uscms/store/user/${USER}/${EOSDIR}/${JOB}/output_${FILE}.root"
+    else
+        ROOTFILE="/eos/uscms/store/user/${USER}/${EOSDIR}/${OUTDIR}/output_${FILE}.root"
+    fi
     if [ ! -f ${ROOTFILE} ]
     then
         if [ ${VERBOSE} -gt -1 ]
         then
-            echo "File ${FILE} in job ${JOB} does not exist"
+            echo "File ${FILE} in job ${JOB} does not exist (${ROOTFILE})"
         fi
         if [[ "${XRDEXIT}" == "" ]]
         then
@@ -172,6 +197,7 @@ then
             cat ${JOBINFO} | awk -v d=0 '{if($1 == "Arguments") d=1; if(d == 0) print $0}' > ${RECOVERY}
         fi
         echo "Adding job ${FILE} to recovery file for dataset ${DATASET}"
+        #FIXME: Add memory override option
         cat ${JOBINFO} | awk -v d=0 -v count=${COUNT} '{if($1 == "Arguments") {if($3 == count) {d=1;} else {d=0;}}  if(d==1) {print $0;}}' >> ${RECOVERY}
         if [[ "${RESUBMIT}" != "" ]]
         then
