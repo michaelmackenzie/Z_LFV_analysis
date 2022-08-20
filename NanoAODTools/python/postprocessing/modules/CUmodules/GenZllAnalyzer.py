@@ -31,6 +31,8 @@ class GenZllAnalyzer(Module):
         self.out.branch("%s_Idx"        % (self.motherName),'I')
         self.out.branch("%s_LepOne_Idx" % (self.motherName),'I')
         self.out.branch("%s_LepTwo_Idx" % (self.motherName),'I')
+        self.out.branch("%s_LepOne_DecayIdx" % (self.motherName),'I')
+        self.out.branch("%s_LepTwo_DecayIdx" % (self.motherName),'I')
         for var in self.variables:
             self.out.branch("%s_%s"%(self.motherName,var),'F')
             #Assumes Z->ll(') decays, so two daughters
@@ -56,6 +58,8 @@ class GenZllAnalyzer(Module):
         self.out.fillBranch("%s_Idx"        % (self.motherName), -99)
         self.out.fillBranch("%s_LepOne_Idx" % (self.motherName), -99)
         self.out.fillBranch("%s_LepTwo_Idx" % (self.motherName), -99)
+        self.out.fillBranch("%s_LepOne_DecayIdx" % (self.motherName), -99)
+        self.out.fillBranch("%s_LepTwo_DecayIdx" % (self.motherName), -99)
 
         for vr in self.variables:
             self.out.fillBranch("%s_%s"        % (self.motherName, vr), -99)
@@ -67,7 +71,32 @@ class GenZllAnalyzer(Module):
         print "Printing Gen collection:\n index:   pdg        pt      eta    mother-idx status isLastCopy"
         for igen,gen in enumerate(gens):
             print "%6i: %5i %10.1f %10.2f %7i %7i %7i"%(igen, gen.pdgId, gen.pt, gen.eta, gen.genPartIdxMother,gen.status,(gen.statusFlags & (1<<13) != 0))
-            
+
+    def get_decay_list(self, idx, gens):
+        daughters = []
+        for igen,gen in enumerate(gens):
+            if gen.genPartIdxMother == idx:
+                daughters.append(igen)
+        return daughters
+
+    def get_tau_decay(self, idx, gens):
+        self_decay = True
+        pdgId = gens[idx].pdgId
+        while self_decay:
+            self_decay = False
+            daughters = self.get_decay_list(idx, gens)
+            #descend down the decay chain until no longer radiative decays, etc.
+            for ipart in daughters:
+                if gens[ipart].pdgId == pdgId:
+                    self_decay = True
+                    idx = ipart
+        #identify if it's leptonic or hadronic decay
+        for ipart in daughters:
+            pdgId = gens[ipart].pdgId
+            if abs(pdgId) == 11 or abs(pdgId) == 13:
+                return ipart
+        return -1
+        
     def analyze(self, event):
         """process event, return True (go to next module) or False (fail, go to next event)"""
         if not hasattr(event, "nGenPart"): #Data does not have gen-particle information
@@ -139,12 +168,30 @@ class GenZllAnalyzer(Module):
         self.out.fillBranch("%s_Idx"        % (self.motherName), mother_id)
         self.out.fillBranch("%s_LepOne_Idx" % (self.motherName), lepone_id)
         self.out.fillBranch("%s_LepTwo_Idx" % (self.motherName), leptwo_id)
+
+        # fill extra tau decay information if applicable
+        if abs(gens[lepone_id].pdgId) == 15:
+            lepone_decay = self.get_tau_decay(lepone_id, gens)
+        else:
+            lepone_decay = -99
+        self.out.fillBranch("%s_LepOne_DecayIdx" % (self.motherName), lepone_decay)
+        if abs(gens[leptwo_id].pdgId) == 15:
+            leptwo_decay = self.get_tau_decay(leptwo_id, gens)
+        else:
+            leptwo_decay = -99
+        self.out.fillBranch("%s_LepTwo_DecayIdx" % (self.motherName), leptwo_decay)
+
+        # if abs(gens[lepone_id].pdgId) == 15:
+        #     print " LepOne decay = %i LepTwo decay = %i" % (lepone_decay, leptwo_decay)
+        #     self.print_gen(gens)
+
+        #fill daughter variables
         for vr in self.variables:
             if mother_id < 0:
                 self.out.fillBranch("%s_%s" % (self.motherName, vr), -99)
             else:
                 out = getattr(gens[mother_id],vr)
-                self.out.fillBranch("%s_%s" % (self.motherName, vr), -99)
+                self.out.fillBranch("%s_%s" % (self.motherName, vr), out)
             out = getattr(gens[lepone_id],vr)
             self.out.fillBranch("%s_LepOne_%s" % (self.motherName, vr), out)
             out = getattr(gens[leptwo_id],vr)

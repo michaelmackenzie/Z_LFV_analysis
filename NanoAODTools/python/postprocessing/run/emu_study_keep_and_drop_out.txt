@@ -1,0 +1,20 @@
+# this is a comment
+drop * # start with all
+
+#Gen info
+keep Gen*
+keep nGen*
+keep gen*
+keep genWeight*
+#extra drop
+drop GenJet*
+drop nGenJet
+drop GenDressed*
+drop nGenDressed*
+
+#Add event period information
+keep run
+keep luminosityBlock
+keep event
+
+
