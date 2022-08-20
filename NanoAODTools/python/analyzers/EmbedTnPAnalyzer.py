@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonSkimmer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.EmbeddingTnPFilter import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenZllAnalyzer import *
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
 
@@ -46,8 +47,8 @@ elif year == "2018":
 print "Trigger cuts:", TriggerCuts
 
 #Base lepton selection
-MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.4
-ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.5
+MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.2
+ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.2
 
 #configure the modules
 modules=[]
@@ -75,6 +76,15 @@ modules.append(ElectronSelector)
 Selection= EmbeddingTnPFilter(year=year,verbose=0)
 modules.append(Selection)
 
+#generator info of simulated leptons (useful for unfolding corrections)
+if not isData == "data":
+   ZllBuilder=GenZllAnalyzer(
+      variables=['pt','eta','phi','mass','pdgId'],
+      motherName='GenZll',
+      skip=False,
+      verbose=-1
+   )
+   modules.append(ZllBuilder)
 
 #configure the pileup module and the json file filtering
 if isData == "MC":

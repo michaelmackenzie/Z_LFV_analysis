@@ -31,6 +31,7 @@ class EmbeddingTnPFilter(Module):
 
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         self.out = wrappedOutputTree
+        self.out.branch("pair_ismuon"         , "O");
         self.out.branch("pair_mass"           , "F");
         self.out.branch("pair_pt"             , "F");
         self.out.branch("pair_eta"            , "F");
@@ -42,6 +43,7 @@ class EmbeddingTnPFilter(Module):
         self.out.branch("one_sc_eta"          , "F");
         self.out.branch("one_phi"             , "F");
         self.out.branch("one_q"               , "F");
+        self.out.branch("one_ecorr"           , "F");
         self.out.branch("one_triggered"       , "O");
         self.out.branch("one_id1"             , "I");
         self.out.branch("one_id2"             , "I");
@@ -50,6 +52,7 @@ class EmbeddingTnPFilter(Module):
         self.out.branch("two_sc_eta"          , "F");
         self.out.branch("two_phi"             , "F");
         self.out.branch("two_q"               , "F");
+        self.out.branch("two_ecorr"           , "F");
         self.out.branch("two_triggered"       , "O");
         self.out.branch("two_id1"             , "I");
         self.out.branch("two_id2"             , "I");
@@ -63,13 +66,17 @@ class EmbeddingTnPFilter(Module):
         if isMuon :
             bit_1 = 1 #IsoMu
             bit_2 = bit_1 # no second trigger
+            pt_min_1 = 27. if self.year == "2017" else 24.
+            pt_min_2 = pt_min_1
         else :
-            if self.year == 2017:
+            if self.year == "2017":
                 bit_1 = 10 # 32_L1DoubleEG_AND_L1SingleEGOr
                 bit_2 = bit_1 # no second trigger
             else :
                 bit_1 = 1 # WPTight 1 ele
                 bit_2 = bit_1 # no second trigger
+            pt_min_1 = 27. if self.year == "2016" else 32.
+            pt_min_2 = pt_min_1
         deltaR_match = 0.1
         deltaPt_match = 10 #fractional match, > ~5 --> no pT matching
         result = 0
@@ -87,8 +94,8 @@ class EmbeddingTnPFilter(Module):
             trigObj = trigObjs[i_trig]
             if abs(trigObj.id) != pdg:
                 continue
-            passBit1 = trigObj.filterBits & (1<<bit_1) != 0
-            passBit2 = trigObj.filterBits & (1<<bit_2) != 0
+            passBit1 = (trigObj.filterBits & (1<<bit_1) != 0) and trigObj.pt > pt_min_1
+            passBit2 = (trigObj.filterBits & (1<<bit_2) != 0) and trigObj.pt > pt_min_2
             if self.verbose > 9:
                 print "  Trigger object", i_trig, "for",name,"has filterBits", trigObj.filterBits, "pt, eta, phi =", trigObj.pt, trigObj.eta, trigObj.phi
             if passBit1 or passBit2:
@@ -111,6 +118,7 @@ class EmbeddingTnPFilter(Module):
         return 0
 
     def fill_branches(self, one, two, isMuons):
+        self.out.fillBranch("pair_ismuon"    , isMuons)
         self.out.fillBranch("pair_mass"      , (one.p4() + two.p4()).M())
         self.out.fillBranch("pair_pt"        , (one.p4() + two.p4()).Pt())
         self.out.fillBranch("pair_eta"       , (one.p4() + two.p4()).Eta())
@@ -118,16 +126,20 @@ class EmbeddingTnPFilter(Module):
         self.out.fillBranch("one_eta"        , one.eta)
         if not isMuons:
             self.out.fillBranch("one_sc_eta"     , one.eta + one.deltaEtaSC)
+            self.out.fillBranch("one_ecorr"      , one.eCorr)
         else :
             self.out.fillBranch("one_sc_eta"     , one.eta)
+            self.out.fillBranch("one_ecorr"      , 0.)
         self.out.fillBranch("one_phi"        , one.phi)
         self.out.fillBranch("one_q"          , one.charge)
         self.out.fillBranch("two_pt"         , two.pt)
         self.out.fillBranch("two_eta"        , two.eta)
         if not isMuons:
             self.out.fillBranch("two_sc_eta"     , two.eta + two.deltaEtaSC)
+            self.out.fillBranch("two_ecorr"      , two.eCorr)
         else :
             self.out.fillBranch("two_sc_eta"     , two.eta)
+            self.out.fillBranch("two_ecorr"      , 0.)
         self.out.fillBranch("two_phi"        , two.phi)
         self.out.fillBranch("two_q"          , two.charge)
 
@@ -146,9 +158,9 @@ class EmbeddingTnPFilter(Module):
     # muon ID check
     def muon_id(self, muon, ID, IsoID):
         passed = (ID == 0 or
-                  (ID == 1 and muon.looseId) or
+                  (ID == 1 and muon.looseId ) or
                   (ID == 2 and muon.mediumId) or
-                  (ID == 3 and muon.tightId))
+                  (ID == 3 and muon.tightId ))
         passed = passed and muon.pfRelIso04_all < IsoID
         return passed
 
@@ -168,7 +180,7 @@ class EmbeddingTnPFilter(Module):
         nMuons     = len(muons    )
 
         # require exactly two muons or two electrons
-        if not ((nElectrons == 2 and nMuons == 0) or (nElectrons == 0 and nMuons == 2)):
+        if not ((nElectrons == 2 and nMuons != 2) or (nElectrons != 2 and nMuons == 2)):
             return False
 
 
@@ -300,24 +312,24 @@ class EmbeddingTnPFilter(Module):
         self.out.fillBranch("two_triggered", leptonTwoTriggered)
 
         if doMuons :
-            self.out.fillBranch("one_id1", lep1.mediumId)
+            self.out.fillBranch("one_id1", lep1.mediumId and math.fabs(lep1.dz) < 0.2 and math.fabs(lep1.dxy) < 0.5)
             self.out.fillBranch("one_id2", ((lep1.pfRelIso04_all < muonIsoVVLoose) + (lep1.pfRelIso04_all < muonIsoVLoose) +
                                             (lep1.pfRelIso04_all < muonIsoLoose )  +
                                             (lep1.pfRelIso04_all < muonIsoMedium)  + (lep1.pfRelIso04_all < muonIsoTight) +
                                             (lep1.pfRelIso04_all < muonIsoVTight)  + (lep1.pfRelIso04_all < muonIsoVVTight)))
-            self.out.fillBranch("two_id1", lep2.mediumId)
+            self.out.fillBranch("two_id1", lep2.mediumId and math.fabs(lep2.dz) < 0.2 and math.fabs(lep2.dxy) < 0.5)
             self.out.fillBranch("two_id2", ((lep2.pfRelIso04_all < muonIsoVVLoose) + (lep2.pfRelIso04_all < muonIsoVLoose) +
                                             (lep2.pfRelIso04_all < muonIsoLoose )  +
                                             (lep2.pfRelIso04_all < muonIsoMedium)  + (lep2.pfRelIso04_all < muonIsoTight) +
                                             (lep2.pfRelIso04_all < muonIsoVTight)  + (lep2.pfRelIso04_all < muonIsoVVTight)))
         else :
-            self.out.fillBranch("one_id1", lep1.mvaFall17V2noIso_WP90)
+            self.out.fillBranch("one_id1", lep1.mvaFall17V2noIso_WP90 and math.fabs(lep1.dz) < 0.2 and math.fabs(lep1.dxy) < 0.5)
             #use muon Iso ID flag definitions for electron iso ID
             self.out.fillBranch("one_id2", ((lep1.pfRelIso03_all < muonIsoVVLoose) + (lep1.pfRelIso03_all < muonIsoVLoose) +
                                             (lep1.pfRelIso03_all < muonIsoLoose )  +
                                             (lep1.pfRelIso03_all < muonIsoMedium)  + (lep1.pfRelIso03_all < muonIsoTight) +
                                             (lep1.pfRelIso03_all < muonIsoVTight)  + (lep1.pfRelIso03_all < muonIsoVVTight)))
-            self.out.fillBranch("two_id1", lep2.mvaFall17V2noIso_WP90)
+            self.out.fillBranch("two_id1", lep2.mvaFall17V2noIso_WP90 and math.fabs(lep2.dz) < 0.2 and math.fabs(lep2.dxy) < 0.5)
             #use muon Iso ID flag definitions for electron iso ID
             self.out.fillBranch("two_id2", ((lep2.pfRelIso03_all < muonIsoVVLoose) + (lep2.pfRelIso03_all < muonIsoVLoose) +
                                             (lep2.pfRelIso03_all < muonIsoLoose )  +

@@ -7,6 +7,9 @@ keep nElectron
 keep PuppiMET*
 keep genWeight
 
+keep nGenPart
+keep GenPart*
+
 #Add Trigger information
 keep HLT_*
 keep HLT_Mu*

@@ -24,7 +24,7 @@ samplesDict = {}
 
 
 
-nEvtPerJob = 5 # faster jobs, # in unit of 1e6 , 5-10 are good settings. 
+nEvtPerJob = 8 # faster jobs, # in unit of 1e6 , 5-10 are good settings. 
 
 #################################################
 #                                               #
@@ -93,7 +93,7 @@ samplesDict['2018_SingleMuon'] = [
 #################################################
 
 ### redefine N(events/job) for embedding ###
-nEvtPerJob = 1 #~25k events per file, ~50-100 files per dataset --> ~5-10 jobs/dataset
+nEvtPerJob = 0.5 #~25k events per file, ~50-100 files per dataset --> ~5-10 jobs/dataset
 
 # 2016 Embedded samples
 samplesDict['2016_embed_ee'] = [
@@ -212,6 +212,30 @@ samplesDict['2018_embed_mumu'] = [
         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-D_2018', inputDBS="phys03"),
 ]
 
+#################################################
+#                                               #
+#------------- Running MC Samples --------------#
+#                                               #
+#################################################
+
+### redefine N(events/job) for MC ###
+nEvtPerJob = 3
+
+samplesDict['2016_z'] = [
+    bm.JobConfig(
+        dataset='/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext2-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='EmbedTnPAnalysis_DY50_2016'),
+]
+samplesDict['2017_z'] = [
+    bm.JobConfig(
+        dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8_ext3-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='EmbedTnPAnalysis_DY50_2017'),    
+]
+samplesDict['2018_z'] = [
+    bm.JobConfig(
+        dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21_ext2-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='EmbedTnPAnalysis_DY50_2018'),
+]
 
 # -----------------------------
 # submit to batch
@@ -221,8 +245,8 @@ samplesToSubmit = samplesDict.keys()
 samplesToSubmit.sort()
 # samplesToSubmit = ["2018_embed_ee", "2018_embed_mumu"]
 
-doYears = ["2016", "2017", "2018"]
-# doYears = ["2017", "2018"]
+# doYears = ["2016", "2017", "2018"]
+doYears = ["2016", "2017"]
 configs = []
 
 for s in samplesToSubmit:

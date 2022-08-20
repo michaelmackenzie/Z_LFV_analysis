@@ -89,6 +89,12 @@ do
         echo "No tree file found, exit code 1, failure in processing"
         exit 1
     fi
+    echo "Adding event count normalization to the output tree"
+    root.exe -q -b -l "condor/add_norm.C(\"temp.root\", \"tree.root\")"
+    ROOTEXIT=$?
+    if [[ ${ROOTEXIT} -ne 0 ]]; then
+        echo "Normalization counting failed, but not required so continuing without it"
+    fi
     mv tree.root outDir/tree_${COUNTER}.root
     rm *.root
     COUNTER=$((COUNTER+1))
