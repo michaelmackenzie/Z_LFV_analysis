@@ -1,0 +1,15 @@
+# this isp a comment
+drop * # start with all
+
+#Branches added to the tree
+
+# generator level info
+keep genWeight
+keep GenZll*
+
+#Add event period information
+keep run
+keep luminosityBlock
+keep event
+
+keep puWeight

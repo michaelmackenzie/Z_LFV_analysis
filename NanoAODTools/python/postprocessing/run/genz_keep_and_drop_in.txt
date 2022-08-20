@@ -1,0 +1,11 @@
+# this isp a comment
+drop * # start with all
+keep nGenPart
+keep GenPart*
+
+#Add event period information
+keep run
+keep luminosityBlock
+keep event
+
+keep Pileup*
