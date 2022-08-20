@@ -104,8 +104,19 @@ do
         echo "Normalization counting failed, exit code 1, failure in processing"
         exit 1
     fi
-
     mv tree-split.root outDir/tree_${COUNTER}.root
+    #get luminosity info
+    if [[ ${ISDATA} != "MC" ]]
+    then
+        python python/analyzers/LumiJSONAnalyzer.py temp.root ${ISDATA} ${YEAR}
+        if [[ ! -f file_lumis_JSON.txt ]]
+        then
+            echo "Luminosity parsing failed!"
+        else
+            mv file_lumis_JSON.txt outDir/file_lumis_JSON_${COUNTER}.txt
+        fi
+    fi
+    #clean up files
     rm *.root
     COUNTER=$((COUNTER+1))
 
@@ -118,6 +129,7 @@ ls outDir/
 FILE=output_${SUFFIX}_${COUNT}.root
 ./haddnano.py ${FILE} outDir/*.root
 
+#copy back the data file
 xrdcp -f ${FILE} ${OUTDIR}/${FILE} 2>&1
 XRDEXIT=$?
 if [[ $XRDEXIT -ne 0 ]]; then
@@ -125,5 +137,25 @@ if [[ $XRDEXIT -ne 0 ]]; then
   echo "exit code $XRDEXIT, failure in xrdcp"
   exit $XRDEXIT
 fi
+
+#process lumi file if relevant
+if [[ ${ISDATA} != "MC" ]]
+then
+    JSONFILE=lumis_${SUFFIX}_${COUNT}_JSON.txt
+    python scripts/combine_json.py outDir/file_lumis_ --out_name ${JSONFILE}
+    if [[ ! -f ${JSONFILE} ]]
+    then
+        echo "failure in lumi file processing, failed to produce merged file"
+    else
+        xrdcp -f ${JSONFILE} ${OUTDIR}/${JSONFILE} 2>&1
+        XRDEXIT=$?
+        if [[ $XRDEXIT -ne 0 ]]; then
+            echo "exit code $XRDEXIT, failure in json lumi file xrdcp"
+            cat ${JSONFILE}
+        fi
+        rm ${JSONFILE}
+    fi
+fi
+
 rm ${FILE}
 rm -rf outDir

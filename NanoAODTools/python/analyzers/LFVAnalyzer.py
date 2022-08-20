@@ -14,6 +14,7 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenRecoMatcher i
 # from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.FunctionWrapper import *
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.common.PrefireCorr import *
 
 
 from importlib import import_module
@@ -62,17 +63,17 @@ branchsel_out ="python/postprocessing/run/keep_and_drop_out.txt"
 if year == "2016":
    TriggerCuts="((HLT_IsoMu24 && nMuon > 0) || (HLT_Ele27_WPTight_Gsf && nElectron > 0))"
 elif year == "2017":
-   TriggerCuts="(HLT_IsoMu27 && nMuon>0) || (HLT_Ele32_WPTight_Gsf_L1DoubleEG && nElectron>0)"
+   TriggerCuts="(HLT_IsoMu27 && nMuon > 0) || (HLT_Ele32_WPTight_Gsf_L1DoubleEG && nElectron > 0)"
 elif year == "2018":
-   TriggerCuts="(HLT_IsoMu24 && nMuon>0) || (HLT_Ele32_WPTight_Gsf && nElectron>0)"
+   TriggerCuts="(HLT_IsoMu24 && nMuon > 0) || (HLT_Ele32_WPTight_Gsf && nElectron > 0)"
 
 # TriggerCuts = None
 print "Trigger cuts:", TriggerCuts
 
 #Base lepton selection
-MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.4 and l.mediumId and l.pfRelIso04_all < 0.5
-ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.5 and l.mvaFall17V2noIso_WP90 and l.pfRelIso03_all < 0.5
-TauSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<2.3 and l.idDeepTau2017v2p1VSmu > 10 and l.idDeepTau2017v2p1VSe > 10 and l.idDeepTau2017v2p1VSjet > 5 and l.idDecayModeNewDMs
+MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.2 and l.mediumId and l.pfRelIso04_all < 0.5
+ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.2 and l.mvaFall17V2noIso_WP90 and l.pfRelIso03_all < 0.5
+TauSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<2.2 and l.idDeepTau2017v2p1VSmu > 10 and l.idDeepTau2017v2p1VSe > 10 and l.idDeepTau2017v2p1VSjet > 5 and l.idDecayModeNewDMs
 JetSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<3.0 and l.puId>-1 and l.jetId>1 
 MaxMass = -1 # no cut
 MinMass = 50
@@ -82,6 +83,24 @@ MinDeltaR = 0.3 # delta R between the leptons
 modules=[]
 GenCounter=GenCount()
 modules.append(GenCounter)
+
+#prefire probability, before jet/photon/electron collection is skimmed
+if isData == "MC": #only do on MC, 2016 and 2017
+   if year == "2016":
+      PrefireCorr = PrefCorr(jetroot="L1prefiring_jetpt_2016BtoH.root",
+                             jetmapname="L1prefiring_jetpt_2016BtoH",
+                             photonroot="L1prefiring_photonpt_2016BtoH.root",
+                             photonmapname="L1prefiring_photonpt_2016BtoH"
+      )
+      modules.append(PrefireCorr)
+   elif year == "2017":
+      PrefireCorr = PrefCorr(jetroot="L1prefiring_jetpt_2017BtoF.root",
+                             jetmapname="L1prefiring_jetpt_2017BtoF",
+                             photonroot="L1prefiring_photonpt_2017BtoF.root",
+                             photonmapname="L1prefiring_photonpt_2017BtoF"
+      )
+      modules.append(PrefireCorr)      
+   
 
 #lepton selection
 MuonSelector= LeptonSkimmer(
@@ -152,6 +171,7 @@ modules.append(Selection)
 
 #Add additional object cleaning
 
+#FIXME: Add each year b-tag WP cuts
 JetSelector=JetSkimmer( 
    BtagWPs=[0.1274, 0.4229, 0.7813 ], 
    nGoodJetMin=-1, 
