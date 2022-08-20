@@ -59,13 +59,15 @@ class EGammaTnPFilter(Module):
         pass
 
     def check_trig(self, trigObjs, lepton, isMuon):
-        if self.year == 2017:
+        if self.year == "2017":
             bit_1 = 10 # 32_L1DoubleEG_AND_L1SingleEGOr
             bit_2 = bit_1 # no second trigger
         else :
             bit_1 = 1 # WPTight 1 ele
             bit_2 = bit_1 # no second trigger
-        deltaR_match = 0.2
+        pt_min_1 = 27. if self.year == "2016" else 32.
+        pt_min_2 = pt_min_1
+        deltaR_match = 0.1
         deltaPt_match = 10 #fractional match, > ~5 --> no pT matching
         result = 0
         passedBit1 = False
@@ -79,8 +81,8 @@ class EGammaTnPFilter(Module):
             trigObj = trigObjs[i_trig]
             if abs(trigObj.id) != pdg:
                 continue
-            passBit1 = trigObj.filterBits & (1<<bit_1) != 0
-            passBit2 = trigObj.filterBits & (1<<bit_2) != 0
+            passBit1 = (trigObj.filterBits & (1<<bit_1) != 0) and trigObj.pt > pt_min_1
+            passBit2 = (trigObj.filterBits & (1<<bit_2) != 0) and trigObj.pt > pt_min_2
             if self.verbose > 9:
                 print "  Trigger object", i_trig, "for",name,"has filterBits", trigObj.filterBits, "pt, eta, phi =", trigObj.pt, trigObj.eta, trigObj.phi
             if passBit1 or passBit2:
