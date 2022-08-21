@@ -23,6 +23,10 @@ int dump_gen_event(const char* file, int nevents = 1) {
   UInt_t nElectron;
   float Electron_pt[n], Electron_eta[n], Electron_phi[n], Electron_mass[n];
   int Electron_genPartIdx[n];
+  UInt_t nTau;
+  float Tau_pt[n], Tau_eta[n], Tau_phi[n], Tau_mass[n];
+  Int_t Tau_genPartIdx[n];
+  UChar_t Tau_genPartFlav[n];
 
   Events->SetBranchAddress("nGenPart"                , &nGenPart                );
   Events->SetBranchAddress("GenPart_pt"              , &GenPart_pt              );
@@ -48,42 +52,66 @@ int dump_gen_event(const char* file, int nevents = 1) {
   Events->SetBranchAddress("Electron_mass"           , &Electron_mass           );
   Events->SetBranchAddress("Electron_genPartIdx"     , &Electron_genPartIdx     );
 
+  Events->SetBranchAddress("nTau"                    , &nTau                    );
+  Events->SetBranchAddress("Tau_pt"                  , &Tau_pt                  );
+  Events->SetBranchAddress("Tau_eta"                 , &Tau_eta                 );
+  Events->SetBranchAddress("Tau_phi"                 , &Tau_phi                 );
+  Events->SetBranchAddress("Tau_mass"                , &Tau_mass                );
+  Events->SetBranchAddress("Tau_genPartIdx"          , &Tau_genPartIdx          );
+  Events->SetBranchAddress("Tau_genPartFlav"         , &Tau_genPartFlav         );
+
   for(Long64_t entry = 0; entry < nentries; ++entry) {
     Events->GetEntry(entry);
     cout << "*** Printing event information for entry " << entry << endl;
 
     //Gen particles
     cout << " N(gen particles) = " << nGenPart << endl;
-    cout << " Idx:     pt       eta   phi      mass  pdgId   status    flags isDirectTauDecay isPromptTauDecay isLastCopy mother Idx\n";
+    cout << " Idx:     pt       eta   phi      mass  pdgId   status isLastCopy  isDirectTauDecay isPromptTauDecay mother-Idx\n";
     for(int ipart = 0; ipart < nGenPart; ++ipart) {
-      printf(" %3i: %6.1f %9.2f %5.2f  %8.2e %6i %8i %8i        %i                %i            %i        %3i\n",
+      printf(" %3i: %6.1f %9.2f %5.2f  %8.2e %6i %8i     %i                %i                %i           %3i\n",
              ipart,
              GenPart_pt[ipart], GenPart_eta[ipart], GenPart_phi[ipart], GenPart_mass[ipart],
-             GenPart_pdgId[ipart], GenPart_status[ipart], GenPart_statusFlags[ipart],
+             GenPart_pdgId[ipart], GenPart_status[ipart],
+             (GenPart_statusFlags[ipart] & (1 << 13)) != 0,
              (GenPart_statusFlags[ipart] & (1 << 4)) != 0,
              (GenPart_statusFlags[ipart] & (1 << 3)) != 0,
-             (GenPart_statusFlags[ipart] & (1 << 13)) != 0,
              GenPart_genPartIdxMother[ipart]);
-    }
-
-    //Reco muons
-    cout << " N(muons) = " << nMuon << endl;
-    cout << " Idx:     pt       eta   phi      mass  Gen Idx\n";
-    for(int ipart = 0; ipart < nMuon; ++ipart) {
-      printf(" %3i: %6.1f %9.2f %5.2f  %8.2e %3i\n",
-             ipart,
-             Muon_pt[ipart], Muon_eta[ipart], Muon_phi[ipart], Muon_mass[ipart],
-             Muon_genPartIdx[ipart]);
     }
 
     //Reco electrons
     cout << " N(electrons) = " << nElectron << endl;
-    cout << " Idx:     pt       eta   phi      mass  Gen Idx\n";
-    for(int ipart = 0; ipart < nElectron; ++ipart) {
-      printf(" %3i: %6.1f %9.2f %5.2f  %8.2e %3i\n",
-             ipart,
-             Electron_pt[ipart], Electron_eta[ipart], Electron_phi[ipart], Electron_mass[ipart],
-             Electron_genPartIdx[ipart]);
+    if(nElectron > 0) {
+      cout << " Idx:     pt       eta   phi      mass  Gen-Idx\n";
+      for(int ipart = 0; ipart < nElectron; ++ipart) {
+        printf(" %3i: %6.1f %9.2f %5.2f  %9.2e   %3i\n",
+               ipart,
+               Electron_pt[ipart], Electron_eta[ipart], Electron_phi[ipart], Electron_mass[ipart],
+               Electron_genPartIdx[ipart]);
+      }
+    }
+
+    //Reco muons
+    cout << " N(muons) = " << nMuon << endl;
+    if(nMuon > 0) {
+      cout << " Idx:     pt       eta   phi      mass  Gen-Idx\n";
+      for(int ipart = 0; ipart < nMuon; ++ipart) {
+        printf(" %3i: %6.1f %9.2f %5.2f  %9.2e   %3i\n",
+               ipart,
+               Muon_pt[ipart], Muon_eta[ipart], Muon_phi[ipart], Muon_mass[ipart],
+               Muon_genPartIdx[ipart]);
+      }
+    }
+
+    //Reco taus
+    cout << " N(taus) = " << nTau << endl;
+    if(nTau > 0) {
+      cout << " Idx:     pt       eta   phi      mass  Gen-Idx  Gen-Flavor\n";
+      for(int ipart = 0; ipart < nTau; ++ipart) {
+        printf(" %3i: %6.1f %9.2f %5.2f  %9.2e   %3i      %3i\n",
+               ipart,
+               Tau_pt[ipart], Tau_eta[ipart], Tau_phi[ipart], Tau_mass[ipart],
+               Tau_genPartIdx[ipart], Tau_genPartFlav[ipart]);
+      }
     }
   }
   f->Close();
