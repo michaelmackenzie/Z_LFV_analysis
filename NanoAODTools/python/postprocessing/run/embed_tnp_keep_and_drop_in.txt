@@ -1,0 +1,25 @@
+# this isp a comment
+drop * # start with all
+keep Muon*
+keep Electron*
+keep nMuon
+keep nElectron
+keep PuppiMET*
+keep genWeight
+
+keep nGenPart
+keep GenPart*
+
+#Add Trigger information
+keep HLT_*
+keep HLT_Mu*
+keep HLT_IsoMu*
+keep HLT_Ele*_WPTight_Gsf
+keep TrigObj*
+
+#Add event period information
+keep run
+keep luminosityBlock
+keep event
+
+keep Pileup*
