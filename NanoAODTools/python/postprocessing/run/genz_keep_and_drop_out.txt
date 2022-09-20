@@ -11,5 +11,3 @@ keep GenZll*
 keep run
 keep luminosityBlock
 keep event
-
-keep puWeight

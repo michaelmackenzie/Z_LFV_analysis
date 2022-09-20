@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenZllAnalyzer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.EmbeddingEMuStudy import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonSkimmer import *
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
 
@@ -48,6 +49,10 @@ branchsel_out ="python/postprocessing/run/emu_study_keep_and_drop_out.txt"
 TriggerCuts = None
 print "Trigger cuts:", TriggerCuts
 
+#for studying the ID efficiencies
+# MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.2 and l.mediumId and l.pfRelIso04_all < 0.5
+TauSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<2.2 and l.idDeepTau2017v2p1VSmu > 10 and l.idDeepTau2017v2p1VSe > 10 and l.idDeepTau2017v2p1VSjet > -1 and l.idDecayModeNewDMs
+
 #configure the modules
 modules=[]
 
@@ -60,9 +65,29 @@ ZllBuilder=GenZllAnalyzer(
 )
 modules.append(ZllBuilder)
 
-#Efficiency study for emu
+#Efficiency study for mutau
 MuTauStudy= EmbeddingEMuStudy(year = year, final_state = "mutau")
 modules.append(MuTauStudy)
+
+#Lepton ID efficiency studies
+# MuonSelector= LeptonSkimmer(
+#    LepFlavour='Muon',
+#    Selection=MuonSelection,
+#    Veto=None,
+#    minNlep=-1,
+#    maxNlep=-1,
+#    verbose=False
+# )
+# modules.append(MuonSelector)
+TauSelector= LeptonSkimmer(
+   LepFlavour='Tau',
+   Selection=TauSelection,
+   Veto=None,
+   minNlep=-1,
+   maxNlep=-1,
+   verbose=False
+)
+modules.append(TauSelector)
 
 jsonFile = None
 if isData != "MC": #data/embedding

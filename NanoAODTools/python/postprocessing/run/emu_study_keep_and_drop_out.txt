@@ -2,15 +2,17 @@
 drop * # start with all
 
 #Gen info
-keep Gen*
-keep nGen*
+keep GenPart*
+keep nGenPart*
+keep GenZll*
 keep gen*
 keep genWeight*
-#extra drop
-drop GenJet*
-drop nGenJet
-drop GenDressed*
-drop nGenDressed*
+
+#Reco info of interest
+keep nElectron
+keep nMuon
+keep nTau
+keep Tau*
 
 #Add event period information
 keep run

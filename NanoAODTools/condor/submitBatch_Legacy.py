@@ -41,22 +41,23 @@ samplesDict['2016_SingleElectron'] = [
     bm.JobConfig( '/SingleElectron/Run2016E-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleElectronRun2016E_2016'),
     bm.JobConfig( '/SingleElectron/Run2016F-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleElectronRun2016F_2016'),
     bm.JobConfig( '/SingleElectron/Run2016G-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleElectronRun2016G_2016'),
-    bm.JobConfig( '/SingleElectron/Run2016H-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleElectronRun2016H_2016')]
+    bm.JobConfig( '/SingleElectron/Run2016H-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleElectronRun2016H_2016')
+]
 
 samplesDict['2017_SingleElectron'] = [ 
     bm.JobConfig( '/SingleElectron/Run2017B-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleElectronRun2017B_2017'),
     bm.JobConfig( '/SingleElectron/Run2017C-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleElectronRun2017C_2017'),
     bm.JobConfig( '/SingleElectron/Run2017D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleElectronRun2017D_2017'),
     bm.JobConfig( '/SingleElectron/Run2017E-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleElectronRun2017E_2017'),
-    bm.JobConfig( '/SingleElectron/Run2017F-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleElectronRun2017F_2017')]
+    bm.JobConfig( '/SingleElectron/Run2017F-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleElectronRun2017F_2017')
+]
 
 samplesDict['2018_SingleElectron'] = [
     bm.JobConfig( '/EGamma/Run2018A-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleElectronRun2018A_2018'),
     bm.JobConfig( '/EGamma/Run2018B-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleElectronRun2018B_2018'),
     bm.JobConfig( '/EGamma/Run2018C-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleElectronRun2018C_2018'),
-    bm.JobConfig( '/EGamma/Run2018D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleElectronRun2018D_2018')]
-
-
+    bm.JobConfig( '/EGamma/Run2018D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleElectronRun2018D_2018')
+]
 
 # Single Muon
 samplesDict['2016_SingleMuon'] = [ 
@@ -66,22 +67,23 @@ samplesDict['2016_SingleMuon'] = [
     bm.JobConfig( '/SingleMuon/Run2016E-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleMuonRun2016E_2016'),
     bm.JobConfig( '/SingleMuon/Run2016F-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleMuonRun2016F_2016'),
     bm.JobConfig( '/SingleMuon/Run2016G-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleMuonRun2016G_2016'),
-    bm.JobConfig( '/SingleMuon/Run2016H-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleMuonRun2016H_2016')]
+    bm.JobConfig( '/SingleMuon/Run2016H-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleMuonRun2016H_2016')
+]
 
 samplesDict['2017_SingleMuon'] = [ 
     bm.JobConfig( '/SingleMuon/Run2017B-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleMuonRun2017B_2017'),
     bm.JobConfig( '/SingleMuon/Run2017C-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleMuonRun2017C_2017'),
     bm.JobConfig( '/SingleMuon/Run2017D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleMuonRun2017D_2017'),
     bm.JobConfig( '/SingleMuon/Run2017E-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleMuonRun2017E_2017'),
-    bm.JobConfig( '/SingleMuon/Run2017F-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleMuonRun2017F_2017')]
+    bm.JobConfig( '/SingleMuon/Run2017F-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleMuonRun2017F_2017')
+]
 
 samplesDict['2018_SingleMuon'] = [
     bm.JobConfig( '/SingleMuon/Run2018A-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleMuonRun2018A_2018'),
     bm.JobConfig( '/SingleMuon/Run2018B-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleMuonRun2018B_2018'),
     bm.JobConfig( '/SingleMuon/Run2018C-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleMuonRun2018C_2018'),
-    bm.JobConfig( '/SingleMuon/Run2018D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleMuonRun2018D_2018')]
-
-
+    bm.JobConfig( '/SingleMuon/Run2018D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleMuonRun2018D_2018')
+]
 
 
 
@@ -397,23 +399,14 @@ nEvtSigPerJob = 0.006 #only 125 events per file, 40k-80k per dataset, so 5-10 jo
 samplesDict['2016_signal'] = [
     #### z samples ####
     bm.JobConfig( 
-        dataset='/LFVAnalysis_ZEMu_2016_8028V1/pellicci-LFVAnalysis_NANOAOD_10222V1-07f11a9f6612f8436de459459102e3f2/USER',
+        dataset='/ZEMuAnalysis_2016_8028V1/pellicci-ZEMuAnalysis_NANOAOD_10218V1-b1c578360797952dfc156561d5f36519/USER',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZEMu_2016', inputDBS="phys03"),
     bm.JobConfig( 
-        dataset='/LFVAnalysis_ZETau_2016_8028V1/pellicci-LFVAnalysis_NANOAOD_10222V1-07f11a9f6612f8436de459459102e3f2/USER',
+        dataset='/LFVAnalysis_ZETau_2016_8028V1/mimacken-LFVAnalysis_NANOAOD_8028V1-d11e799790792310589ef5ee63b17d7a/USER',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZETau_2016', inputDBS="phys03"),
     bm.JobConfig( 
-        dataset='/LFVAnalysis_ZMuTau_2016_8028V1/pellicci-LFVAnalysis_NANOAOD_10222V1-07f11a9f6612f8436de459459102e3f2/USER',
+        dataset='/LFVAnalysis_ZMuTau_2016_8028V1/mimacken-LFVAnalysis_NANOAOD_8028V1-d11e799790792310589ef5ee63b17d7a/USER',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZMuTau_2016', inputDBS="phys03"),
-    # bm.JobConfig( 
-    #     dataset='/ZEMuAnalysis_2016_8028V1/pellicci-ZEMuAnalysis_NANOAOD_10218V1-b1c578360797952dfc156561d5f36519/USER',
-    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZEMu_2016', inputDBS="phys03"),
-    # bm.JobConfig( 
-    #     dataset='/LFVAnalysis_ZETau_2016_8028V1/mimacken-LFVAnalysis_NANOAOD_8028V1-d11e799790792310589ef5ee63b17d7a/USER',
-    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZETau_2016', inputDBS="phys03"),
-    # bm.JobConfig( 
-    #     dataset='/LFVAnalysis_ZMuTau_2016_8028V1/mimacken-LFVAnalysis_NANOAOD_8028V1-d11e799790792310589ef5ee63b17d7a/USER',
-    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZMuTau_2016', inputDBS="phys03"),
     #### h samples ####
     bm.JobConfig( 
         dataset='/LFVAnalysis_HEMu_2016_8028V1/mimacken-LFVAnalysis_NANOAOD_8028V1-d11e799790792310589ef5ee63b17d7a/USER',

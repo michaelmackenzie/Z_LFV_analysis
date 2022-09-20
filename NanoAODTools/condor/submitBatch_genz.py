@@ -82,6 +82,10 @@ samplesDict['2016_signal'] = [
     bm.JobConfig( 
         dataset='/LFV_ZToLL_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL16NanoAODv9-106X_mcRun2_asymptotic_v17-v1/NANOAODSIM',
         nEvtPerJobIn1e6=0.5, year="2016", isData=False, suffix='GenZAnalysis_UL-LFVZ_2016'),
+    #v3 samples using EXO group input
+    bm.JobConfig( 
+        dataset='/LFVAnalysis_ZLL_2016_949V1_22prodV2/pellicci-LFVAnalysis_ZLL_NANO_2016_10222V1-07f11a9f6612f8436de459459102e3f2/USER',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='GenZAnalysis_LFVZ-v2_2016', inputDBS="phys03"),
 ]
 
 samplesDict['2017_signal'] = [

@@ -99,6 +99,8 @@ fi
 echo "Using EOS directory ${EOSDIR}"
 
 NFAILED=0
+NPASSED=0
+NRUNNING=0
 echo "Using jobname ${JOBNAME}"
 FAILEDJOBS=""
 
@@ -127,6 +129,7 @@ do
     STDLOG="${f/log/stdout}"
     if [ ! -f ${STDLOG} ]
     then
+        NRUNNING=$((1 + $NRUNNING))
         if [[ "${IGNORERUNNING}" != "" ]]
         then
             continue
@@ -173,11 +176,15 @@ do
             then
                 FAILEDJOBS="${FAILEDJOBS} ${FILE}"
                 NFAILED=$((1 + $NFAILED))
+            else
+                NPASSED=$((1 + $NPASSED))
             fi
         fi
+    else
+        NPASSED=$((1 + $NPASSED))
     fi
 done
-echo "${NFAILED} jobs failed checks"
+echo "${NFAILED} jobs failed checks, ${NPASSED} passed, and ${NRUNNING} are (possibly) running"
 
 if [[ "${RESUBMIT}" != "" ]]
 then

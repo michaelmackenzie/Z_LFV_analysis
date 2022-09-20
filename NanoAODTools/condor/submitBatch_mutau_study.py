@@ -126,8 +126,8 @@ samplesToSubmit = samplesDict.keys()
 samplesToSubmit.sort()
 # samplesToSubmit = ["2018_embed_ee", "2018_embed_mumu"]
 
-# doYears = ["2016", "2017", "2018"]
-doYears = ["2016", "2017"]
+doYears = ["2016", "2017", "2018"]
+# doYears = ["2016", "2017"]
 configs = []
 
 for s in samplesToSubmit:
