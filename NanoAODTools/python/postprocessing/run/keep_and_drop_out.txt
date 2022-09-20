@@ -1,22 +1,26 @@
 # this isp a comment
 drop * # start with all
 
-# keep numbers
-keep nMuon
-keep nTau
-keep nElectron
-keep nJet
-keep nBJet*
-keep nMuEle
 
-#collections
+keep nTau
 keep Tau*
+
+keep nElectron
 keep Electron*
+
+keep nMuon
 keep Muon*
+
+keep nJet
 keep Jet*
+keep nBJet*
+keep BJet*
+
+keep nMuEle
 keep MuEle*
 
 #photon
+keep nPhoton
 keep Photon_pt
 keep Photon_eta
 keep Photon_phi
@@ -25,53 +29,48 @@ keep Photon_mvaID*
 keep Photon_pfRelIso03_*
 keep Photon_electronVeto
 
-#MET info
-keep PuppiMET*
-keep MET_pt
-keep MET_phi
-keep MET_cov*
-keep MET_sumEt
-keep MET_significance
-
 #Triggers
-keep HLT_IsoMu24
-keep HLT_IsoMu27
+keep HLT_IsoMu*
 keep HLT_Mu50
-keep HLT_Ele27_WPTight_Gsf*
-keep HLT_Ele32_WPTight_Gsf*
-keep HLT_Ele35_WPTight_Gsf*
+keep HLT_Ele*_WPTight_Gsf*
 keep TrigObj_*
 
 
 #Various flags
 keep Flag_*
 
-#Generator weight
-keep genWeight*
-
-#Pileup info
-keep PV_npvs*
-keep Pileup_nPU
-keep Pileup_nTrueInt
-keep puWeight*
-
-#Add event period information
-keep run
-keep luminosityBlock
-keep event
-
-#Add generator information
-keep LHE_*
+keep MET_*
+keep PuppiMET*
 keep GenMET_*
 keep Gen*
-
-#produced internally
+keep nGen*
 keep HT
-keep BJet*
-
 #extra drop
 drop GenJet*
 drop nGenJet
 drop GenDressed*
 drop nGenDressed*
 
+#Generator weight
+keep genWeight*
+
+#Pileup info
+keep PV*
+keep PV_npvs*
+keep Pileup_nPU
+keep Pileup_nTrueInt
+keep puWeight*
+
+#prefire info (2016 and 2017 only)
+keep PrefireWeight*
+
+#Add event period information
+keep run
+keep luminosityBlock
+keep event
+
+#selection filter ID
+keep SelectionFilter_*
+
+#Add generator information
+keep LHE_*
