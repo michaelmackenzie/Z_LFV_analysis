@@ -46,12 +46,12 @@ class SelectionFilter(Module):
  
 
     def endFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
-        print "SelectionFilter: Saw %i events: N(mutau) = %i; N(etau) = %i; N(emu) = %i; N(mumu) = %i; N(ee) = %i" % (self.seen, self.mutau[0],
+        print "SelectionFilter: Saw %10i events: N(mutau) = %i; N(etau) = %i; N(emu) = %i; N(mumu) = %i; N(ee) = %i" % (self.seen, self.mutau[0],
                                                                                                                       self.etau[0], self.emu[0],
                                                                                                                       self.mumu[0], self.ee[0])
-        print "SelectionFilter: Passing tight IDs: N(mutau) = %i; N(etau) = %i; N(emu) = %i; N(mumu) = %i; N(ee) = %i" % (self.mutau[1],
-                                                                                                                          self.etau[1], self.emu[1],
-                                                                                                                          self.mumu[1], self.ee[1])
+        print "SelectionFilter: Passing tight IDs    : N(mutau) = %i; N(etau) = %i; N(emu) = %i; N(mumu) = %i; N(ee) = %i" % (self.mutau[1],
+                                                                                                                              self.etau[1], self.emu[1],
+                                                                                                                              self.mumu[1], self.ee[1])
         pass
 
 

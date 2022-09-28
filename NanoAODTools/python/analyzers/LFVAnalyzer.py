@@ -27,33 +27,32 @@ ROOT.PyConfig.IgnoreCommandLineOptions = True
 #read in command line arguments
 #Example: python <Analyzer> <input file> <data/MC/Embedded> <year>
 
+nargs = len(sys.argv)
+if nargs < 4 or sys.argv[1] == '-h' or sys.argv[1] == '--help':
+   print "At least 3 arguments required: <input file> <data/MC/Embedded> <year> [optional Max Entries, -1 for all] [optional Start Entry]"
+   exit()
 
 inputFile = sys.argv[1].split(',') #[ sys.argv[1] ]
 isData    =   sys.argv[2]
 year      =   sys.argv[3]
+#debug configuration options
+maxEntries= int(sys.argv[4]) if nargs > 4 else None
+firstEntry= int(sys.argv[5]) if nargs > 5 else 0
+if maxEntries < 0: maxEntries = None
 
+#Whether or not to prefetch the file
 prefetch  = False
-
-# inputFile = [
-#     "root://cms-xrd-global.cern.ch//store/user/pellicci/ZEMuAnalysis_2016_8028V1/ZEMuAnalysis_NANOAOD_10218V1/200211_105742/0000/ZEMuAnalysis_pythia8_NANOAOD_2016_1.root",\
-#     "root://cms-xrd-global.cern.ch//store/user/pellicci/ZEMuAnalysis_2016_8028V1/ZEMuAnalysis_NANOAOD_10218V1/200211_105742/0000/ZEMuAnalysis_pythia8_NANOAOD_2016_2.root",\
-# ]
-# inputFile = [
-#     "condor/tmp_data/ZEMu_2016_01.root", \
-#     "condor/tmp_data/ZEMu_2016_02.root", \
-# ]
 
 if isData not in ["data", "MC", "Embedded"]:
    print "Unknown data flag %s" % (isData)
+   print "Defined flags are: data, MC, and Embedded"
    exit()
    
 if year not in ["2016", "2017", "2018"]:
    print "Unknown year %s" % (year)
+   print "Defined years are: 2016, 2017, and 2018"
    exit()
    
-#debug configuration options
-maxEntries=None #deactivate(use all evts): None
-firstEntry=0 #0 to start at the first event
 
 # branches to read in / write out
 branchsel_in  ="python/postprocessing/run/keep_and_drop_in.txt"
@@ -70,11 +69,17 @@ elif year == "2018":
 # TriggerCuts = None
 print "Trigger cuts:", TriggerCuts
 
-#Base lepton selection
+#Base lepton/jet selection
 MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.2 and l.mediumId and l.pfRelIso04_all < 0.5
 ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.2 and l.mvaFall17V2noIso_WP90 and l.pfRelIso03_all < 0.5
 TauSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<2.2 and l.idDeepTau2017v2p1VSmu > 10 and l.idDeepTau2017v2p1VSe > 10 and l.idDeepTau2017v2p1VSjet > 5 and l.idDecayModeNewDMs
 JetSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<3.0 and l.puId>-1 and l.jetId>1 
+
+#Loose light lepton selection, to remove overlap with taus
+LooseMuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.4 and l.looseId and l.pfRelIso04_all < 0.5
+LooseElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.5 and l.mvaFall17V2noIso_WPL and l.pfRelIso03_all < 0.5
+
+#Event selection cuts
 MaxMass = -1 # no cut
 MinMass = 50
 MinDeltaR = 0.3 # delta R between the leptons
@@ -102,7 +107,57 @@ if isData == "MC": #only do on MC, 2016 and 2017
       modules.append(PrefireCorr)      
    
 
-#lepton selection
+#loose light lepton selection
+LooseMuonSelector= LeptonSkimmer(
+   LepFlavour='Muon',
+   Selection=LooseMuonSelection,
+   Veto=None,
+   minNlep=-1,
+   maxNlep=-1,
+   verbose=False
+)
+modules.append(LooseMuonSelector)
+LooseElectronSelector= LeptonSkimmer(
+   LepFlavour='Electron',
+   Selection=LooseElectronSelection,
+   Veto=None,
+   minNlep=-1,
+   maxNlep=-1,
+   verbose=False
+)
+modules.append(LooseElectronSelector)
+
+#tau selection
+TauSelector= LeptonSkimmer(
+   LepFlavour='Tau',
+   Selection=TauSelection,
+   Veto=None,
+   minNlep=-1,
+   maxNlep=-1,
+   verbose=False
+)
+modules.append(TauSelector)
+
+#remove taus overlapping leptons
+TauMuonCleaner=JetLepCleaner( 
+   Lepton='Muon',
+   Jet='Tau',
+   dRJet=0.3,
+   RemoveOverlappingJets=True, 
+   RemoveOverlappingLeptons=False
+)
+modules.append(TauMuonCleaner)   
+
+TauElectronCleaner=JetLepCleaner(
+   Lepton='Electron',
+   Jet='Tau',
+   dRJet=0.3,
+   RemoveOverlappingJets=True, 
+   RemoveOverlappingLeptons=False
+)
+modules.append(TauElectronCleaner)
+
+#tigher muon/electron selection
 MuonSelector= LeptonSkimmer(
    LepFlavour='Muon',
    Selection=MuonSelection,
@@ -132,34 +187,6 @@ modules.append(ElectronSelector)
                   
 #                    )
 # modules.append(TriggerSelector)
-
-TauSelector= LeptonSkimmer(
-   LepFlavour='Tau',
-   Selection=TauSelection,
-   Veto=None,
-   minNlep=-1,
-   maxNlep=-1,
-   verbose=False
-)
-modules.append(TauSelector)
-
-TauMuonCleaner=JetLepCleaner( 
-   Lepton='Muon',
-   Jet='Tau',
-   dRJet=0.3,
-   RemoveOverlappingJets=True, 
-   RemoveOverlappingLeptons=False
-)
-modules.append(TauMuonCleaner)   
-
-TauElectronCleaner=JetLepCleaner(
-   Lepton='Electron',
-   Jet='Tau',
-   dRJet=0.3,
-   RemoveOverlappingJets=True, 
-   RemoveOverlappingLeptons=False
-)
-modules.append(TauElectronCleaner)
 
 #filter events by final state selection
 Selection= SelectionFilter(year=year,
