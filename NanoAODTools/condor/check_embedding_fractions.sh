@@ -2,7 +2,8 @@
 
 YEAR=$1
 FINALSTATES=$2
-VERBOSE=$3
+VERSION=$3
+VERBOSE=$4
 
 if [[ "${YEAR}" == "" ]]
 then
@@ -12,6 +13,16 @@ fi
 if [[ "${FINALSTATES}" == "" ]]
 then
     FINALSTATES="ElMu ElTau MuTau MuMu ElEl"
+fi
+
+if [[ "${VERSION}" == "" ]]
+then
+    if [[ "${YEAR}" == "2017" ]]
+    then
+        VERSION=1
+    else
+        VERSION=2
+    fi
 fi
 
 if [[ "${VERBOSE}" == "" ]]
@@ -45,15 +56,17 @@ do
     NEVENTS_NANO=0
     for RUN in $RUNS
     do
-        if [[ "${YEAR}" == "2016" ]]
+        #Get the NanoAOD file (2018 Run C MuMu has no V2)
+        if [[ "${YEAR}${RUN}${FINALSTATE}V${VERSION}" == "2018CMuMuV2" ]]
         then
-            FILE=`das_client -query="dataset=/EmbeddingRun${YEAR}${RUN}/pellicci-Embedded${FINALSTATE}_*10222V2*/USER instance=prod/phys03" 2>/dev/null | tail -n 1`
+            FILE=`das_client -query="dataset=/EmbeddingRun${YEAR}${RUN}/pellicci-Embedded${FINALSTATE}_*10222V1*/USER instance=prod/phys03" 2>/dev/null | tail -n 1`
         else
-            FILE=`das_client -query="dataset=/EmbeddingRun${YEAR}${RUN}/pellicci-Embedded${FINALSTATE}*/USER instance=prod/phys03" 2>/dev/null | tail -n 1`
+            FILE=`das_client -query="dataset=/EmbeddingRun${YEAR}${RUN}/pellicci-Embedded${FINALSTATE}_*10222V${VERSION}*/USER instance=prod/phys03" 2>/dev/null | tail -n 1`
         fi
+
         if [ ${VERBOSE} -gt 0 ]
         then
-            echo "NanoAOD File = ${FILE}"
+            echo "NanoAOD Dataset = ${FILE}"
         fi
         if [[ "${FILE}" == "" ]]
         then
@@ -61,7 +74,7 @@ do
             continue
         fi
         NNANO=`das_client -query="dataset=${FILE} instance=prod/phys03 | grep dataset.nevents" 2>/dev/null | awk '{if(NF == 1) print $0}' | xargs`
-        if [ ${VERBOSE} -gt 0 ]
+        if [ ${VERBOSE} -gt 1 ]
         then
             echo "Nano number = ${NNANO}"
         fi
@@ -77,7 +90,7 @@ do
         fi
         if [ ${VERBOSE} -gt 0 ]
         then
-            echo "MiniAOD File = ${FILE}"
+            echo "MiniAOD Dataset = ${FILE}"
         fi
         if [[ "${FILE}" == "" ]]
         then
@@ -85,6 +98,10 @@ do
             continue
         fi
         NMINI=`das_client -query="dataset=${FILE} instance=prod/phys03 | grep dataset.nevents" 2>/dev/null | awk '{if(NF == 1) print $0}' | xargs`
+        if [ ${VERBOSE} -gt 1 ]
+        then
+            echo "Min number = ${NMINI}"
+        fi
         echo "Run ${YEAR}${RUN} Final State ${FINALSTATE}: Mini / Nano = ${NMINI}/${NNANO} = `echo "scale=4 ; $NMINI / $NNANO" | bc`"
         NEVENTS_NANO=$(($NNANO + $NEVENTS_NANO))
         NEVENTS_MINI=$(($NMINI + $NEVENTS_MINI))
