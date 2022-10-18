@@ -321,7 +321,7 @@ samplesDict['2018_embed_emu'] = [
         dataset='/EmbeddingRun2018C/pellicci-EmbeddedElMu_NANOAOD_2018_10222V2-9b11f648cb233dc346c2d0860bbea8f9/USER',
         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_Embed-EMu-C_2018', inputDBS="phys03"),
     bm.JobConfig(
-        dataset='/EmbeddingRun2018D/pellicci-EmbeddedElMu_NANOAOD_2018_10222V2-e181eeebc101019f884cba30e429f851/USER',
+        dataset='/EmbeddingRun2018D/pellicci-EmbeddedElMu_NANOAOD_2018_10222V3-e181eeebc101019f884cba30e429f851/USER',
         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_Embed-EMu-D_2018', inputDBS="phys03"),
     # bm.JobConfig(
     #     dataset='/EmbeddingRun2018A/pellicci-EmbeddedElMu_NANOAOD_2018_10222V1-9b11f648cb233dc346c2d0860bbea8f9/USER',
@@ -429,7 +429,7 @@ samplesDict['2018_embed_mumu'] = [
         dataset='/EmbeddingRun2018C/pellicci-EmbeddedMuMu_NANOAOD_2018_10222V1-9b11f648cb233dc346c2d0860bbea8f9/USER',
         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_Embed-MuMu-C_2018', inputDBS="phys03"),
     bm.JobConfig(
-        dataset='/EmbeddingRun2018D/pellicci-EmbeddedMuMu_NANOAOD_2018_10222V2-e181eeebc101019f884cba30e429f851/USER',
+        dataset='/EmbeddingRun2018D/pellicci-EmbeddedMuMu_NANOAOD_2018_10222V3-e181eeebc101019f884cba30e429f851/USER',
         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_Embed-MuMu-D_2018', inputDBS="phys03"),
     # bm.JobConfig(
     #     dataset='/EmbeddingRun2018A/pellicci-EmbeddedMuMu_NANOAOD_2018_10222V1-9b11f648cb233dc346c2d0860bbea8f9/USER',
