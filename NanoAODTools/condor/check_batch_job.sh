@@ -24,7 +24,16 @@ JOBNAME=""
 CHECKFILES=""
 RESUBMIT="" #"" for nothing, "dryrun" to prepare resubmission, anything else (e.g. "d") to perform resubmission
 TAG="" #dataset tag to consider
-EOSDIR="nano_batchout"
+if [[ "${HOSTNAME}" == *"lxplus"* ]]
+then
+    HOST="lxplus"
+    LOC="cms"
+    EOSDIR="batch"
+else
+    HOST="lpc"
+    LOC="uscms"
+    EOSDIR="nano_batchout"
+fi
 VERBOSE=0
 DRYRUN=""
 IGNORERUNNING=""
@@ -96,7 +105,13 @@ then
     RESUBMIT="dryrun"
 fi
 
-echo "Using EOS directory ${EOSDIR}"
+if [[ "${HOST}" == "lpc" ]]
+then
+    EOSPATH="/eos/${LOC}/store/user/${USER}/${EOSDIR}"
+else
+    EOSPATH="/eos/${LOC}/store/group/phys_smp/ZLFV/${EOSDIR}"
+fi
+echo "Using EOS path ${EOSPATH}"
 
 NFAILED=0
 NPASSED=0
@@ -139,19 +154,19 @@ do
             echo "Stdout file ${STDLOG} does not exist"
         fi
     else
-        XRDEXIT=`grep -i "exit code" ${STDLOG}`
+        XRDEXIT=`grep -i "failure" ${STDLOG}`
         if [[ "${XRDEXIT}" != "" ]]
         then
-            echo "Failure in file ${STDOUT}: status code ${XRDEXIT}"
+            echo "Failure in file ${STDOUT}, error message: ${XRDEXIT}"
             FAILEDJOBS="${FAILEDJOBS} ${FILE}"
             NFAILED=$((1 + $NFAILED))
         fi
     fi
     if [[ "${OUTDIR}" == "" ]]
     then
-        ROOTFILE="/eos/uscms/store/user/${USER}/${EOSDIR}/${JOB}/output_${FILE}.root"
+        ROOTFILE="${EOSPATH}/${JOB}/output_${FILE}.root"
     else
-        ROOTFILE="/eos/uscms/store/user/${USER}/${EOSDIR}/${OUTDIR}/output_${FILE}.root"
+        ROOTFILE="${EOSPATH}/${OUTDIR}/output_${FILE}.root"
     fi
     if [ ! -f ${ROOTFILE} ]
     then

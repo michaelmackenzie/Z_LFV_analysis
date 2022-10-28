@@ -5,9 +5,11 @@ Help() {
     echo "Options:"
     echo "--help    (-h): print this message"
     echo "--summary (-s): print only the job totals in a summary line"
+    echo "--verbose (-v): print detailed job information"
 }
 
 SUMMARY=""
+VERBOSE=""
 for var in "$@"
 do
     if [[ "${var}" == "--help" ]] || [[ "${var}" == "-h" ]]
@@ -17,6 +19,9 @@ do
     elif [[ "${var}" == "--summary" ]] || [[ "${var}" == "-s" ]]
     then
         SUMMARY="s"
+    elif [[ "${var}" == "--verbose" ]] || [[ "${var}" == "-v" ]]
+    then
+        VERBOSE="v"
     else
         echo "Unknown argument ${var}"
         exit
@@ -25,9 +30,13 @@ done
 
 date
 
-condor_q | awk -v user=${USER} -v summary=${SUMMARY} '
+condor_q -nobatch | awk -v user=${USER} -v summary=${SUMMARY} -v verbose=${VERBOSE} '
 {
+    if($2 == "Schedd:" && verbose != "") {
+	print $0
+    }
     if($2 == user) {
+	if(verbose != "") print $0
         ++total
         split($1,arr,".")
         name=arr[1]

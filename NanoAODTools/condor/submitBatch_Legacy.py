@@ -3,17 +3,32 @@ import PhysicsTools.NanoAODTools.condor.BatchMaster as bm
 
 import os, sys
 
+dryRun = False
 
 # -----------------------------
 # Specify parameters
 # -----------------------------
 
+user = os.getenv('USER')
+host = os.getenv('HOSTNAME')
+
+print 'Using user %s on host %s' % (user, host)
+
 executable = 'execBatch.sh'
 analyzer   = 'LFVAnalyzer'
 stage_dir  = 'batch'
-output_dir = '/store/user/mimacken/nano_batchout'
-location   = 'lpc'
+if 'lxplus' in host: #use SMP space
+    output_dir = '/store/group/phys_smp/ZLFV/batch'
+    # output_dir = '/eos/cms/store/group/phys_smp/ZLFV/batch'
+    location   = 'lxplus'
+elif user == 'mmackenz':
+    output_dir = '/store/user/mimacken/nano_batchout'
+    location   = 'lpc'
+else:
+    output_dir = '/store/user/%s/batch' % (user)
+    location   = 'lpc'
 
+print 'location = %s, output_dir = %s' % (location, output_dir)
 
 
 # -----------------------------
@@ -1089,7 +1104,7 @@ samplesToSubmit = samplesDict.keys()
 samplesToSubmit.sort()
 doYears = ["2018"]
 # doYears = ["2016", "2017", "2018"]
-sampleTag = "embed"
+sampleTag = ""
 configs = []
 
 for s in samplesToSubmit:
@@ -1112,9 +1127,17 @@ batchMaster = bm.BatchMaster(
 
 #ensure there's a symbolic link 'batch' to put the tarball in
 if not os.path.exists("batch") :
-    if not os.path.exists("~/nobackup/batch") :
-        os.makedirs("~/nobackup/batch")
-    os.symlink("~/nobackup/batch", "batch")
+    if 'lxplus' in host:
+        if not os.path.exists("~/private/batch") :
+            os.makedirs("~/private/batch")
+        os.symlink("~/private/batch", "batch")
+    else: #LPC
+        if not os.path.exists("~/nobackup/batch") :
+            os.makedirs("~/nobackup/batch")
+        os.symlink("~/nobackup/batch", "batch")
     print "Created symbolic link to ~/nobackup/batch"
 
-batchMaster.submit_to_batch(doSubmit=True)
+if not os.path.isfile('%s/batch_exclude.txt' % (os.getenv('CMSSW_BASE'))):
+    os.system('cp batch_exclude.txt ${CMSSW_BASE}/')
+
+batchMaster.submit_to_batch(doSubmit=(not dryRun))

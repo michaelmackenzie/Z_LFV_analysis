@@ -46,7 +46,7 @@ class BatchMaster():
     '''A tool for submitting batch jobs'''
     def __init__(self, analyzer, config_list, stage_dir, output_dir,
                  executable='execBatch.sh', location='lpc', maxFilesPerJob = -1,
-                 memory = 4800, disk = 5000000):
+                 memory = 4800, disk = 5000000, queue = 'tomorrow'):
         self._current     = os.path.abspath('.')
 
         self._analyzer       = analyzer
@@ -59,6 +59,7 @@ class BatchMaster():
         self._maxFilesPerJob = maxFilesPerJob
         self._memory         = memory
         self._disk           = disk
+        self._queue          = queue
 
     
     def split_jobs_for_cfg(self, cfg):
@@ -72,7 +73,8 @@ class BatchMaster():
         os.system(dasQuery_command)
         
         ftxt = open(dasQuery_outFile)
-        fileList = ["root://cmsxrootd.fnal.gov/" + f.strip() for f in ftxt.readlines()]
+        xrootd = 'cmsxrootd.fnal.gov' if self._location == 'lpc' else 'xrootd-cms.infn.it' #'cms-xrd-global.cern.ch'
+        fileList = ["root://%s//%s" % (xrootd, f.strip()) for f in ftxt.readlines()]
         ftxt.close()
         nFiles = len(fileList)
         if nFiles <= 0:
@@ -122,6 +124,8 @@ class BatchMaster():
         if self._location == 'lpc':
             output_dir = 'root://cmseos.fnal.gov/' + self._output_dir
             print output_dir
+        elif self._location == 'lxplus' and self._location[:4] != '/eos':
+            output_dir = 'root://eoscms.cern.ch/' + self._output_dir
         else:
             output_dir = self._output_dir
 
@@ -133,10 +137,13 @@ class BatchMaster():
         batch_tmp.write('Notification          = Never\n')
 
 
-        if self._location == 'lpc':
+        if self._location in ['lpc', 'lxplus']:
             batch_tmp.write('Requirements          = OpSys == "LINUX"&& (Arch != "DUMMY" )\n')
-            batch_tmp.write('request_disk          = %i\n' % (self._disk)) # 10 GB to xrdcp temp nanoAOD instead of slow root://cmsxrootd.fnal.gov/, Ziheng 
-            batch_tmp.write('request_memory        = %i\n' % (self._memory)) #~5GB ram
+            batch_tmp.write('request_disk          = %i\n' % (self._disk)) # 10 GB to xrdcp temp nanoAOD xrootd reading
+            batch_tmp.write('request_memory        = %i\n' % (self._memory))
+            if self._location == 'lxplus':
+                # batch_tmp.write('+MaxRuntime           = 1440\n') #FIXME: remove if not needed
+                batch_tmp.write('+JobFlavour           = \"%s\"\n' % (self._queue)) #see https://twiki.cern.ch/twiki/bin/view/ABPComputing/LxbatchHTCondor#Queue_Flavours
 
         batch_tmp.write('\n')
 
@@ -145,7 +152,7 @@ class BatchMaster():
 
             ## make file with list of inputs ntuples for the analyzer
             input_file = open('input_{}_{}.txt'.format(cfg._suffix, i+1), 'w')
-            if self._location == 'lpc':
+            if self._location in ['lpc', 'lxplus']:
                 for s in source:
                     input_file.write( s + "\n")
             input_file.close()
@@ -178,7 +185,10 @@ class BatchMaster():
         # set output dir
         print 'Setting up output directory...'
         self._output_dir  = '{0}/{1}_{2}'.format(self._output_dir, self._analyzer, current_time)
-        make_directory('/eos/uscms/' + self._output_dir, clear=False)
+        if self._location == 'lpc':
+            make_directory('/eos/uscms/' + self._output_dir, clear=False)
+        elif self._location == 'lxplus':
+            make_directory('/eos/cms/' + self._output_dir, clear=False)
 
         # tar cmssw 
         print 'Creating tarball of current workspace in {0}'.format(self._stage_dir)
@@ -197,7 +207,7 @@ class BatchMaster():
 
         # submit
         print 'Ready to submit to batch system {0}!'.format(self._location)
-        if self._location in ['lpc']:
+        if self._location in ['lpc', 'lxplus']:
             for cfg in self._config_list:
                 print "\n\n", cfg._suffix
                 self.make_batch_lpc(cfg)

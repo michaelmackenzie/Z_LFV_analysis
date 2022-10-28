@@ -20,7 +20,11 @@ fi
 ### Transfer files, prepare directory ###
 TOPDIR=$PWD
 
-# lpc
+# lxplus/lpc
+if [[ "${HOSTNAME}" == *"cern.ch"* ]]
+then
+    export X509_USER_PROXY=/afs/cern.ch/user/m/mimacken/voms_proxy/x509up_u117705
+fi
 export SCRAM_ARCH=slc7_amd64_gcc820
 export CMSSW_VERSION=CMSSW_10_6_29
 source /cvmfs/cms.cern.ch/cmsset_default.sh
@@ -68,8 +72,10 @@ do
     # xrdcp to local src folder first
     # analyzer is upto 100x-200x faster than xrd streaming. Ziheng
     echo "Copying ${NANOAOD} locally"
-    xrdcp ${NANOAOD} ./temp.root
+    date
+    xrdcp -f ${NANOAOD} ./temp.root
     XRDEXIT=$?
+    date
     if [[ $XRDEXIT -ne 0 ]]; then
         rm *.root
         echo "exit code $XRDEXIT, failure in xrdcp"
@@ -130,12 +136,25 @@ FILE=output_${SUFFIX}_${COUNT}.root
 ./haddnano.py ${FILE} outDir/*.root
 
 #copy back the data file
-xrdcp -f ${FILE} ${OUTDIR}/${FILE} 2>&1
-XRDEXIT=$?
+for ATTEMPT in {1..10}
+do
+    echo "Attempt ${ATTEMPT}: Copying back merged file ${FILE} to ${OUTDIR}"
+    date
+    xrdcp -f ${FILE} ${OUTDIR}/${FILE} 2>&1
+    XRDEXIT=$?
+    date
+    if [[ $XRDEXIT -ne 0 ]]; then
+        sleep 60
+        continue
+    else
+        break
+    fi
+done
+
 if [[ $XRDEXIT -ne 0 ]]; then
-  rm *.root
-  echo "exit code $XRDEXIT, failure in xrdcp"
-  exit $XRDEXIT
+    rm *.root
+    echo "exit code $XRDEXIT, failure in xrdcp"
+    exit $XRDEXIT
 fi
 
 #process lumi file if relevant
@@ -159,3 +178,5 @@ fi
 
 rm ${FILE}
 rm -rf outDir
+
+echo "Finished processing"
