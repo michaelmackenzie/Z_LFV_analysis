@@ -68,24 +68,38 @@ samplesDict['2016_signal'] = [
     bm.JobConfig( 
         dataset='/LFVAnalysis_ZMuTau_2016_8028V1/mimacken-LFVAnalysis_NANOAOD_8028V1-d11e799790792310589ef5ee63b17d7a/USER',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='GenZAnalysis_ZMuTau_2016', inputDBS="phys03"),
-    #v2 samples using AMC@NLO
+    # #v2 samples using AMC@NLO
+    # bm.JobConfig( 
+    #     dataset='/LFVAnalysis_ZEMu_2016_8028V1/pellicci-LFVAnalysis_NANOAOD_10222V1-07f11a9f6612f8436de459459102e3f2/USER',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='GenZAnalysis_ZEMu-v2_2016', inputDBS="phys03"),
+    # bm.JobConfig( 
+    #     dataset='/LFVAnalysis_ZETau_2016_8028V1/pellicci-LFVAnalysis_NANOAOD_10222V1-07f11a9f6612f8436de459459102e3f2/USER',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='GenZAnalysis_ZETau-v2_2016', inputDBS="phys03"),
+    # bm.JobConfig( 
+    #     dataset='/LFVAnalysis_ZMuTau_2016_8028V1/pellicci-LFVAnalysis_NANOAOD_10222V1-07f11a9f6612f8436de459459102e3f2/USER',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='GenZAnalysis_ZMuTau-v2_2016', inputDBS="phys03"),
+    # #EXO group UL sample
+    # bm.JobConfig( 
+    #     dataset='/LFV_ZToLL_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL16NanoAODv9-106X_mcRun2_asymptotic_v17-v1/NANOAODSIM',
+    #     nEvtPerJobIn1e6=0.5, year="2016", isData=False, suffix='GenZAnalysis_UL-LFVZ_2016'),
+    # #v3 samples using EXO group input
+    # bm.JobConfig( 
+    #     dataset='/LFVAnalysis_ZLL_2016_949V1_22prodV2/pellicci-LFVAnalysis_ZLL_NANO_2016_10222V1-07f11a9f6612f8436de459459102e3f2/USER',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='GenZAnalysis_LFVZ-v2_2016', inputDBS="phys03"),
+    #v4 samples with higher statistics
     bm.JobConfig( 
-        dataset='/LFVAnalysis_ZEMu_2016_8028V1/pellicci-LFVAnalysis_NANOAOD_10222V1-07f11a9f6612f8436de459459102e3f2/USER',
-        nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='GenZAnalysis_ZEMu-v2_2016', inputDBS="phys03"),
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2016/ZEMu_NANO_200k/CRAB_UserFiles/ZLFVAnalysis_NANO_8028V2/221024_122309/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='GenZAnalysis_ZEMu-v3_2016', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'Sum'),
     bm.JobConfig( 
-        dataset='/LFVAnalysis_ZETau_2016_8028V1/pellicci-LFVAnalysis_NANOAOD_10222V1-07f11a9f6612f8436de459459102e3f2/USER',
-        nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='GenZAnalysis_ZETau-v2_2016', inputDBS="phys03"),
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2016/ZETau_NANO_200k/CRAB_UserFiles/ZLFVAnalysis_NANO_8028V2/221024_122331/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='GenZAnalysis_ZETau-v3_2016', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'Sum'),
     bm.JobConfig( 
-        dataset='/LFVAnalysis_ZMuTau_2016_8028V1/pellicci-LFVAnalysis_NANOAOD_10222V1-07f11a9f6612f8436de459459102e3f2/USER',
-        nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='GenZAnalysis_ZMuTau-v2_2016', inputDBS="phys03"),
-    #EXO group UL sample
-    bm.JobConfig( 
-        dataset='/LFV_ZToLL_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL16NanoAODv9-106X_mcRun2_asymptotic_v17-v1/NANOAODSIM',
-        nEvtPerJobIn1e6=0.5, year="2016", isData=False, suffix='GenZAnalysis_UL-LFVZ_2016'),
-    #v3 samples using EXO group input
-    bm.JobConfig( 
-        dataset='/LFVAnalysis_ZLL_2016_949V1_22prodV2/pellicci-LFVAnalysis_ZLL_NANO_2016_10222V1-07f11a9f6612f8436de459459102e3f2/USER',
-        nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='GenZAnalysis_LFVZ-v2_2016', inputDBS="phys03"),
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2016/ZMuTau_NANO_200k/CRAB_UserFiles/ZLFVAnalysis_NANO_8028V2/221024_122352/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='GenZAnalysis_ZMuTau-v3_2016', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'Sum'),
+
 ]
 
 samplesDict['2017_signal'] = [

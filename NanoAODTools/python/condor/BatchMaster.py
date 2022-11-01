@@ -30,10 +30,14 @@ def cmdline(command):
 
 class JobConfig():
     '''Class for storing configuration for each dataset'''
-    def __init__(self, dataset, nEvtPerJobIn1e6, year, isData, suffix, inputDBS = "global"):
+    def __init__(self, dataset, nEvtPerJobIn1e6, year, isData, suffix, inputDBS = "global", user_redir = None, user_nfiles = 10, user_tag = None):
         self._dataset   = dataset
         self._nEvtPerJobIn1e6 = nEvtPerJobIn1e6
         self._inputDBS = inputDBS
+        #for accessing datasets not in DAS
+        self._user_redir = user_redir
+        self._user_nfiles = user_nfiles
+        self._user_tag = user_tag
         
         # need to pass to executable
         self._year      = year
@@ -61,8 +65,42 @@ class BatchMaster():
         self._disk           = disk
         self._queue          = queue
 
-    
+    #-------------------------------------------------------------------------------------------------------------------
     def split_jobs_for_cfg(self, cfg):
+        if cfg._user_redir is None:
+            return self.split_jobs_for_cfg_das(cfg)
+        else:
+            return self.split_jobs_for_cfg_user(cfg)
+
+    #-------------------------------------------------------------------------------------------------------------------
+    def split_jobs_for_cfg_user(self, cfg):
+        eosQuery_outFile = 'eosQuery_%s.txt' % (cfg._suffix)
+        eosQuery_command = 'eos %s ls %s > %s' % (cfg._user_redir, cfg._dataset, eosQuery_outFile)
+        os.system(eosQuery_command)        
+        ftxt = open(eosQuery_outFile)
+        xrootd = 'cmsxrootd.fnal.gov' if self._location == 'lpc' else 'xrootd-cms.infn.it' #'cms-xrd-global.cern.ch'
+        fileList = ["root://%s//%s/%s" % (xrootd, cfg._dataset, f.strip()) for f in ftxt.readlines() if '.root' in f and (cfg._user_tag is None or cfg._user_tag in f)]
+        ftxt.close()
+        nFiles = len(fileList)
+        if nFiles <= 0:
+            print "ERROR! No sample files are found! Exiting..."
+            exit()
+        # Split the files by requested number of files / job
+        nFilesPerJob = self._maxFilesPerJob if self._maxFilesPerJob > 0 and self._maxFilesPerJob < cfg._user_nfiles else cfg._user_nfiles
+        nJobs = int(math.ceil(nFiles/nFilesPerJob))
+        sources = [ fileList[i:i+nFilesPerJob] for i in range(0, len(fileList), nFilesPerJob) ]
+        print "EOS for dataset: ", cfg._dataset
+        print "**************************************************"
+        print "*  dataset: ", cfg._suffix
+        print "*  X events in {} files, raw_nJobs {}, nJobs {}".format(nFiles, nJobs, len(sources))
+        print "**************************************************"        
+        print "saved the EOS output to ", eosQuery_outFile
+
+        # return a list with len=nJobs, For the given dataset
+        return sources
+
+    #-------------------------------------------------------------------------------------------------------------------
+    def split_jobs_for_cfg_das(self, cfg):
         # query the root files using das commandline tool
         print "das query files"
         dasQuery_outFile = 'dasQuery_{}.txt'.format(cfg._suffix)
@@ -108,11 +146,12 @@ class BatchMaster():
         print "*  dataset: ", cfg._suffix
         print "*  {} events in {} files, raw_nJobs {}, nJobs {}".format(nEvents, nFiles, nJobs, len(sources))
         print "**************************************************"        
-        print "save the DAS output to ", dasQuery_outFile
+        print "saved the DAS output to ", dasQuery_outFile
 
         # return a list with len=nJobs, For the given dataset
         return sources
 
+    #-------------------------------------------------------------------------------------------------------------------
     def make_batch_lpc(self, cfg):
         '''
         Prepares for submission to lpc.  Does the following:
