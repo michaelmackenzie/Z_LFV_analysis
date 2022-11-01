@@ -25,6 +25,7 @@ p.add_argument('--veto'     , help='Comma separated list of tags to not process 
 p.add_argument('--dryrun'   , help='Setup merging without running', action='store_true', required=False)
 p.add_argument('--dosingle' , help='Merge first dataset only', action='store_true', required=False)
 p.add_argument('--usedirect', help='Use the direct EOS path instead of XROOTD', action='store_true', required=False)
+p.add_argument('--copylocal', help='Copy files locally to merge', action='store_true', required=False)
 p.add_argument('--jsononly' , help='Only process lumi json files', action='store_true', required=False)
 p.add_argument('--verbose'  , help='Print additional information', action='store_true', required=False)
 
@@ -39,6 +40,7 @@ veto       = args.veto.split(',')
 dryrun     = args.dryrun
 dosingle   = args.dosingle
 usedirect  = args.usedirect
+copylocal  = args.copylocal
 jsononly   = args.jsononly
 verbose    = args.verbose
 
@@ -63,13 +65,18 @@ print "Using input path %s and output path %s" % (inputpath, outputpath)
 
 #---------------------------------#
 
-#make a directory to store merged files temporarily
-if not os.path.exists("batch/temp_root/") :
-    os.makedirs("batch/temp_root")
-
 user = os.environ.get('USER')
 hostname = os.environ.get('HOSTNAME')
 host = 'lxplus' if 'lxplus' in hostname else 'lpc'
+
+
+if host == 'lpc':
+    #make a directory to store merged files temporarily
+    if not os.path.exists("batch/temp_root/") :
+        os.makedirs("batch/temp_root")
+        tmp_dir = 'batch/temp_root/'
+else:
+    tmp_dir = os.environ.get('TMPDIR') + '/'
 
 #Get the list of files in the batch output directory
 if usedirect:
@@ -177,8 +184,20 @@ for dirname in list_dirs:
             else:
                 inputlist = ['root://cmseos.fnal.gov//store/user/%s/%s%s' % (user, inputpath, s) for s in inputlist]
 
+        if copylocal:
+            #write the inputs into the temp space to merge them locally
+            local_list = []
+            for infile in inputlist:
+                local_copy = 'xrdcp -f %s %s' % (infile, tmp_dir)
+                print local_copy
+                if not dryrun:
+                    os.system(local_copy)
+                local_list.append('%s%s' % (tmp_dir, infile.split('/')[-1]))
+            inputlist = local_list
+                
+            
         #merge the dataset files
-        hadd_command = "../haddnano.py " + "batch/temp_root/" + outputname
+        hadd_command = "time ../haddnano.py " + tmp_dir + outputname
         if verbose: print "Hadd command:", hadd_command
         if inputlist == []:
             print "Not datafiles found for dataset", outputname
@@ -199,15 +218,20 @@ for dirname in list_dirs:
                 exit()
             continue
 
+        #remove the input files if copied over after merging
+        if copylocal:
+            for infile in inputlist:
+                os.remove(infile)
+
         # Copy back the merged data:
-        copy_command = 'xrdcp -f batch/temp_root/' + outputname
+        copy_command = 'time xrdcp -f ' + tmp_dir + outputname
         if host == 'lxplus':
             copy_command = copy_command + ' root://eoscms.cern.ch//store/group/phys_smp/ZLFV/' + outputpath
         else:
             copy_command = copy_command + ' root://cmseos.fnal.gov//store/user/' + user +'/'  + outputpath
         print copy_command
         os.system(copy_command)
-        os.remove("batch/temp_root/%s" % (outputname))
+        os.remove("%s%s" % (tmp_dir, outputname))
 
     # Process lumi files, if relevant
     if isData or isEmbed:

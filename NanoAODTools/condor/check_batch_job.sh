@@ -11,6 +11,8 @@ Help() {
     echo "--ignorerunning   : Ignore still running jobs"
     echo "--override-outdir : Override expected output job directory"
     echo "--memory          : Override default job memory in resubmission"
+    echo "--runningtime     : Override default job running time in resubmission"
+    echo "--queue           : Override default job queue (flavour) in resubmission"
 }
 
 if [[ $# -eq 0 ]]
@@ -39,6 +41,8 @@ DRYRUN=""
 IGNORERUNNING=""
 OUTDIR=""
 MEMORY=""
+RUNNINGTIME=""
+QUEUE=""
 
 iarg=1
 while [ "${iarg}" -le "$#" ]
@@ -78,6 +82,16 @@ do
         iarg=$((iarg + 1))
         eval "var=\${${iarg}}"
         MEMORY=${var}
+    elif [[ "${var}" == "--runningtime" ]]
+    then
+        iarg=$((iarg + 1))
+        eval "var=\${${iarg}}"
+        RUNNINGTIME=${var}
+    elif [[ "${var}" == "--queue" ]]
+    then
+        iarg=$((iarg + 1))
+        eval "var=\${${iarg}}"
+        QUEUE=${var}
     elif [[ "${var}" == "--tag" ]]
     then
         iarg=$((iarg + 1))
@@ -216,7 +230,18 @@ then
         if [ ! -f "${RECOVERY}" ]
         then
             echo "Creating recovery jdl for dataset ${DATASET}"
-            cat ${JOBINFO} | awk -v d=0 '{if($1 == "Arguments") d=1; if(d == 0) print $0}' > ${RECOVERY}
+            cat ${JOBINFO} | awk -v d=0 -v m=${MEMORY} -v r=${RUNNINGTIME} -v q=${QUEUE} '{
+            if($1 == "Arguments") d=1;
+            if(d == 0) {
+              if(!(m != "" && ($0 ~ /request_memory/)) && !(r != "" && ($0 ~ /MaxRuntime/)) && !(q != "" && ($0 ~ /JobFlavour/))) {
+                print $0
+              }
+            }
+          } END {
+            if(m != "") print "request_memory        =", m
+            if(r != "") print "+MaxRuntime           =", r
+            if(q != "") print "+JobFlavour           = \"" q "\""
+          }' > ${RECOVERY}
         fi
         echo "Adding job ${FILE} to recovery file for dataset ${DATASET}"
         #FIXME: Add memory override option
