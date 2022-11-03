@@ -26,6 +26,8 @@ p.add_argument('--dryrun'   , help='Setup merging without running', action='stor
 p.add_argument('--dosingle' , help='Merge first dataset only', action='store_true', required=False)
 p.add_argument('--usedirect', help='Use the direct EOS path instead of XROOTD', action='store_true', required=False)
 p.add_argument('--copylocal', help='Copy files locally to merge', action='store_true', required=False)
+p.add_argument('--segments' , help='Use job segments rather than a merged ntupl', action='store_true', required=False)
+p.add_argument('--onlylink' , help='Link segments instead of copying them over', action='store_true', required=False)
 p.add_argument('--jsononly' , help='Only process lumi json files', action='store_true', required=False)
 p.add_argument('--verbose'  , help='Print additional information', action='store_true', required=False)
 
@@ -41,8 +43,17 @@ dryrun     = args.dryrun
 dosingle   = args.dosingle
 usedirect  = args.usedirect
 copylocal  = args.copylocal
+segments   = args.segments
+onlylink   = args.onlylink
 jsononly   = args.jsononly
 verbose    = args.verbose
+
+if copylocal and segments:
+    print "Can't use both --copylocal and --segments!"
+    exit()
+if onlylink and not segments:
+    print "--onlylink is only defined when using --segments!"
+    exit()
 
 if inputpath[-1:] != '/':
     inputpath = inputpath + '/'
@@ -74,7 +85,7 @@ if host == 'lpc':
     #make a directory to store merged files temporarily
     if not os.path.exists("batch/temp_root/") :
         os.makedirs("batch/temp_root")
-        tmp_dir = 'batch/temp_root/'
+    tmp_dir = 'batch/temp_root/'
 else:
     tmp_dir = os.environ.get('TMPDIR') + '/'
 
@@ -93,10 +104,6 @@ else:
     # inputpath = eospath + inputpath
 if verbose:
     print "Processing input path", inputpath, "to output path", outputpath
-
-dir_output_data = outputpath + "dataprocess/"
-dir_output_bkg  = outputpath + "MC/backgrounds/"
-dir_output_sig  = outputpath + "MC/signals/"
 
 #list_dirs = os.listdir(inputpath) #list all first files to get 1 per dataset
 if host == 'lxplus':
@@ -194,45 +201,88 @@ for dirname in list_dirs:
                     os.system(local_copy)
                 local_list.append('%s%s' % (tmp_dir, infile.split('/')[-1]))
             inputlist = local_list
-                
-            
-        #merge the dataset files
-        hadd_command = "time ../haddnano.py " + tmp_dir + outputname
-        if verbose: print "Hadd command:", hadd_command
-        if inputlist == []:
-            print "Not datafiles found for dataset", outputname
-            if dosingle:
-                exit()
-            continue
-        #ensure only root files are considered, adding each to the merge command
-        for data_file in inputlist:
-            if ".root" in data_file:
-                hadd_command = hadd_command + " " + data_file
 
-        print "Merging into output dataset", outputname
-        if not dryrun:
-            os.system(hadd_command)
+        ###################################
+        # Process the job segments
+        if segments:
+            ###################################
+            # Use the job segment ntuples
+
+            dataset_dir = '/eos/cms/store/group/phys_smp/ZLFV/' if host == 'lxplus' else '/eos/uscms/store/user/%s/' % (user)
+            dataset_dir = dataset_dir + outputpath + outputname[:-5]
+            if verbose:
+                print "Making directory %s" % (dataset_dir)
+            os.system('[ ! -d %s ] && mkdir %s' % (dataset_dir, dataset_dir))
+            # remove previous ntuples
+            if not dryrun:
+                os.system('rm %s/*' % (dataset_dir))
+                # seg_ls_dir = 'ls %s' % (dataset_dir)
+                # print "Listing dir: %s" % (seg_ls_dir)
+                # process = subprocess.Popen(seg_ls_dir, stdout=subprocess.PIPE)
+                # stdout, stderr = process.communicate()
+                # prev_files = stdout.split('\n')
+                # for f in prev_files:
+                #     if ".root" in f or ".txt" in f:
+                #         prev_rm = '%s/%s' % (dataset_dir, f)
+                #         if verbose:
+                #             print "Removing file: %s" % (prev_rm)
+                #         os.remove(prev_rm)
+                for data_file in inputlist:
+                    if not ".root" in data_file: continue
+                    if verbose:
+                        print "Adding segment file %s" % (data_file)
+                    if onlylink:
+                        print "Links not yet implemented!"
+                    else:
+                        if usedirect:
+                            segment_copy = 'cp %s %s/' % (data_file, dataset_dir)
+                        else:
+                            redir = 'root://eoscms.cern.ch/' if host == 'lxplus' else 'root://cmseos.fnal.gov/'
+                            segment_copy = 'xrdcp %s%s %s/' % (redir, data_file[data_file.index('/store'):], dataset_dir)
+                        if verbose:
+                            print "Segment copy: %s" % (segment_copy)    
+                        os.system(segment_copy)
+
         else:
-            print hadd_command
-            if dosingle:
-                exit()
-            continue
+            ###################################
+            # Merge the dataset files
+            hadd_command = "time ../haddnano.py " + tmp_dir + outputname
+            if verbose: print "Hadd command:", hadd_command
+            if inputlist == []:
+                print "Not datafiles found for dataset", outputname
+                if dosingle:
+                    exit()
+                continue
+            #ensure only root files are considered, adding each to the merge command
+            for data_file in inputlist:
+                if ".root" in data_file:
+                    hadd_command = hadd_command + " " + data_file
 
-        #remove the input files if copied over after merging
-        if copylocal:
-            for infile in inputlist:
-                os.remove(infile)
+            print "Merging into output dataset", outputname
+            if not dryrun:
+                os.system(hadd_command)
+            else:
+                print hadd_command
+                if dosingle:
+                    exit()
+                continue
 
-        # Copy back the merged data:
-        copy_command = 'time xrdcp -f ' + tmp_dir + outputname
-        if host == 'lxplus':
-            copy_command = copy_command + ' root://eoscms.cern.ch//store/group/phys_smp/ZLFV/' + outputpath
-        else:
-            copy_command = copy_command + ' root://cmseos.fnal.gov//store/user/' + user +'/'  + outputpath
-        print copy_command
-        os.system(copy_command)
-        os.remove("%s%s" % (tmp_dir, outputname))
+            #remove the input files if copied over after merging
+            if copylocal:
+                for infile in inputlist:
+                    os.remove(infile)
 
+            # Copy back the merged data:
+            copy_command = 'time xrdcp -f ' + tmp_dir + outputname
+            if host == 'lxplus':
+                copy_command = copy_command + ' root://eoscms.cern.ch//store/group/phys_smp/ZLFV/' + outputpath
+            else:
+                copy_command = copy_command + ' root://cmseos.fnal.gov//store/user/' + user +'/'  + outputpath
+            print copy_command
+            os.system(copy_command)
+            os.remove("%s%s" % (tmp_dir, outputname))
+
+    ######################################################
     # Process lumi files, if relevant
     if isData or isEmbed:
         if host == 'lxplus':
