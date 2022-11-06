@@ -26,8 +26,9 @@ p.add_argument('--dryrun'   , help='Setup merging without running', action='stor
 p.add_argument('--dosingle' , help='Merge first dataset only', action='store_true', required=False)
 p.add_argument('--usedirect', help='Use the direct EOS path instead of XROOTD', action='store_true', required=False)
 p.add_argument('--copylocal', help='Copy files locally to merge', action='store_true', required=False)
-p.add_argument('--segments' , help='Use job segments rather than a merged ntupl', action='store_true', required=False)
+p.add_argument('--segments' , help='Use job segments rather than a merged ntuple', action='store_true', required=False)
 p.add_argument('--onlylink' , help='Link segments instead of copying them over', action='store_true', required=False)
+p.add_argument('--mergeseg' , help='Merge existing segment files', action='store_true', required=False)
 p.add_argument('--jsononly' , help='Only process lumi json files', action='store_true', required=False)
 p.add_argument('--verbose'  , help='Print additional information', action='store_true', required=False)
 
@@ -45,6 +46,7 @@ usedirect  = args.usedirect
 copylocal  = args.copylocal
 segments   = args.segments
 onlylink   = args.onlylink
+mergeseg   = args.mergeseg
 jsononly   = args.jsononly
 verbose    = args.verbose
 
@@ -110,7 +112,7 @@ if host == 'lxplus':
     #FIXME: remove non-root files from search list
     command = 'eos root://eoscms.cern.ch ls /store/group/phys_smp/ZLFV/%s' % (inputpath)
 else:
-    command = 'eos root://cmseos.fnal.gov ls /store/user/%s/%s*.root' % (user, inputpath)
+    command = 'eos root://cmseos.fnal.gov ls /store/user/%s/%s' % (user, inputpath)
 
 if verbose:
     print "Running command", command
@@ -124,15 +126,25 @@ list_processed = []
 for dirname in list_dirs:
     if verbose:
         print "Found file", dirname
-    if dirname == "" or dirname[-4:] != "root":
+    if dirname == "":
         continue
-    samplename = dirname.split("_")
-    outputname = ""
-    for index in range(len(samplename)-1):        
-        if index > 0:
-            outputname = outputname + "_"
-        outputname = outputname + samplename[index]
+    if mergeseg:
+        if '.' in dirname: continue
+    elif dirname[-4:] != 'root':
+        continue
 
+    if mergeseg:
+        outputname = dirname
+    else:
+        samplename = dirname.split("_")
+        outputname = ""
+        for index in range(len(samplename)-1):
+            if index > 0:
+                outputname = outputname + "_"
+            outputname = outputname + samplename[index]
+
+    if verbose:
+        print "Using output name", outputname
     #determine if the file is data or embedding for special processing (e.g. lumi files)
     isData = "SingleElectron" in dirname or "SingleMuon" in dirname
     isEmbed = "Embed-" in dirname
@@ -159,10 +171,13 @@ for dirname in list_dirs:
     print "Processing dataset", outputname
 
     #get the list of ntuple files to merge
-    if host == 'lxplus': #can't use wildcard in lxplus 'ls' command
-        inputname  = outputname + "_"
+    if mergeseg:
+        inputname = outputname + '/'
     else:
-        inputname  = outputname + "_*.root"
+        if host == 'lxplus': #can't use wildcard in lxplus 'ls' command
+            inputname  = outputname + "_"
+        else:
+            inputname  = outputname + "_*.root"
     outputname = outputname.replace("output_" ,"")
     luminame = 'lumis_'+outputname
 
@@ -180,6 +195,7 @@ for dirname in list_dirs:
         stdout, stderr = process.communicate()
         inputlist = stdout.split('\n')
         if host == 'lxplus': inputlist = [l for l in inputlist if inputname in l and '.root' in l]
+        if mergeseg: inputlist = [inputname + l for l in inputlist]
         if usedirect:
             if host == 'lxplus':
                 inputlist = ['/eos/cms/store/group/phys_smp/ZLFV/%s%s' % (inputpath, s) for s in inputlist]
@@ -247,7 +263,6 @@ for dirname in list_dirs:
             ###################################
             # Merge the dataset files
             hadd_command = "time ../haddnano.py " + tmp_dir + outputname
-            if verbose: print "Hadd command:", hadd_command
             if inputlist == []:
                 print "Not datafiles found for dataset", outputname
                 if dosingle:

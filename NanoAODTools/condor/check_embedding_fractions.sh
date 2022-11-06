@@ -17,12 +17,7 @@ fi
 
 if [[ "${VERSION}" == "" ]]
 then
-    if [[ "${YEAR}" == "2017" ]]
-    then
-        VERSION=1
-    else
-        VERSION=2
-    fi
+    VERSION=2
 fi
 
 if [[ "${VERBOSE}" == "" ]]
@@ -63,6 +58,18 @@ do
         elif [[ "${YEAR}${RUN}V${VERSION}" == "2018DV2" ]]
         then
             FILE=`das_client -query="dataset=/EmbeddingRun${YEAR}${RUN}/pellicci-Embedded${FINALSTATE}_*10222V4*/USER instance=prod/phys03" 2>/dev/null | tail -n 1`
+        elif [[ "${YEAR}${RUN}${FINALSTATE}V${VERSION}" == "2017BMuMuV2" ]]
+        then
+            FILE=`das_client -query="dataset=/EmbeddingRun${YEAR}${RUN}/pellicci-Embedded${FINALSTATE}_*10222V1*/USER instance=prod/phys03" 2>/dev/null | tail -n 1`
+        elif [[ "${YEAR}${RUN}${FINALSTATE}V${VERSION}" == "2017FMuMuV2" ]]
+        then
+            FILE=`das_client -query="dataset=/EmbeddingRun${YEAR}${RUN}/pellicci-Embedded${FINALSTATE}_*10222V1*/USER instance=prod/phys03" 2>/dev/null | tail -n 1`
+        elif [[ "${YEAR}${RUN}${FINALSTATE}V${VERSION}" == "2017DElTauV2" ]]
+        then
+            FILE=`das_client -query="dataset=/EmbeddingRun${YEAR}${RUN}/pellicci-Embedded${FINALSTATE}_*10222V3*/USER instance=prod/phys03" 2>/dev/null | tail -n 1`
+        elif [[ "${YEAR}${RUN}${FINALSTATE}V${VERSION}" == "2017EElTauV2" ]]
+        then
+            FILE=`das_client -query="dataset=/EmbeddingRun${YEAR}${RUN}/pellicci-Embedded${FINALSTATE}_*10222V3*/USER instance=prod/phys03" 2>/dev/null | tail -n 1`
         else
             FILE=`das_client -query="dataset=/EmbeddingRun${YEAR}${RUN}/pellicci-Embedded${FINALSTATE}_*10222V${VERSION}*/USER instance=prod/phys03" 2>/dev/null | tail -n 1`
         fi
