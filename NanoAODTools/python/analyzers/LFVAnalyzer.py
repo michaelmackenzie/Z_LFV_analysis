@@ -77,17 +77,21 @@ elif year == "2018":
 # TriggerCuts = None
 print "Trigger cuts:", TriggerCuts
 
+# Jet ID parameters
 jet_pu_id = 6
+jet_id = 6 # 7 = tight lep veto in 2016, 6 in 2017/2018, so >=6 for either
+
 #Base lepton/jet selection
 MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.4 and l.mediumId and l.pfRelIso04_all < 0.5
 ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.5 and l.mvaFall17V2noIso_WP90 and l.pfRelIso03_all < 0.5
 TauSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<2.3 and l.idDeepTau2017v2p1VSmu > 10 and l.idDeepTau2017v2p1VSe > 10 and l.idDeepTau2017v2p1VSjet > 5 and l.idDecayModeNewDMs
-JetSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<3.0 and (l.pt >= 50. or l.puId>=jet_pu_id) and l.jetId>1 
+JetSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<3.0 and (l.pt >= 50. or l.puId>=jet_pu_id) and l.jetId>=jet_id
 
 #Loose light lepton selection, to remove overlap with taus
 LooseMuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.4 and l.looseId and l.pfRelIso04_all < 0.5
 LooseElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.5 and l.mvaFall17V2noIso_WPL and l.pfRelIso03_all < 0.5
-LooseJetSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<3.0 and (l.pt >= 50. or l.puId>-1) and l.jetId>1 
+#Loose jet selection, to calculate PU ID weight
+LooseJetSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<3.0 and (l.pt >= 50. or l.puId>-1) and l.jetId>=jet_id
 
 #Event selection cuts
 MaxMass   = 175 #-1 = no cut
