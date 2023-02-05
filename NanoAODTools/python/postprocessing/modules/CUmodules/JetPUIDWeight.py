@@ -18,7 +18,7 @@ class JetPUIDWeight(Module):
         self.pt_max = pt_max
 
         data_file = os.environ['CMSSW_BASE'] + "/src/PhysicsTools/NanoAODTools/data/jme/scalefactorsPUID_81Xtraining.root"
-        mc_file   = os.environ['CMSSW_BASE'] + "/src/CLFVAnalysis/scale_factors/jet_puid_mumu_" + year + ".root"
+        mc_file   = os.environ['CMSSW_BASE'] + "/src/PhysicsTools/NanoAODTools/data/jme/jet_puid_mumu_" + year + ".root"
 
         self.data_file = ROOT.TFile(data_file, "READ")
         self.mc_file   = ROOT.TFile(mc_file  , "READ")

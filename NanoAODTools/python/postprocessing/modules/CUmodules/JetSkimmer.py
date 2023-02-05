@@ -128,7 +128,7 @@ class JetSkimmer(Module):
         if len(self.BtagWPs[0]) > 0:
             for key in bjets.keys():
                 # if len(bjets[key]) > 0:
-                self.out.fillBranch("%s_%s" % ("BJet", key), bjets[key]) 
+                if hasattr(self.out, '%s_%s' % ("BJet", key)): self.out.fillBranch("%s_%s" % ("BJet", key), bjets[key]) 
 
             self.out.fillBranch("nBJetMedium",nBJetMedium)
             self.out.fillBranch("nBJetTight",nBJetTight)
