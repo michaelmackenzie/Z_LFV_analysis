@@ -3,6 +3,7 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonSkimmer im
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.HTSkimmer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetSkimmer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetLepCleaner import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetPUIDWeight import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.SelectionFilter import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenCount import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenLepCount import *
@@ -15,6 +16,10 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenRecoMatcher i
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.PrefireCorr import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.common.muonScaleResProducer import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetHelperRun2 import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetUncertainties import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.btv.btagSFProducer import *
 
 
 from importlib import import_module
@@ -43,6 +48,9 @@ if maxEntries < 0: maxEntries = None
 #Whether or not to prefetch the file
 prefetch  = False
 
+#Drop slow modules
+dropSlow = False
+
 if isData not in ["data", "MC", "Embedded"]:
    print "Unknown data flag %s" % (isData)
    print "Defined flags are: data, MC, and Embedded"
@@ -69,19 +77,21 @@ elif year == "2018":
 # TriggerCuts = None
 print "Trigger cuts:", TriggerCuts
 
+jet_pu_id = 6
 #Base lepton/jet selection
-MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.2 and l.mediumId and l.pfRelIso04_all < 0.5
-ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.2 and l.mvaFall17V2noIso_WP90 and l.pfRelIso03_all < 0.5
-TauSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<2.2 and l.idDeepTau2017v2p1VSmu > 10 and l.idDeepTau2017v2p1VSe > 10 and l.idDeepTau2017v2p1VSjet > 5 and l.idDecayModeNewDMs
-JetSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<3.0 and l.puId>-1 and l.jetId>1 
+MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.4 and l.mediumId and l.pfRelIso04_all < 0.5
+ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.5 and l.mvaFall17V2noIso_WP90 and l.pfRelIso03_all < 0.5
+TauSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<2.3 and l.idDeepTau2017v2p1VSmu > 10 and l.idDeepTau2017v2p1VSe > 10 and l.idDeepTau2017v2p1VSjet > 5 and l.idDecayModeNewDMs
+JetSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<3.0 and (l.pt >= 50. or l.puId>=jet_pu_id) and l.jetId>1 
 
 #Loose light lepton selection, to remove overlap with taus
 LooseMuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.4 and l.looseId and l.pfRelIso04_all < 0.5
 LooseElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.5 and l.mvaFall17V2noIso_WPL and l.pfRelIso03_all < 0.5
+LooseJetSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<3.0 and (l.pt >= 50. or l.puId>-1) and l.jetId>1 
 
 #Event selection cuts
-MaxMass = -1 # no cut
-MinMass = 50
+MaxMass   = 175 #-1 = no cut
+MinMass   =  35 #wider window to estimate event migration systematic uncertainties
 MinDeltaR = 0.3 # delta R between the leptons
 
 #configure the modules
@@ -90,7 +100,7 @@ GenCounter=GenCount()
 modules.append(GenCounter)
 
 #prefire probability, before jet/photon/electron collection is skimmed
-if isData == "MC": #only do on MC, 2016 and 2017
+if isData == "MC" and not dropSlow: #only do on MC, 2016 and 2017
    if year == "2016":
       PrefireCorr = PrefCorr(jetroot="L1prefiring_jetpt_2016BtoH.root",
                              jetmapname="L1prefiring_jetpt_2016BtoH",
@@ -196,17 +206,47 @@ Selection= SelectionFilter(year=year,
                            verbose=0)
 modules.append(Selection)
 
+# Rochester corrections for muons
+if year == "2016":
+   modules.append(muonScaleRes2016())
+elif year == "2017":
+   modules.append(muonScaleRes2017())
+elif year == "2018":
+   modules.append(muonScaleRes2018())
+
+# # JET MET corrections, before jet cleaning is applied
+# #FIXME: Get correct run period for Data/Embedding
+# jmeCorrections = createJMECorrector(isData == "MC", year, "B", "Total", True, "AK4PFchs", False)
+# modules.append(jmeCorrections())
+
+# JET MET uncertainties, before jet cleaning is applied
+if isData == "MC" and not dropSlow: #FIXME: Can this be done with PuppiMET?
+   if year == "2016":
+      modules.append(jetmetUncertainties2016())
+   elif year == "2017":
+      modules.append(jetmetUncertainties2017())
+   elif year == "2018":
+      modules.append(jetmetUncertainties2018())
+
 #Add additional object cleaning
 
+#First skim without Jet PU ID, calculate PU ID weight, then remove those that fail PU ID
 #FIXME: Add each year b-tag WP cuts
-JetSelector=JetSkimmer( 
-   BtagWPs=[0.1274, 0.4229, 0.7813 ], 
+if year == "2016":
+   btagWPs = [0.2217, 0.6321, 0.8953]
+elif year == "2017":
+   btagWPs = [0.1522, 0.4941, 0.8001]
+elif year == "2018":
+   btagWPs = [0.1241, 0.4184, 0.7527]
+
+LooseJetSelector=JetSkimmer( 
+   BtagWPs=[], 
    nGoodJetMin=-1, 
-   nBJetMax=20 , 
-   Selection=JetSelection,
+   nBJetMax=-1, 
+   Selection=LooseJetSelection,
    Veto=None
 )
-modules.append(JetSelector)
+modules.append(LooseJetSelector)
 
 JetMuonCleaner=JetLepCleaner( 
    Lepton='Muon',
@@ -235,15 +275,31 @@ JetTauCleaner=JetLepCleaner(
 )
 modules.append(JetTauCleaner)   
 
+jetPUIDWeight=JetPUIDWeight(year = year)
+modules.append(jetPUIDWeight)
+
+JetSelector=JetSkimmer( 
+   BtagWPs=btagWPs, 
+   nGoodJetMin=-1, 
+   nBJetMax=-1, 
+   Selection=JetSelection,
+   Veto=None
+)
+modules.append(JetSelector)
+
 HTCalculator= HTSkimmer(
    minJetPt=20,
    minJetEta=3.0, #FIXME: Should be max jet eta I believe
-   minJetPUid=-1,
+   minJetPUid=jet_pu_id,
    minHT=-1,
    collection="Jet",
    HTname="HT"
 )
 modules.append(HTCalculator)
+
+if isData == "MC": #only for MC
+   BTagScale= btagSFProducer(era = ('Legacy2016' if year == "2016" else year), algo = 'deepcsv', selectedWPs=['L','T'])
+   modules.append(BTagScale)
 
 if not isData == "data":
    ZllBuilder=GenZllAnalyzer(
@@ -308,12 +364,13 @@ modules.append(GenElectronCount)
 
 #configure the pileup module and the json file filtering
 if isData == "MC":
-   if year == "2016":
-      modules.append(puAutoWeight_2016())
-   elif year == "2017":
-      modules.append(puAutoWeight_2017())
-   elif year == "2018":
-      modules.append(puAutoWeight_2018())
+   if not dropSlow:
+      if year == "2016":
+         modules.append(puAutoWeight_2016())
+      elif year == "2017":
+         modules.append(puAutoWeight_2017())
+      elif year == "2018":
+         modules.append(puAutoWeight_2018())
    jsonFile=None
 else: #data/embedding
    if year == "2016" :

@@ -14,6 +14,11 @@ keep Electron*
 #jets
 keep nJet
 keep Jet*
+keep nCorrT1METJet
+keep CorrT1METJet*
+keep nGenJet
+keep GenJet*
+keep fixedGridRhoFastjetAll
 
 #photons
 keep nPhoton
@@ -22,16 +27,13 @@ keep Photon_*
 #MET
 keep MET_*
 keep PuppiMET*
+keep GenMET*
+keep RawMET*
 
 #Gen info
 keep Gen*
 keep gen*
 keep genWeight*
-#extra drop
-drop GenJet*
-drop nGenJet
-drop GenDressed*
-drop nGenDressed*
 
 #Add Trigger information
 keep HLT_*
