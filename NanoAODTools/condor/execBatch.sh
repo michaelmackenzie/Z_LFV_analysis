@@ -23,8 +23,10 @@ TOPDIR=$PWD
 # lxplus/lpc
 if [[ "${HOSTNAME}" == *"cern.ch"* ]]
 then
+    echo "Exporting the x509 token location (${USER})"
     export X509_USER_PROXY=/afs/cern.ch/user/m/mimacken/voms_proxy/x509up_u117705
 fi
+
 export SCRAM_ARCH=slc7_amd64_gcc820
 export CMSSW_VERSION=CMSSW_10_6_29
 source /cvmfs/cms.cern.ch/cmsset_default.sh
@@ -60,7 +62,7 @@ pwd
 mv ../../input_${SUFFIX}_${COUNT}.txt ./
 echo "Input file list: "
 cat $INPUT_TXT_FILENAME
-
+echo ""
 
 [ ! -d outDir ] && mkdir outDir
 
@@ -92,8 +94,15 @@ do
     echo "python python/analyzers/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}"
     python python/analyzers/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}
     if [[ ! -f tree.root ]]; then
-        echo "No tree file found, exit code 1, failure in processing"
-        exit 1
+        echo "No tree file found, re-running ntupling job"
+        ls -l *.root
+        python python/analyzers/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}
+        if [[ ! -f tree.root ]]; then
+            echo "No tree file found, exit code 1, failure in processing"
+            ls *.root
+            exit 1
+        fi
+        echo "Second tree processing was successful!"
     fi
     echo "Splitting the output tree into selection trees"
     time root.exe -q -b "condor/split_output_tree.C(\"tree.root\", \"tree-split.root\")"

@@ -20,7 +20,7 @@ p.add_argument('input_dir'  , help='Type e.g. input file path')
 p.add_argument('--outdir'   , help='Type e.g. output file path', default="", required=False)
 p.add_argument('--mc_data'  , help='Type MC or Data for only MC or Data', default="", required=False)
 p.add_argument('--year'     , help='Specific year to process',default="", required=False)
-p.add_argument('--tag'      , help='Dataset tag to process',default="", required=False)
+p.add_argument('--tag'      , help='Dataset tag list to process',default="", required=False)
 p.add_argument('--veto'     , help='Comma separated list of tags to not process (e.g. DY,ttbar,Embed)',default="", required=False)
 p.add_argument('--dryrun'   , help='Setup merging without running', action='store_true', required=False)
 p.add_argument('--dosingle' , help='Merge first dataset only', action='store_true', required=False)
@@ -38,7 +38,7 @@ inputpath  = args.input_dir
 outputpath = args.outdir
 mc_data    = args.mc_data
 year       = args.year
-tag        = args.tag
+tag        = args.tag.split(',')
 veto       = args.veto.split(',')
 dryrun     = args.dryrun
 dosingle   = args.dosingle
@@ -156,7 +156,11 @@ for dirname in list_dirs:
         continue
     if outputname in list_processed:
         continue
-    if tag != "" and tag not in outputname:
+    tagged = False if len(tag) > 0 else True
+    for tag_i in tag:
+        if tag_i in outputname:
+            tagged = True
+    if not tagged:
         continue
     skip_dataset = False
     for veto_tag in veto:

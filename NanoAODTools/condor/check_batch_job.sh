@@ -1,21 +1,23 @@
 Help() {
     echo "Check jobs in a single submission for failues"
     echo "Options:"
-    echo "--help       (-h) : print this message"
-    echo "--resubmit   (-r) : resubmit failed jobs"
-    echo "--verbose    (-v) : add additional printout information"
-    echo "--dryrun          : prepare but don't submit resubmission job, with --resubmit also used"
-    echo "--eosdir          : EOS directory to search for the job output in"
-    echo "--tag             : Dataset tag to use"
-    echo "--checkfiles      : Do basic checks on the output files"
-    echo "--ignorerunning   : Ignore still running jobs"
-    echo "--override-outdir : Override expected output job directory"
-    echo "--memory          : Override default job memory in resubmission"
-    echo "--runningtime     : Override default job running time in resubmission"
-    echo "--queue           : Override default job queue (flavour) in resubmission"
+    echo "--help       (-h)      : print this message"
+    echo "--resubmit   (-r)      : resubmit failed jobs"
+    echo "--verbose (-v) [arg=1] : add additional printout information"
+    echo "--dryrun               : prepare but don't submit resubmission job, with --resubmit also used"
+    echo "--eosdir               : EOS directory to search for the job output in"
+    echo "--tag                  : Dataset tag to use"
+    echo "--checkfiles           : Do basic checks on the output files"
+    echo "--ignorerunning        : Ignore still running jobs"
+    echo "--override-outdir      : Override expected output job directory"
+    echo "--memory               : Override default job memory in resubmission"
+    echo "--runningtime          : Override default job running time in resubmission"
+    echo "--split [arg=2]        : Split resubmitted jobs into more jobs (NOT IMPLEMENTED)"
+    echo "--queue                : Override default job queue (flavour) in resubmission"
+    echo "--force                : Force resubmit successful and failed jobs"
 }
 
-if [[ $# -eq 0 ]]
+if [ $# -eq 0 ]
 then
     echo "No parameters passed! Printing help (--help) information:"
     Help
@@ -42,10 +44,12 @@ IGNORERUNNING=""
 OUTDIR=""
 MEMORY=""
 RUNNINGTIME=""
+SPLIT=0
 QUEUE=""
+FORCE=""
 
 iarg=1
-while [ "${iarg}" -le "$#" ]
+while [ ${iarg} -le $# ]
 do
     eval "var=\${${iarg}}"
     if [[ "${var}" == "--help" ]] || [[ "${var}" == "-h" ]]
@@ -57,13 +61,26 @@ do
         RESUBMIT="d"
     elif [[ "${var}" == "--verbose" ]] || [[ "${var}" == "-v" ]]
     then
-        VERBOSE=1
+        #Test if a verbosity level is given
+        iarg=$((iarg + 1))
+        eval "var=\${${iarg}}"
+        if [[ $var =~ ^-?[0-9]+$ ]]
+        then
+            VERBOSE=${var}
+        else
+            iarg=$((iarg - 1))
+            eval "var=\${${iarg}}"
+            VERBOSE=1
+        fi
     elif [[ "${var}" == "--dryrun" ]]
     then
         DRYRUN="d"
     elif [[ "${var}" == "--checkfiles" ]]
     then
         CHECKFILES="d"
+    elif [[ "${var}" == "--force" ]]
+    then
+        FORCE="d"
     elif [[ "${var}" == "--ignorerunning" ]]
     then
         IGNORERUNNING="d"
@@ -87,6 +104,19 @@ do
         iarg=$((iarg + 1))
         eval "var=\${${iarg}}"
         RUNNINGTIME=${var}
+    elif [[ "${var}" == "--split" ]]
+    then
+        #Test if a splitting level is given
+        iarg=$((iarg + 1))
+        eval "var=\${${iarg}}"
+        if [[ $var =~ ^-?[0-9]+$ ]]
+        then
+            SPLIT=${var}
+        else
+            iarg=$((iarg - 1))
+            eval "var=\${${iarg}}"
+            SPLIT=2
+        fi
     elif [[ "${var}" == "--queue" ]]
     then
         iarg=$((iarg + 1))
@@ -125,15 +155,19 @@ then
 else
     EOSPATH="/eos/${LOC}/store/group/phys_smp/ZLFV/${EOSDIR}"
 fi
-echo "Using EOS path ${EOSPATH}"
+if [ ${VERBOSE} -gt -2 ]
+then
+    echo "Using EOS path ${EOSPATH}"
+    echo "Using jobname ${JOBNAME}"
+fi
+
 
 NFAILED=0
 NPASSED=0
 NRUNNING=0
-echo "Using jobname ${JOBNAME}"
 FAILEDJOBS=""
 
-if [[ "${OUTDIR}" != "" ]]
+if [[ "${OUTDIR}" != "" ]] && [ ${VERBOSE} -gt -2 ]
 then
     echo "Overriding output directory to use ${OUTDIR}"
 fi
@@ -149,7 +183,7 @@ do
             echo "Checking file ${FILE} in job ${JOB}"
         fi
     else
-        if [ ${VERBOSE} -gt 0 ]
+        if [ ${VERBOSE} -gt 1 ]
         then
             echo "Skipping file ${FILE} as tag ${TAG} not found"
         fi
@@ -171,7 +205,10 @@ do
         XRDEXIT=`grep -i "failure" ${STDLOG}`
         if [[ "${XRDEXIT}" != "" ]]
         then
-            echo "Failure in file ${STDOUT}, error message: ${XRDEXIT}"
+            if [ ${VERBOSE} -gt -1 ]
+            then
+                echo "Failure in file ${STDLOG}, error message: ${XRDEXIT}"
+            fi
             FAILEDJOBS="${FAILEDJOBS} ${FILE}"
             NFAILED=$((1 + $NFAILED))
         fi
@@ -199,7 +236,10 @@ do
         ROOTSTATUS=$?
         if [[ $ROOTSTATUS -ne 0 ]]
         then
-            echo "File ${FILE} failed ROOT file checking"
+            if [ ${VERBOSE} -gt -1 ]
+            then
+                echo "File ${FILE} failed ROOT file checking"
+            fi
             #only add it if it hasn't already failed a check
             if [[ "${XRDEXIT}" == "" ]]
             then
@@ -207,16 +247,33 @@ do
                 NFAILED=$((1 + $NFAILED))
             else
                 NPASSED=$((1 + $NPASSED))
+                if [[ "${FORCE}" != "" ]]
+                then
+                    FAILEDJOBS="${FAILEDJOBS} ${FILE}"
+                fi
             fi
         fi
     else
         NPASSED=$((1 + $NPASSED))
+        if [[ "${FORCE}" != "" ]]
+        then
+            FAILEDJOBS="${FAILEDJOBS} ${FILE}"
+        fi
+
     fi
 done
-echo "${NFAILED} jobs failed checks, ${NPASSED} passed, and ${NRUNNING} are (possibly) running"
+if [ ${VERBOSE} -gt -3 ]
+then
+    echo "${NFAILED} jobs failed checks, ${NPASSED} passed, and ${NRUNNING} are (possibly) running"
+fi
 
 if [[ "${RESUBMIT}" != "" ]]
 then
+    if [[ "${FOCRE}" != "" ]]
+    then
+        echo "Force re-submitting all jobs checked!"
+    fi
+
     if [[ "${FAILEDJOBS}" != "" ]]
     then
         rm ${JOBNAME}recover_*.jdl
@@ -229,7 +286,10 @@ then
         COUNT=`echo ${FILE} | awk -F "_" '{print $NF}'`
         if [ ! -f "${RECOVERY}" ]
         then
-            echo "Creating recovery jdl for dataset ${DATASET}"
+            if [ ${VERBOSE} -gt -2 ]
+            then
+                echo "Creating recovery jdl for dataset ${DATASET}"
+            fi
             cat ${JOBINFO} | awk -v d=0 -v m=${MEMORY} -v r=${RUNNINGTIME} -v q=${QUEUE} '{
             if($1 == "Arguments") d=1;
             if(d == 0) {
@@ -243,12 +303,34 @@ then
             if(q != "") print "+JobFlavour           = \"" q "\""
           }' > ${RECOVERY}
         fi
-        echo "Adding job ${FILE} to recovery file for dataset ${DATASET}"
-        #FIXME: Add memory override option
-        cat ${JOBINFO} | awk -v d=0 -v count=${COUNT} '{if($1 == "Arguments") {if($3 == count) {d=1;} else {d=0;}}  if(d==1) {print $0;}}' >> ${RECOVERY}
+        if [ ${VERBOSE} -gt -2 ]
+        then
+            echo "Adding job ${FILE} to recovery file for dataset ${DATASET}"
+        fi
+        #print the job submission info for the given job
+        if [ ${SPLIT} -eq 0 ]
+        then
+            cat ${JOBINFO} | awk -v d=0 -v count=${COUNT} '{
+              if($1 == "Arguments") {
+                if($3 == count) {d=1;} else {d=0;}
+              }
+              if(d==1) {print $0;}
+            }' >> ${RECOVERY}
+        else
+            INPUTFILE=${JOBNAME}/input_${DATASET}_${COUNT}.txt
+            cat ${JOBINFO} | awk -v d=0 -v count=${COUNT} -v loop=${LOOP} '{
+              if($1 == "Arguments") {
+                if($3 == count) {d=1;} else {d=0;}
+              }
+              if(d==1) {print $0;}
+            }' >> ${RECOVERY}
+        fi
         if [[ "${RESUBMIT}" != "" ]]
         then
-            echo "Storing previous records for this failed job in recovery directory"
+            if [ ${VERBOSE} -gt -1 ]
+            then
+                echo "Storing previous records for this failed job in recovery directory"
+            fi
             mkdir -p batch/recovery/${JOBNAME}
             mv ${JOBNAME}reports/${FILE}* batch/recovery/${JOBNAME}/
         fi
@@ -259,12 +341,21 @@ then
         cd ${JOBNAME}
         for FILE in `ls recover_*.jdl`
         do
-            echo "Submitting recovery job for dataset ${FILE}"
+            if [ ${VERBOSE} -gt -3 ]
+            then
+                echo "Submitting recovery job for dataset ${FILE}"
+            fi
             condor_submit ${FILE}
         done
     else
-        echo "Finished resubmission dry-run"
+        if [ ${VERBOSE} -gt -1 ]
+        then
+            echo "Finished resubmission dry-run"
+        fi
     fi
 fi
 
-echo "Finished processing all jobs"
+if [ ${VERBOSE} -gt -2 ]
+then
+    echo "Finished processing all jobs"
+fi

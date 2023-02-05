@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 import PhysicsTools.NanoAODTools.condor.BatchMaster as bm
+from sample_map import *
 
 import os, sys
 
@@ -23,6 +24,9 @@ location   = 'lpc'
 samplesDict = {}
 
 
+#Load currently used samples
+sampleMap = SampleMap()
+sampleMap.load_samples(sampleMap._data)
 
 nEvtPerJob = 8 # faster jobs, # in unit of 1e6 , 5-10 are good settings. 
 
@@ -95,122 +99,14 @@ samplesDict['2018_SingleMuon'] = [
 ### redefine N(events/job) for embedding ###
 nEvtPerJob = 0.5 #~25k events per file, ~50-100 files per dataset --> ~5-10 jobs/dataset
 
-# 2016 Embedded samples
-samplesDict['2016_embed_ee'] = [
-    bm.JobConfig(
-        dataset='/EmbeddingRun2016B/pellicci-EmbeddedElEl_NANOAOD_10222V2-eb4bd41e0cecc0e67477f0cf9aac775c/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-B_2016', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2016C/pellicci-EmbeddedElEl_NANOAOD_10222V2-eb4bd41e0cecc0e67477f0cf9aac775c/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-C_2016', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2016D/pellicci-EmbeddedElEl_NANOAOD_10222V2-eb4bd41e0cecc0e67477f0cf9aac775c/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-D_2016', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2016E/pellicci-EmbeddedElEl_NANOAOD_10222V2-eb4bd41e0cecc0e67477f0cf9aac775c/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-E_2016', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2016F/pellicci-EmbeddedElEl_NANOAOD_10222V2-eb4bd41e0cecc0e67477f0cf9aac775c/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-F_2016', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2016G/pellicci-EmbeddedElEl_NANOAOD_10222V2-eb4bd41e0cecc0e67477f0cf9aac775c/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-G_2016', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2016H/pellicci-EmbeddedElEl_NANOAOD_10222V2-eb4bd41e0cecc0e67477f0cf9aac775c/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-H_2016', inputDBS="phys03"),
-]
+for dataset in sampleMap._data.keys():
+    if 'embed_ee' in dataset or 'embed_mumu' in dataset:
+        samplesDict[dataset] = []
+        for sample in sampleMap._data[dataset]:
+            samplesDict[dataset].append(bm.JobConfig(dataset = sample._path, nEvtPerJobIn1e6 = nEvtPerJob, year = sample._year,
+                                                     isData = sample._isdata, suffix = 'EmbedTnPAnalysis_%s_%i' % (sample._name, sample._year),
+                                                     inputDBS = sample._inputDBS))
 
-samplesDict['2016_embed_mumu'] = [
-    bm.JobConfig(
-        dataset='/EmbeddingRun2016B/pellicci-EmbeddedMuMu_NANOAOD_10222V2-eb4bd41e0cecc0e67477f0cf9aac775c/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-B_2016', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2016C/pellicci-EmbeddedMuMu_NANOAOD_10222V2-eb4bd41e0cecc0e67477f0cf9aac775c/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-C_2016', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2016D/pellicci-EmbeddedMuMu_NANOAOD_10222V2-eb4bd41e0cecc0e67477f0cf9aac775c/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-D_2016', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2016E/pellicci-EmbeddedMuMu_NANOAOD_10222V2-eb4bd41e0cecc0e67477f0cf9aac775c/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-E_2016', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2016F/pellicci-EmbeddedMuMu_NANOAOD_10222V2-eb4bd41e0cecc0e67477f0cf9aac775c/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-F_2016', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2016G/pellicci-EmbeddedMuMu_NANOAOD_10222V2-eb4bd41e0cecc0e67477f0cf9aac775c/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-G_2016', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2016H/pellicci-EmbeddedMuMu_NANOAOD_10222V2-eb4bd41e0cecc0e67477f0cf9aac775c/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-H_2016', inputDBS="phys03"),
-]
-
-# 2017 Embedded samples
-samplesDict['2017_embed_ee'] = [
-    bm.JobConfig(
-        dataset='/EmbeddingRun2017B/pellicci-EmbeddedElEl_NANOAOD_10222V1-6e995938c955340423734eed12836829/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-B_2017', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2017C/pellicci-EmbeddedElEl_NANOAOD_10222V1-6e995938c955340423734eed12836829/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-C_2017', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2017D/pellicci-EmbeddedElEl_NANOAOD_10222V1-6e995938c955340423734eed12836829/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-D_2017', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2017E/pellicci-EmbeddedElEl_NANOAOD_10222V1-6e995938c955340423734eed12836829/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-E_2017', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2017F/pellicci-EmbeddedElEl_NANOAOD_10222V1-6e995938c955340423734eed12836829/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-F_2017', inputDBS="phys03"),
-]
-
-samplesDict['2017_embed_mumu'] = [
-    bm.JobConfig(
-        dataset='/EmbeddingRun2017B/pellicci-EmbeddedMuMu_NANOAOD_10222V1-6e995938c955340423734eed12836829/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-B_2017', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2017C/pellicci-EmbeddedMuMu_NANOAOD_10222V1-6e995938c955340423734eed12836829/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-C_2017', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2017D/pellicci-EmbeddedMuMu_NANOAOD_10222V1-6e995938c955340423734eed12836829/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-D_2017', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2017E/pellicci-EmbeddedMuMu_NANOAOD_10222V1-6e995938c955340423734eed12836829/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-E_2017', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2017F/pellicci-EmbeddedMuMu_NANOAOD_10222V1-6e995938c955340423734eed12836829/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-F_2017', inputDBS="phys03"),
-]
-
-# 2018 Embedded samples
-samplesDict['2018_embed_ee'] = [
-    bm.JobConfig(
-        dataset='/EmbeddingRun2018A/pellicci-EmbeddedElEl_NANOAOD_2018_10222V1-9b11f648cb233dc346c2d0860bbea8f9/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-A_2018', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2018B/pellicci-EmbeddedElEl_NANOAOD_2018_10222V1-9b11f648cb233dc346c2d0860bbea8f9/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-B_2018', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2018C/pellicci-EmbeddedElEl_NANOAOD_2018_10222V1-9b11f648cb233dc346c2d0860bbea8f9/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-C_2018', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2018D/pellicci-EmbeddedElEl_NANOAOD_2018_10222V1-e181eeebc101019f884cba30e429f851/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='EmbedTnPAnalysis_Embed-EE-D_2018', inputDBS="phys03"),
-]
-
-samplesDict['2018_embed_mumu'] = [
-    bm.JobConfig(
-        dataset='/EmbeddingRun2018A/pellicci-EmbeddedMuMu_NANOAOD_2018_10222V1-9b11f648cb233dc346c2d0860bbea8f9/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-A_2018', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2018B/pellicci-EmbeddedMuMu_NANOAOD_2018_10222V1-9b11f648cb233dc346c2d0860bbea8f9/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-B_2018', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2018C/pellicci-EmbeddedMuMu_NANOAOD_2018_10222V1-9b11f648cb233dc346c2d0860bbea8f9/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-C_2018', inputDBS="phys03"),
-    bm.JobConfig(
-        dataset='/EmbeddingRun2018D/pellicci-EmbeddedMuMu_NANOAOD_2018_10222V1-e181eeebc101019f884cba30e429f851/USER',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='EmbedTnPAnalysis_Embed-MuMu-D_2018', inputDBS="phys03"),
-]
 
 #################################################
 #                                               #
@@ -242,11 +138,11 @@ samplesDict['2018_z'] = [
 # -----------------------------
 
 samplesToSubmit = samplesDict.keys()
-samplesToSubmit.sort()
 # samplesToSubmit = ["2018_embed_ee", "2018_embed_mumu"]
+samplesToSubmit.sort()
 
 # doYears = ["2016", "2017", "2018"]
-doYears = ["2016", "2017"]
+doYears = ["2016"]
 configs = []
 
 for s in samplesToSubmit:

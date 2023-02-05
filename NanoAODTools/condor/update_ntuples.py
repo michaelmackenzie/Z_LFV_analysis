@@ -124,7 +124,9 @@ for dirname in list_dirs:
     list_processed.append(dirname)
     print "Processing entry", dirname
 
-    isdirectory = False if '.' in dirname else True
+    isdirectory = '.' not in dirname
+    if verbose and isdirectory:
+        print "--> Directory!"
 
     #clean out the previous directory if needed
     if not dryrun and isdirectory:
@@ -133,7 +135,9 @@ for dirname in list_dirs:
         os.system(clean_command)
 
     # Copy the data
-    copy_command = 'time xrdcp -fr %s%s %s' % (inputpath, dirname, outputpath)
+    flag = '-fr' if isdirectory else '-f'
+    copy_command = 'time xrdcp %s %s%s %s' % (flag, inputpath, dirname, outputpath)
+    if not isdirectory: copy_command = copy_command + dirname
     print copy_command
     if not dryrun:
         os.system(copy_command)
