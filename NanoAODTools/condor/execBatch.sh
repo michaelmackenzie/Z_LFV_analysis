@@ -79,9 +79,16 @@ do
     XRDEXIT=$?
     date
     if [[ $XRDEXIT -ne 0 ]]; then
-        rm *.root
-        echo "exit code $XRDEXIT, failure in xrdcp"
-        exit $XRDEXIT
+        echo "!!! NANOAOD file couldn't be copied, re-trying"
+        [ -f temp.root ] && rm temp.root
+        xrdcp -f ${NANOAOD} ./temp.root
+        XRDEXIT=$?
+        date
+        if [[ $XRDEXIT -ne 0 ]]; then
+            rm *.root
+            echo "exit code $XRDEXIT, failure in xrdcp"
+            exit $XRDEXIT
+        fi
     fi
     if [[ ! -f temp.root ]]; then
         echo "No temp file found, exit code 1, failure in xrdcp"
