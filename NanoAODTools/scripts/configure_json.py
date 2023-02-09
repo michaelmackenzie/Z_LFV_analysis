@@ -15,8 +15,9 @@ def parse_lumi_list(run, lumis, mask):
             mask_lumis = mask[run]
         else:
             return []
+    prev_lumi = -99
     for lumi in lumis:
-        if mask != None and not check_lumi(lumi, mask_lumis):
+        if mask is not None and not check_lumi(lumi, mask_lumis):
             continue;
         if curr_lumi == []: #first loop
             curr_lumi.append(lumi)
@@ -25,8 +26,9 @@ def parse_lumi_list(run, lumis, mask):
             lumi_list.append(curr_lumi)
             curr_lumi = [lumi]
         prev_lumi = lumi
-    curr_lumi.append(prev_lumi)
-    lumi_list.append(curr_lumi)
+    if prev_lumi > -1:
+        curr_lumi.append(prev_lumi)
+        lumi_list.append(curr_lumi)
     return lumi_list
 
 p = argparse.ArgumentParser(description='Reformat dasgoclient json into brilcalc format')
@@ -53,7 +55,6 @@ for record in data:
     run_number = record["run"][0]["run_number"]
     lumis = record["lumi"][0]["number"]
     lumis.sort()
-    # runs[run_number] = lumis
     lumis = parse_lumi_list(str(run_number), lumis, mask)
     if lumis != []:
         runs[run_number] = lumis

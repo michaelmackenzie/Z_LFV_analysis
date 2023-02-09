@@ -86,7 +86,7 @@ class SampleMap():
             DataSample(name = 'SingleMuonRun2018D',  year = 2018, isdata = True, path = '/SingleMuon/Run2018D-02Apr2020-v1/NANOAOD'),
         ]
 
-    def load_embed(self, data):
+    def load_embed(self, data, include_mini = False):
         #################################################
         #                                               #
         #---------- Running Embedded Samples -----------#
@@ -289,7 +289,74 @@ class SampleMap():
                        year=2018, isdata=False, name='Embed-MuMu-D', inputDBS="phys03"),
         ]
 
-    def load_samples(self, data):
+        ###############################################
+        # MINIAOD paths
+        ###############################################
+
+        if include_mini:
+            # 2017 Embedded samples
+            data['2017_embed_mini_emu'] = [
+                DataSample(path='/EmbeddingRun2017B/ElMuFinalState-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-EMu-B', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017C/ElMuFinalState-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-EMu-C', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017D/ElMuFinalState-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-EMu-D', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017E/ElMuFinalState-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-EMu-E', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017F/ElMuFinalState-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-EMu-F', inputDBS="phys03"),
+            ]
+            data['2017_embed_mini_etau'] = [
+                DataSample(path='/EmbeddingRun2017B/ElTauFinalState-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-ETau-B', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017C/ElTauFinalState-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-ETau-C', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017D/ElTauFinalState-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-ETau-D', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017E/ElTauFinalState-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-ETau-E', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017F/ElTauFinalState-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-ETau-F', inputDBS="phys03"),
+            ]
+            data['2017_embed_mini_mutau'] = [
+                DataSample(path='/EmbeddingRun2017B/MuTauFinalState-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-MuTau-B', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017C/MuTauFinalState-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-MuTau-C', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017D/MuTauFinalState-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-MuTau-D', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017E/MuTauFinalState-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-MuTau-E', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017F/MuTauFinalState-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-MuTau-F', inputDBS="phys03"),
+            ]
+            data['2017_embed_mini_ee'] = [
+                DataSample(path='/EmbeddingRun2017B/ElectronEmbedding-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-EE-B', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017C/ElectronEmbedding-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-EE-C', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017D/ElectronEmbedding-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-EE-D', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017E/ElectronEmbedding-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-EE-E', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017F/ElectronEmbedding-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-EE-F', inputDBS="phys03"),
+            ]
+            data['2017_embed_mini_mumu'] = [
+                DataSample(path='/EmbeddingRun2017B/MuonEmbedding-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-MuMu-B', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017C/MuonEmbedding-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-MuMu-C', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017D/MuonEmbedding-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-MuMu-D', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017E/MuonEmbedding-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-MuMu-E', inputDBS="phys03"),
+                DataSample(path='/EmbeddingRun2017F/MuonEmbedding-inputDoubleMu_94X_miniAOD-v2/USER',
+                           year=2017, isdata=False, name='Embed-MINI-MuMu-F', inputDBS="phys03"),
+            ]
+            
+    def load_samples(self, data, include_mini = False):
         self.load_data(data)
-        self.load_embed(data)
+        self.load_embed(data, include_mini)
 
