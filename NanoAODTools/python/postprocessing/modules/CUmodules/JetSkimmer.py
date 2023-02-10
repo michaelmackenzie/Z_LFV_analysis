@@ -11,10 +11,11 @@ _rootLeafType2rootBranchType = {'UChar_t': 'b', 'Char_t': 'B', 'UInt_t': 'i','In
 
 
 class JetSkimmer(Module):
-    def __init__(self, BtagWPs, nGoodJetMin, nBJetMax, Selection=None, Veto=None):
+    def __init__(self, BtagWPs, nGoodJetMin, nBJetMax, BtagBranch = 'btagDeepB', Selection=None, Veto=None):
         self.BtagWPs=BtagWPs,
         self.nGoodJetMin=nGoodJetMin,
         self.nBJetMax=nBJetMax,
+        self.BtagBranch = BtagBranch,
         self.Selection=Selection,
         self.Veto=Veto,
         self.branchType = {}
@@ -47,14 +48,20 @@ class JetSkimmer(Module):
                             _rootLeafType2rootBranchType[self.branchType[br]],
                             lenVar="nJet")
 
- #       self.out.branch("nBJet",'F')
-#        self.out.branch("nBJet",'F')        
+        if len(self.BtagWPs[0]) > 0:
+            #       self.out.branch("nBJet",'F')
+            #        self.out.branch("nBJet",'F')        
         
-        self.out.branch("nBJetMedium",'F')
-        self.out.branch("nBJetTight",'F')
+            self.out.branch("nBJetMedium",'I')
+            self.out.branch("nBJetTight",'I')
         
-        for br in ["pt","eta", "phi", "btagDeepB","btagDeepC"]:
-            self.out.branch("%s_%s" % ("BJet", br),_rootLeafType2rootBranchType['Float_t'], lenVar="nBJet")            
+            for br in ["pt","eta", "phi", self.BtagBranch[0],"btagDeepC", "partonFlavour"]:
+                if wrappedOutputTree._tree.GetBranchStatus('Jet_%s' % (br)):
+                    self.out.branch("%s_%s" % ("BJet", br),_rootLeafType2rootBranchType['Float_t'], lenVar="nBJet")
+                else: print "Jet collection is missing branch %s" % (br)
+            # self.out.branch("%s_partonFlavour" % ("BJet"),_rootLeafType2rootBranchType['Int_t'], lenVar="nBJet")
+            self.out.branch("%s_idx"  % ("BJet"),_rootLeafType2rootBranchType['Int_t'], lenVar="nBJet")
+            self.out.branch("%s_WPID" % ("BJet"),_rootLeafType2rootBranchType['Int_t'], lenVar="nBJet")
 
         pass
  
@@ -77,51 +84,54 @@ class JetSkimmer(Module):
         """process event, return True (go to next module) or False (fail, go to next event)"""
         jets = Collection(event, "Jet")
         if self.Selection[0]!=None:
- #         print self.Selection[0]
-          jets = filter( self.Selection[0], jets)
+        #         print self.Selection[0]
+            jets = filter( self.Selection[0], jets)
 
         veto=[]
         if self.Veto[0]!=None:
-          veto = filter( self.Veto[0], jets)
+            veto = filter( self.Veto[0], jets)
         if len(veto)>0:
-           print "veto from jets"
-           return False
-
-      
-        bjets={"pt":[],"eta":[],"phi":[],"btagDeepB":[]}
-    
-#        nBJet=0; nCJet=0;
-        nBJetMedium=0; nBJetTight=0;
-        for jet in jets:
-          if getattr(jet,"btagDeepB")>float(self.BtagWPs[0][0]):
-             for key in bjets.keys():
-               bjets[key].append(getattr(jet,key))
-             if getattr(jet,"btagDeepB")>float(self.BtagWPs[0][1]):
-                nBJetMedium+=1
-             if getattr(jet,"btagDeepB")>float(self.BtagWPs[0][2]):
-                nBJetTight+=1             
-             
-        if len(jets)<self.nGoodJetMin[0]:
-           print "JetSkimmer:",len(jets),"good jets found with lower limit",self.nGoodJetMin
-           return False
-           
-
-        if len(bjets)>self.nBJetMax[0]:
-            print "JetSkimmer:",len(bjets),"good b-jets found with upper limit",self.nBJetMax, "skip"
+            print "veto from jets"
             return False
+
+        if len(jets)<self.nGoodJetMin[0]:
+            print "JetSkimmer:",len(jets),"good jets found with lower limit",self.nGoodJetMin
+            return False
+
+        bjets={"pt":[],"eta":[],"phi":[],self.BtagBranch[0]:[],'partonFlavour':[],'idx':[],'WPID':[]}    
+        if len(self.BtagWPs[0]) > 0:
+            #        nBJet=0; nCJet=0;
+            nBJetMedium=0; nBJetTight=0;
+            for idx,jet in enumerate(jets):
+                if getattr(jet,self.BtagBranch[0])>float(self.BtagWPs[0][0]):
+                    for key in bjets.keys():
+                        if(hasattr(jet, key)): bjets[key].append(getattr(jet,key))
+                        elif key == 'WPID': bjets[key].append(1)
+                        elif key == 'idx': bjets[key].append(idx)
+                        else: bjets[key].append(-999)
+                    if getattr(jet,self.BtagBranch[0])>float(self.BtagWPs[0][1]):
+                        bjets[key][-1] = 2
+                        nBJetMedium+=1
+                    if getattr(jet,self.BtagBranch[0])>float(self.BtagWPs[0][2]):
+                        bjets[key][-1] = 3
+                        nBJetTight+=1             
+
+            if self.nBJetMax[0] > 0 and len(bjets)>self.nBJetMax[0]:
+                print "JetSkimmer:",len(bjets),"good b-jets found with upper limit",self.nBJetMax, "skip"
+                return False
 
         for bridx, br in enumerate(self.brlist_all):
             out = []
             for obj in jets:
                 out.append(getattr(obj, br))
-            self.out.fillBranch("%s_%s" % ("Jet", br), out) 
-        for key in bjets.keys():
-            self.out.fillBranch("%s_%s" % ("BJet", key), bjets[key]) 
+            self.out.fillBranch("%s_%s" % ("Jet", br), out)
+        if len(self.BtagWPs[0]) > 0:
+            for key in bjets.keys():
+                # if len(bjets[key]) > 0:
+                if hasattr(self.out, '%s_%s' % ("BJet", key)): self.out.fillBranch("%s_%s" % ("BJet", key), bjets[key]) 
 
-        self.out.fillBranch("nBJetMedium",nBJetMedium)
-        self.out.fillBranch("nBJetTight",nBJetTight)
-
-
+            self.out.fillBranch("nBJetMedium",nBJetMedium)
+            self.out.fillBranch("nBJetTight",nBJetTight)
 
         return True
 

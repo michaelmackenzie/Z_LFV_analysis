@@ -1,0 +1,8 @@
+# this isp a comment
+drop * # start with all
+
+#Add event period information
+keep run
+keep luminosityBlock
+keep event
+

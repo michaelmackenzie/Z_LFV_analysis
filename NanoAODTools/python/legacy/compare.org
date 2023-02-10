@@ -1,0 +1,189 @@
+* Comparing previous and new ntupling
+
+** Signal samples
+inputFile = [
+    "root://cms-xrd-global.cern.ch//store/user/pellicci/ZEMuAnalysis_2016_8028V1/ZEMuAnalysis_NANOAOD_10218V1/200211_105742/0000/ZEMuAnalysis_pythia8_NANOAOD_2016_1.root",\
+    "root://cms-xrd-global.cern.ch//store/user/pellicci/ZEMuAnalysis_2016_8028V1/ZEMuAnalysis_NANOAOD_10218V1/200211_105742/0000/ZEMuAnalysis_pythia8_NANOAOD_2016_2.root",\
+]
+
+|----------+-----------+-----------+-------------------+--------|
+| Test     | Read-mode | Rate (Hz) |     Relative Rate | N(emu) |
+|          |           |           | to previous+local |        |
+|----------+-----------+-----------+-------------------+--------|
+| Previous | XROOTD    |       1.1 |            0.0169 |    167 |
+|          | Prefetch  |      65.1 |            1.0000 |        |
+|          | local     |      65.1 |            1.0000 |        |
+|----------+-----------+-----------+-------------------+--------|
+| Matched  | XROOTD    |       1.5 |            0.0230 |    167 |
+|          | Prefetch  |      35.5 |            0.5453 |        |
+|          | Local     |      35.5 |            0.5453 |        |
+|----------+-----------+-----------+-------------------+--------|
+| Current  | XROOTD    |       1.4 |            0.0215 |    170 |
+|          | Prefetch  |      29.3 |            0.4501 |        |
+|          | Local     |      29.3 |            0.4501 |        |
+|----------+-----------+-----------+-------------------+--------|
+#+TBLFM: $4=$3/@5$3; %.4f
+
+*** Current example local processing times:
+#+BEGIN_EXAMPLE
+Module   0                       GenCount summary:        148 events seen,    43327.8 Hz
+Module   1                  LeptonSkimmer summary:        148 events seen,      157.7 Hz
+Module   2                  LeptonSkimmer summary:        148 events seen,      371.9 Hz
+Module   3                  LeptonSkimmer summary:        148 events seen,       71.5 Hz
+Module   4                  JetLepCleaner summary:        148 events seen,     3197.1 Hz
+Module   5                  JetLepCleaner summary:        148 events seen,     3121.5 Hz
+Module   6                SelectionFilter summary:        148 events seen,     3294.5 Hz
+Module   7                     JetSkimmer summary:         80 events seen,       67.2 Hz
+Module   8                  JetLepCleaner summary:         80 events seen,     1325.5 Hz
+Module   9                  JetLepCleaner summary:         80 events seen,     2049.1 Hz
+Module  10                  JetLepCleaner summary:         80 events seen,     2247.9 Hz
+Module  11                      HTSkimmer summary:         80 events seen,    31260.0 Hz
+Module  12                 GenZllAnalyzer summary:         80 events seen,      240.4 Hz
+Module  13                    GenLepCount summary:         80 events seen,     3600.6 Hz
+Module  14                    GenLepCount summary:         80 events seen,     3334.6 Hz
+Module  15                    GenLepCount summary:         80 events seen,     3122.4 Hz
+Module  16               puWeightProducer summary:         80 events seen,     2014.0 Hz
+#+END_EXAMPLE
+Total time 17.1 sec. to process 500 events. Rate = 29.3 Hz.
+
+*** Matched example local processing times:
+#+BEGIN_EXAMPLE
+Module   0                       GenCount summary:        149 events seen,    43705.9 Hz
+Module   1                  LeptonSkimmer summary:        149 events seen,      158.7 Hz
+Module   2                  LeptonSkimmer summary:        149 events seen,      380.2 Hz
+Module   3                  LeptonSkimmer summary:        149 events seen,       89.9 Hz
+Module   4                  JetLepCleaner summary:        149 events seen,     3139.5 Hz
+Module   5                  JetLepCleaner summary:        149 events seen,     3114.1 Hz
+Module   6                SelectionFilter summary:        149 events seen,     3354.4 Hz
+Module   7                 GenZllAnalyzer summary:         75 events seen,      288.6 Hz
+Module   8                    GenLepCount summary:         75 events seen,     3634.5 Hz
+Module   9                    GenLepCount summary:         75 events seen,     3393.4 Hz
+Module  10                    GenLepCount summary:         75 events seen,     3153.0 Hz
+Module  11               puWeightProducer summary:         75 events seen,     2400.0 Hz
+#+END_EXAMPLE
+Total time 14.1 sec. to process 500 events. Rate = 35.5 Hz.
+
+** Data samples
+
+inputFile = [
+"root://cmsxrootd.fnal.gov//store/data/Run2016B/SingleMuon/NANOAOD/02Apr2020_ver2-v1/240000/F5332FBF-A8F3-B441-A571-4ACAC0938D3E.root"
+]
+
+Total number of events: 19894
+|----------+-----------+-----------+---------------+--------+----------+---------+---------+-------|
+| Test     | Read-mode | Rate (Hz) | Relative Rate | N(emu) | N(mutau) | N(etau) | N(mumu) | N(ee) |
+|----------+-----------+-----------+---------------+--------+----------+---------+---------+-------|
+| Previous | Local     |     994.0 |        1.0000 |     16 |       67 |       1 |     445 |     0 |
+|----------+-----------+-----------+---------------+--------+----------+---------+---------+-------|
+| Matched  | Local     |     473.5 |        0.4764 |     16 |       67 |       1 |     444 |     0 |
+|----------+-----------+-----------+---------------+--------+----------+---------+---------+-------|
+| Current  | Local     |     431.1 |        0.4337 |     13 |       59 |       0 |     615 |     0 |
+|----------+-----------+-----------+---------------+--------+----------+---------+---------+-------|
+#+TBLFM: $4=$3/@2$3; %.4f
+
+Notes:
+- Fixed a bug in the di-muon selection of the Previous analyzer that passed mumu events with 1 muon tight and 1 loose
+(these events were then filtered out in the next stage)
+- 1 event difference in Previous vs Matched mumu is from the old selector allowing > 2 muons in an event and picking
+the first Z candidate, but the new selector removes this logic since it's ~0.2% of mumu events
+- Matched analyzer is faster than the Current due to no jet cleaning, as was done in the Previous analyzer
+
+*** Current example processing times:
+#+BEGIN_EXAMPLE
+Module   0                       GenCount summary:       8648 events seen,    11142.3 Hz
+Module   1                  LeptonSkimmer summary:       8648 events seen,     1026.8 Hz
+Module   2                  LeptonSkimmer summary:       8648 events seen,     1323.2 Hz
+Module   3                  LeptonSkimmer summary:       8648 events seen,     2327.5 Hz
+Module   4                  JetLepCleaner summary:       8648 events seen,     3462.7 Hz
+Module   5                  JetLepCleaner summary:       8648 events seen,     3538.5 Hz
+Module   6                SelectionFilter summary:       8648 events seen,    11502.8 Hz
+Module   7                     JetSkimmer summary:        687 events seen,      257.4 Hz
+Module   8                  JetLepCleaner summary:        687 events seen,     1651.6 Hz
+Module   9                  JetLepCleaner summary:        687 events seen,     2077.0 Hz
+Module  10                  JetLepCleaner summary:        687 events seen,     2054.0 Hz
+Module  11                      HTSkimmer summary:        687 events seen,    25843.4 Hz
+Module  12                    GenLepCount summary:        687 events seen,     8620.5 Hz
+Module  13                    GenLepCount summary:        687 events seen,    13307.6 Hz
+Module  14                    GenLepCount summary:        687 events seen,    13886.1 Hz
+#+END_EXAMPLE
+Total time 46.1 sec. to process 19894 events. Rate = 431.1 Hz.
+
+*** Matched example processing times:
+#+BEGIN_EXAMPLE
+Module   0                       GenCount summary:       9474 events seen,    12411.7 Hz
+Module   1                  LeptonSkimmer summary:       9474 events seen,     1113.8 Hz
+Module   2                  LeptonSkimmer summary:       9474 events seen,     1525.0 Hz
+Module   3                  LeptonSkimmer summary:       9474 events seen,     2319.3 Hz
+Module   4                  JetLepCleaner summary:       9474 events seen,     3383.6 Hz
+Module   5                  JetLepCleaner summary:       9474 events seen,     3422.2 Hz
+Module   6                SelectionFilter summary:       9474 events seen,    13361.8 Hz
+Module   7                    GenLepCount summary:        528 events seen,    11443.0 Hz
+Module   8                    GenLepCount summary:        528 events seen,    13621.6 Hz
+Module   9                    GenLepCount summary:        528 events seen,    13884.4 Hz
+#+END_EXAMPLE
+Total time 42.0 sec. to process 19894 events. Rate = 473.5 Hz.
+
+** DY MC samples
+
+inputFile = [
+"root://cmsxrootd.fnal.gov//store/mc/RunIIFall17NanoAODv7/DYJetsToTauTau_ForcedMuEleDecay_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/100000/892D0A20-8B3F-A94F-B168-FA309C3BB3C1.root"
+]
+
+Total number of events: 401145
+|----------+-----------+-----------+---------------+--------+----------+---------+---------+-------|
+| Test     | Read-mode | Rate (Hz) | Relative Rate | N(emu) | N(mutau) | N(etau) | N(mumu) | N(ee) |
+|----------+-----------+-----------+---------------+--------+----------+---------+---------+-------|
+| Previous | Local     |     624.1 |        1.0000 |   1712 |      392 |     270 |   43375 | 24193 |
+|----------+-----------+-----------+---------------+--------+----------+---------+---------+-------|
+| Matched  | Local     |     440.1 |        0.7052 |   1713 |      392 |     270 |   43177 | 24109 |
+|----------+-----------+-----------+---------------+--------+----------+---------+---------+-------|
+| Current  | Local     |     274.1 |        0.4392 |   1840 |      339 |     245 |   57057 | 35636 |
+|----------+-----------+-----------+---------------+--------+----------+---------+---------+-------|
+#+TBLFM: $4=$3/@2$3; %.4f
+
+Notes:
+- Fixed a bug in the di-muon selection of the Previous analyzer that passed mumu events with 1 muon tight and 1 loose
+(these events were then filtered out in the next stage)
+- 1 event difference in Previous vs Matched emu is not yet understood (<1/1000 difference is decent for matching though)
+- Matched analyzer is faster than the Current due to no jet cleaning, as was done in the Previous analyzer
+- The trigger cut preselection filtering increases the modular analyzer significantly, without this
+their rate is ~280 Hz
+
+*** Current example processing times:
+#+BEGIN_EXAMPLE
+Module   0                       GenCount summary:     162971 events seen,    36840.3 Hz
+Module   1                  LeptonSkimmer summary:     162971 events seen,     1076.5 Hz
+Module   2                  LeptonSkimmer summary:     162971 events seen,     1134.3 Hz
+Module   3                  LeptonSkimmer summary:     162971 events seen,     2648.6 Hz
+Module   4                  JetLepCleaner summary:     162971 events seen,     3210.0 Hz
+Module   5                  JetLepCleaner summary:     162971 events seen,     3196.0 Hz
+Module   6                SelectionFilter summary:     162971 events seen,     5960.2 Hz
+Module   7                     JetSkimmer summary:      95117 events seen,      580.2 Hz
+Module   8                  JetLepCleaner summary:      95117 events seen,     1062.4 Hz
+Module   9                  JetLepCleaner summary:      95117 events seen,     1411.4 Hz
+Module  10                  JetLepCleaner summary:      95117 events seen,     1490.5 Hz
+Module  11                      HTSkimmer summary:      95117 events seen,    21104.6 Hz
+Module  12                 GenZllAnalyzer summary:      95117 events seen,     1377.8 Hz
+Module  13                    GenLepCount summary:      95117 events seen,     3274.2 Hz
+Module  14                    GenLepCount summary:      95117 events seen,     2990.3 Hz
+Module  15                    GenLepCount summary:      95117 events seen,     2851.5 Hz
+Module  16               puWeightProducer summary:      95117 events seen,    14311.7 Hz
+#+END_EXAMPLE
+Total time 1463.5 sec. to process 401145 events. Rate = 274.1 Hz.
+
+*** Matched example processing times:
+#+BEGIN_EXAMPLE
+Module   0                       GenCount summary:     163195 events seen,    46709.5 Hz
+Module   1                  LeptonSkimmer summary:     163195 events seen,     1196.0 Hz
+Module   2                  LeptonSkimmer summary:     163195 events seen,     1255.3 Hz
+Module   3                  LeptonSkimmer summary:     163195 events seen,     2851.6 Hz
+Module   4                  JetLepCleaner summary:     163195 events seen,     3325.5 Hz
+Module   5                  JetLepCleaner summary:     163195 events seen,     3308.7 Hz
+Module   6                SelectionFilter summary:     163195 events seen,     7374.6 Hz
+Module   7                 GenZllAnalyzer summary:      69868 events seen,     1428.9 Hz
+Module   8                    GenLepCount summary:      69868 events seen,     3339.7 Hz
+Module   9                    GenLepCount summary:      69868 events seen,     3054.2 Hz
+Module  10                    GenLepCount summary:      69868 events seen,     2932.5 Hz
+Module  11               puWeightProducer summary:      69868 events seen,    16202.2 Hz
+#+END_EXAMPLE
+Total time 911.4 sec. to process 401145 events. Rate = 440.1 Hz.
