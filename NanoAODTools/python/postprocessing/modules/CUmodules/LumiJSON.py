@@ -15,6 +15,7 @@ class LumiJSON(Module):
     def __init__(self):
         self.lumi_map = dict()
         self.seen = 0
+        self.runs = 0
         self.lumis = 0
         pass
 
@@ -28,19 +29,22 @@ class LumiJSON(Module):
         pass
  
     def endFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
-        print "LumiJSON: Saw %i events, %i lumis" % (self.seen, self.lumis)
+        print "LumiJSON: Saw %i events, %i runs, %i lumis" % (self.seen, self.runs, self.lumis)
         self.write_lumis()
         pass
 
     def write_lumis(self):
         f = open('file_lumis_JSON.txt', 'w')
         f.write('{\n')
+        fverbose = open('file_lumis_verbose_JSON.txt', 'w')
+        fverbose.write('{\n')
         runs = self.lumi_map.keys()
         runs.sort()
         for index,run in enumerate(runs):
             lumi_list = self.lumi_map[run]
             lumi_list.sort()
             f.write("  \"%i\": [" % (run))
+            fverbose.write("  \"%i\": [" % (run))
             prev_lumi = -99
             nlumis = 0
             for lumi in lumi_list:
@@ -52,18 +56,27 @@ class LumiJSON(Module):
                 else: #first lumi, so none to close
                     f.write("[%i" % (lumi))
                     nlumis = 1
+                if prev_lumi < -1: #first lumi
+                    fverbose.write("[%i" % (lumi))
+                else:
+                    fverbose.write(", %i" % (lumi))
                 prev_lumi = lumi
             #close the last line
             if index < len(runs) - 1:
                 f.write(", %i]],\n" % (prev_lumi))
+                fverbose.write("]],\n")
             else:
                 f.write(", %i]]\n" % (prev_lumi))
+                fverbose.write("]]\n")
         #close the run list
         f.write("}")
         f.close()
+        fverbose.write("}")
+        fverbose.close()
 
     def add_lumi(self, run, lumi):
         if not run in self.lumi_map:
+            self.runs = self.runs + 1
             lumi_list = [lumi]
             self.lumi_map[run] = lumi_list
             return True

@@ -149,15 +149,6 @@ samplesDict['2016_signal'] = [
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2016/ZMuTau_NANO_200k/CRAB_UserFiles/ZLFVAnalysis_NANO_8028V2/221024_122352/0000/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZMuTau-v2_2016', user_redir = 'root://eoscms.cern.ch/',
         user_nfiles = 1, user_tag = 'Sum'),
-    # bm.JobConfig( 
-    #     dataset='/ZEMuAnalysis_2016_8028V1/pellicci-ZEMuAnalysis_NANOAOD_10218V1-b1c578360797952dfc156561d5f36519/USER',
-    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZEMu_2016', inputDBS="phys03"),
-    # bm.JobConfig( 
-    #     dataset='/LFVAnalysis_ZETau_2016_8028V1/mimacken-LFVAnalysis_NANOAOD_8028V1-d11e799790792310589ef5ee63b17d7a/USER',
-    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZETau_2016', inputDBS="phys03"),
-    # bm.JobConfig( 
-    #     dataset='/LFVAnalysis_ZMuTau_2016_8028V1/mimacken-LFVAnalysis_NANOAOD_8028V1-d11e799790792310589ef5ee63b17d7a/USER',
-    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZMuTau_2016', inputDBS="phys03"),
     # #### h samples ####
     bm.JobConfig( 
         dataset='/LFVAnalysis_HEMu_2016_8028V1/mimacken-LFVAnalysis_NANOAOD_8028V1-d11e799790792310589ef5ee63b17d7a/USER',
@@ -397,15 +388,6 @@ samplesDict['2017_signal'] = [
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017/ZMuTau_NANO_2017_200k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_200k/221030_185500/0000/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZMuTau-v2_2017', user_redir = 'root://eoscms.cern.ch/',
         user_nfiles = 1, user_tag = 'Sum'),
-    # bm.JobConfig(
-    #     dataset='/LFVAnalysis_ZEMu_2017_934V2/pellicci-LFVAnalysis_NANOAOD_10218V2-df769e3b6a68f1e897c86e71b2345849/USER',
-    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZEMu_2017', inputDBS="phys03"),
-    # bm.JobConfig( 
-    #     dataset='/LFVAnalysis_ZETau_2017_934V2/pellicci-LFVAnalysis_NANOAOD_10218V2-df769e3b6a68f1e897c86e71b2345849/USER',
-    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZETau_2017', inputDBS="phys03"),
-    # bm.JobConfig( 
-    #     dataset='/LFVAnalysis_ZMuTau_2017_934V2/pellicci-LFVAnalysis_NANOAOD_10218V2-df769e3b6a68f1e897c86e71b2345849/USER',
-    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZMuTau_2017', inputDBS="phys03"),
     #### h samples ####
     bm.JobConfig( 
         dataset='/LFVAnalysis_HEMu_2017_934V2/pellicci-LFVAnalysis_NANOAOD_10218V2-df769e3b6a68f1e897c86e71b2345849/USER',
@@ -586,15 +568,6 @@ samplesDict['2018_signal'] = [
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2018/ZMuTau_NANO_2018_200k/CRAB_UserFiles/ZLFVAnalysis_NANO_2018_200k/221108_132555/0000/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZMuTau-v2_2018', user_redir = 'root://eoscms.cern.ch/',
         user_nfiles = 1, user_tag = 'Sum'),
-    # bm.JobConfig( 
-    #     dataset='/LFVAnalysis_ZEMu_2018_10218V1/pellicci-LFVAnalysis_NANOAOD_10218V1-a7880b551d3b12f0ed185e04212304eb/USER',
-    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZEMu_2018', inputDBS="phys03"),
-    # bm.JobConfig( 
-    #     dataset='/LFVAnalysis_ZETau_2018_10218V1/pellicci-LFVAnalysis_NANOAOD_10218V1-a7880b551d3b12f0ed185e04212304eb/USER',
-    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZETau_2018', inputDBS="phys03"),
-    # bm.JobConfig( 
-    #     dataset='/LFVAnalysis_ZMuTau_2018_10218V1/pellicci-LFVAnalysis_NANOAOD_10218V1-a7880b551d3b12f0ed185e04212304eb/USER',
-    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZMuTau_2018', inputDBS="phys03"),
     #### h samples ####
     bm.JobConfig( 
         dataset='/LFVAnalysis_HEMu_2018_10218V1/pellicci-LFVAnalysis_NANOAOD_10218V1-a7880b551d3b12f0ed185e04212304eb/USER',
@@ -806,7 +779,7 @@ samplesDict['2018_qcd'] = [
 samplesToSubmit = samplesDict.keys()
 
 samplesToSubmit.sort()
-doYears = ["2017"]
+doYears = ["2018"]
 # doYears = ["2016", "2017", "2018"]
 sampleTag = ""
 sampleVeto = ""
