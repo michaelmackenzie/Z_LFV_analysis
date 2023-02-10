@@ -6,6 +6,7 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetLepCleaner im
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetPUIDWeight import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.ZpTWeight import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.SignalpTWeight import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.MCEra import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonSF import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.EmbeddingUnfolding import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.SelectionFilter import *
@@ -49,14 +50,9 @@ maxEntries= int(sys.argv[4]) if nargs > 4 else None
 firstEntry= int(sys.argv[5]) if nargs > 5 else 0
 if maxEntries < 0: maxEntries = None
 
-# FIXME: period should be randomly selected event by event
-period = 0
 
 #Whether or not to prefetch the file
 prefetch  = False
-
-#Drop slow modules
-dropSlow = False
 
 if isData not in ["data", "MC", "Embedded"]:
    print "Unknown data flag %s" % (isData)
@@ -110,8 +106,19 @@ modules=[]
 GenCounter=GenCount()
 modules.append(GenCounter)
 
+#Randomly assign a data era to MC
+if isData == "MC":
+   if year == "2016":
+      lumis = [19.72, 16.14]
+   elif year == "2018":
+      lumis = [27.66, 31.93]
+   else: #don't split 2017 for now
+      lumis = []
+   MCera = MCEra(lumis = lumis)
+   modules.append(MCera)
+   
 #prefire probability, before jet/photon/electron collection is skimmed
-if isData == "MC" and not dropSlow: #only do on MC, 2016 and 2017
+if isData == "MC": #only do on MC, 2016 and 2017
    if year == "2016":
       PrefireCorr = PrefCorr(jetroot="L1prefiring_jetpt_2016BtoH.root",
                              jetmapname="L1prefiring_jetpt_2016BtoH",
@@ -231,7 +238,7 @@ elif year == "2018":
 # modules.append(jmeCorrections())
 
 # JET MET uncertainties, before jet cleaning is applied
-if isData == "MC" and not dropSlow: #FIXME: Can this be done with PuppiMET?
+if isData == "MC": #FIXME: Can this be done with PuppiMET?
    if year == "2016":
       modules.append(jetmetUncertainties2016())
    elif year == "2017":
@@ -327,21 +334,21 @@ if not isData == "data":
    SignalptCorrection=SignalpTWeight(year = year, branch = "GenZll")
    modules.append(SignalptCorrection)
 
-   MuonIDWeight=LeptonSF(year = year, period = period, Lepton = 'Muon', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded')
+   MuonIDWeight=LeptonSF(year = year, Lepton = 'Muon', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded')
    modules.append(MuonIDWeight)
 
    #Iso ID working point is fixed to Tight, working point here refers to Muon ID working point
-   MuonIsoIDWeight=LeptonSF(year = year, period = period, Lepton = 'Muon', Correction = 'IsoID', working_point = 'Medium', Embed = isData == 'Embedded')
+   MuonIsoIDWeight=LeptonSF(year = year, Lepton = 'Muon', Correction = 'IsoID', working_point = 'Medium', Embed = isData == 'Embedded')
    modules.append(MuonIsoIDWeight)
 
-   ElectronIDWeight=LeptonSF(year = year, period = period, Lepton = 'Electron', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded')
+   ElectronIDWeight=LeptonSF(year = year, Lepton = 'Electron', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded')
    modules.append(ElectronIDWeight)
 
    #Iso ID working point is fixed to Tight, working point here refers to WP90 ID
-   ElectronIsoIDWeight=LeptonSF(year = year, period = period, Lepton = 'Electron', Correction = 'IsoID', working_point = 'Medium', Embed = isData == 'Embedded')
+   ElectronIsoIDWeight=LeptonSF(year = year, Lepton = 'Electron', Correction = 'IsoID', working_point = 'Medium', Embed = isData == 'Embedded')
    modules.append(ElectronIsoIDWeight)
 
-   ElectronRecoIDWeight=LeptonSF(year = year, period = period, Lepton = 'Electron', Correction = 'RecoID', working_point = 'Medium', Embed = isData == 'Embedded')
+   ElectronRecoIDWeight=LeptonSF(year = year,  Lepton = 'Electron', Correction = 'RecoID', working_point = 'Medium', Embed = isData == 'Embedded')
    modules.append(ElectronRecoIDWeight)
 
    if isData == 'Embedded':
@@ -403,13 +410,12 @@ modules.append(GenElectronCount)
 
 #configure the pileup module and the json file filtering
 if isData == "MC":
-   if not dropSlow:
-      if year == "2016":
-         modules.append(puAutoWeight_2016())
-      elif year == "2017":
-         modules.append(puAutoWeight_2017())
-      elif year == "2018":
-         modules.append(puAutoWeight_2018())
+   if year == "2016":
+      modules.append(puAutoWeight_2016())
+   elif year == "2017":
+      modules.append(puAutoWeight_2017())
+   elif year == "2018":
+      modules.append(puAutoWeight_2018())
    jsonFile=None
 else: #data/embedding
    if year == "2016" :

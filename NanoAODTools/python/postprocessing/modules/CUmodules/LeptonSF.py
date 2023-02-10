@@ -13,9 +13,8 @@ _rootLeafType2rootBranchType = {
 
 
 class LeptonSF(Module):
-    def __init__(self, year, period, Lepton, Correction, working_point = 'Medium', Embed = False, verbose=0):
+    def __init__(self, year, Lepton, Correction, working_point = 'Medium', Embed = False, verbose=0):
         self.year = int(year)
-        self.period = period
         self.Lepton = Lepton
         self.Correction = Correction
         self.working_point = working_point
@@ -24,7 +23,8 @@ class LeptonSF(Module):
         known_leptons = ['Muon', 'Electron']
         if Lepton not in known_leptons:
             raise Exception("Unknown lepton %s for lepton corrections" % (Lepton))
-
+        self.files = []
+        self.hists = []
         pass
 
     def beginJob(self):
@@ -70,25 +70,29 @@ class LeptonSF(Module):
         if self.Correction == 'ID': mode = 1
         elif self.Correction == 'IsoID': mode = 2
         path += '_mode-%i_%i' % (mode, self.year)
-        if self.year == 2016: path += '_period_%i' % (self.period)
-        path += '.root'
+        periods = [0,1] if self.year == 2016 else [0]
 
-        if self.verbose > 0:
-            print "Opening correction file %s" % (path)
-        self.corr_file = ROOT.TFile.Open(path, 'READ')
-        hist_name = 'PtVsEtaSF' if not useMC else 'PtVsEtaDYMC'
-        if not self.corr_file or self.corr_file.IsZombie():
-            raise Exception("Failed to open %s %s correction file" % (self.Lepton, self.Correction))
-        if not self.corr_file.GetListOfKeys().Contains(hist_name):
-            raise Exception("Failed to retrieve %s %s correction histogram: %s" % (self.Lepton, self.Correction, hist_name))
-        if useMC and not self.corr_file.GetListOfKeys().Contains('PtVsEtaData'):
-            raise Exception("Failed to retrieve %s %s Data correction histogram: %s" % (self.Lepton, self.Correction, hist_name))
+        for period in periods:
+            fname = path
+            if self.year == 2016: fname += '_period_%i' % (period)
+            fname += '.root'
 
-        if useMC:
-            self.hist = self.corr_file.Get('PtVsEtaData')
-            self.hist.Divide(self.corr_file.Get('PtVsEtaDYMC'))
-        else:
-            self.hist = self.corr_file.Get(hist_name)
+            if self.verbose > 0:
+                print "Opening correction file %s" % (fname)
+            self.files.append(ROOT.TFile.Open(fname, 'READ'))
+            hist_name = 'PtVsEtaSF' if not useMC else 'PtVsEtaDYMC'
+            if not self.files[-1] or self.files[-1].IsZombie():
+                raise Exception("Failed to open %s %s correction file" % (self.Lepton, self.Correction))
+            if not self.files[-1].GetListOfKeys().Contains(hist_name):
+                raise Exception("Failed to retrieve %s %s correction histogram: %s" % (self.Lepton, self.Correction, hist_name))
+            if useMC and not self.files[-1].GetListOfKeys().Contains('PtVsEtaData'):
+                raise Exception("Failed to retrieve %s %s Data correction histogram: %s" % (self.Lepton, self.Correction, hist_name))
+
+            if useMC:
+                self.hists.append(self.files[-1].Get('PtVsEtaData'))
+                self.hists[-1].Divide(self.files[-1].Get('PtVsEtaDYMC'))
+            else:
+                self.hists.append(self.files[-1].Get(hist_name))
         pass
 
     #--------------------------------------------------------------------------------------------------------
@@ -97,47 +101,49 @@ class LeptonSF(Module):
         if self.Correction not in known_corr:
             raise Exception("Unknown %s correction %s" % (self.Lepton, self.Correction))
         path = os.environ['CMSSW_BASE'] + '/src/PhysicsTools/NanoAODTools/data/muon/'
-        if self.Correction == 'ID':
-            known_wp = ['Medium', 'Tight']
-            if self.working_point not in known_wp:
-                raise Exception("Unknown %s %s correction working point %s" % (self.Lepton, self.Correction, self.working_point))
-            if self.year == 2016:
-                if self.period == 0:
-                    self.corr_file = ROOT.TFile.Open(path + 'RunBCDEF_SF_ID_muon_2016.root', 'READ')
-                else:
-                    self.corr_file = ROOT.TFile.Open(path + 'RunGH_SF_ID_muon_2016.root', 'READ')
-                hist_name = 'NUM_%sID_DEN_genTracks_eta_pt' % (self.working_point)
-            elif self.year == 2017:
-                self.corr_file = ROOT.TFile.Open(path + '2017_Mu_RunBCDEF_SF_ID.root', 'READ')
-                hist_name = 'NUM_%sID_DEN_genTracks_pt_abseta' % (self.working_point)
-            elif self.year == 2018:
-                self.corr_file = ROOT.TFile.Open(path + 'RunABCD_SF_ID_muon_2018.root', 'READ')
-                hist_name = 'NUM_%sID_DEN_TrackerMuons_pt_abseta' % (self.working_point)
-        elif self.Correction == 'IsoID':
-            known_wp = ['Tight', 'TightIDandIPCut', 'Medium', 'MediumID']
-            if self.working_point not in known_wp:
-                raise Exception("Unknown %s %s correction working point %s" % (self.Lepton, self.Correction, self.working_point))
-            if self.working_point == 'Tight': self.working_point = 'TightIDandIPCut'
-            if self.working_point == 'Medium': self.working_point = 'MediumID'
-            if self.year == 2016:
-                if self.period == 0:
-                    self.corr_file = ROOT.TFile.Open(path + 'RunBCDEF_SF_ISO_muon_2016.root', 'READ')
-                else:
-                    self.corr_file = ROOT.TFile.Open(path + 'RunGH_SF_ISO_muon_2016.root', 'READ')
-                hist_name = 'NUM_TightRelIso_DEN_%s_eta_pt' % (self.working_point)
-            elif self.year == 2017:
-                self.corr_file = ROOT.TFile.Open(path + '2017_Mu_RunBCDEF_SF_ISO.root', 'READ')
-                hist_name = 'NUM_TightRelIso_DEN_%s_pt_abseta' % (self.working_point)
-            elif self.year == 2018:
-                self.corr_file = ROOT.TFile.Open(path + 'RunABCD_SF_ISO_muon_2018.root', 'READ')
-                hist_name = 'NUM_TightRelIso_DEN_%s_pt_abseta' % (self.working_point)
+        periods = [0,1] if self.year == 2016 else [0]
+        for period in periods:
+            if self.Correction == 'ID':
+                known_wp = ['Medium', 'Tight']
+                if self.working_point not in known_wp:
+                    raise Exception("Unknown %s %s correction working point %s" % (self.Lepton, self.Correction, self.working_point))
+                if self.year == 2016:
+                    if period == 0:
+                        self.files.append(ROOT.TFile.Open(path + 'RunBCDEF_SF_ID_muon_2016.root', 'READ'))
+                    else:
+                        self.files.append(ROOT.TFile.Open(path + 'RunGH_SF_ID_muon_2016.root', 'READ'))
+                    hist_name = 'NUM_%sID_DEN_genTracks_eta_pt' % (self.working_point)
+                elif self.year == 2017:
+                    self.files.append(ROOT.TFile.Open(path + '2017_Mu_RunBCDEF_SF_ID.root', 'READ'))
+                    hist_name = 'NUM_%sID_DEN_genTracks_pt_abseta' % (self.working_point)
+                elif self.year == 2018:
+                    self.files.append(ROOT.TFile.Open(path + 'RunABCD_SF_ID_muon_2018.root', 'READ'))
+                    hist_name = 'NUM_%sID_DEN_TrackerMuons_pt_abseta' % (self.working_point)
+            elif self.Correction == 'IsoID':
+                known_wp = ['Tight', 'TightIDandIPCut', 'Medium', 'MediumID']
+                if self.working_point not in known_wp:
+                    raise Exception("Unknown %s %s correction working point %s" % (self.Lepton, self.Correction, self.working_point))
+                if self.working_point == 'Tight': self.working_point = 'TightIDandIPCut'
+                if self.working_point == 'Medium': self.working_point = 'MediumID'
+                if self.year == 2016:
+                    if period == 0:
+                        self.files.append(ROOT.TFile.Open(path + 'RunBCDEF_SF_ISO_muon_2016.root', 'READ'))
+                    else:
+                        self.files.append(ROOT.TFile.Open(path + 'RunGH_SF_ISO_muon_2016.root', 'READ'))
+                    hist_name = 'NUM_TightRelIso_DEN_%s_eta_pt' % (self.working_point)
+                elif self.year == 2017:
+                    self.files.append(ROOT.TFile.Open(path + '2017_Mu_RunBCDEF_SF_ISO.root', 'READ'))
+                    hist_name = 'NUM_TightRelIso_DEN_%s_pt_abseta' % (self.working_point)
+                elif self.year == 2018:
+                    self.files.append(ROOT.TFile.Open(path + 'RunABCD_SF_ISO_muon_2018.root', 'READ'))
+                    hist_name = 'NUM_TightRelIso_DEN_%s_pt_abseta' % (self.working_point)
 
-        if not self.corr_file or self.corr_file.IsZombie():
-            raise Exception("Failed to open %s %s correction file" % (self.Lepton, self.Correction))
-        if not self.corr_file.GetListOfKeys().Contains(hist_name):
-            raise Exception("Failed to retrieve %s %s %s correction histogram: %s" % (self.Lepton, self.working_point, self.Correction, hist_name))
+            if not self.files[-1] or self.files[-1].IsZombie():
+                raise Exception("Failed to open %s %s correction file" % (self.Lepton, self.Correction))
+            if not self.files[-1].GetListOfKeys().Contains(hist_name):
+                raise Exception("Failed to retrieve %s %s %s correction histogram: %s" % (self.Lepton, self.working_point, self.Correction, hist_name))
 
-        self.hist = self.corr_file.Get(hist_name)
+            self.hists.append(self.files[-1].Get(hist_name))
         pass
 
     def init_electron(self):
@@ -146,48 +152,51 @@ class LeptonSF(Module):
             raise Exception("Unknown %s correction %s" % (self.Lepton, self.Correction))
         path = os.environ['CMSSW_BASE'] + '/src/PhysicsTools/NanoAODTools/data/electron/'
         hist_name = 'EGamma_SF2D'
-        if self.Correction == 'ID':
-            known_wp = ['Medium']
-            if self.working_point not in known_wp:
-                raise Exception("Unknown %s %s correction working point %s" % (self.Lepton, self.Correction, self.working_point))
-            if   self.year == 2016: self.corr_file = ROOT.TFile.Open(path + '2016LegacyReReco_ElectronMVA90noiso_Fall17V2.root', 'READ')
-            elif self.year == 2017: self.corr_file = ROOT.TFile.Open(path + '2017_ElectronMVA90noiso.root', 'READ')
-            elif self.year == 2018: self.corr_file = ROOT.TFile.Open(path + '2018_ElectronMVA90noiso.root', 'READ')
-        elif self.Correction == 'IsoID':
-            self.init_embed(useMC = True)
-            return
-        elif self.Correction == 'RecoID':
-            if   self.year == 2016: self.corr_file = ROOT.TFile.Open(path + 'EGM2D_BtoH_GT20GeV_RecoSF_Legacy2016.root', 'READ')
-            elif self.year == 2017: self.corr_file = ROOT.TFile.Open(path + 'egammaEffi.txt_EGM2D_runBCDEF_passingRECO_2017.root', 'READ')
-            elif self.year == 2018: self.corr_file = ROOT.TFile.Open(path + 'egammaEffi.txt_EGM2D_updatedAll_2018.root', 'READ')
+        periods = [0,1] if self.year == 2016 else [0]
+        for period in periods:
+            if self.Correction == 'ID':
+                known_wp = ['Medium']
+                if self.working_point not in known_wp:
+                    raise Exception("Unknown %s %s correction working point %s" % (self.Lepton, self.Correction, self.working_point))
+                if   self.year == 2016: self.files.append(ROOT.TFile.Open(path + '2016LegacyReReco_ElectronMVA90noiso_Fall17V2.root', 'READ'))
+                elif self.year == 2017: self.files.append(ROOT.TFile.Open(path + '2017_ElectronMVA90noiso.root', 'READ'))
+                elif self.year == 2018: self.files.append(ROOT.TFile.Open(path + '2018_ElectronMVA90noiso.root', 'READ'))
+            elif self.Correction == 'IsoID':
+                self.init_embed(useMC = True)
+                return
+            elif self.Correction == 'RecoID':
+                if   self.year == 2016: self.files.append(ROOT.TFile.Open(path + 'EGM2D_BtoH_GT20GeV_RecoSF_Legacy2016.root', 'READ'))
+                elif self.year == 2017: self.files.append(ROOT.TFile.Open(path + 'egammaEffi.txt_EGM2D_runBCDEF_passingRECO_2017.root', 'READ'))
+                elif self.year == 2018: self.files.append(ROOT.TFile.Open(path + 'egammaEffi.txt_EGM2D_updatedAll_2018.root', 'READ'))
 
-        if not self.corr_file or self.corr_file.IsZombie():
-            raise Exception("Failed to open %s %s correction file" % (self.Lepton, self.Correction))
-        if not self.corr_file.GetListOfKeys().Contains(hist_name):
-            raise Exception("Failed to retrieve %s %s %s correction histogram: %s" % (self.Lepton, self.working_point, self.Correction, hist_name))
+            if not self.files[-1] or self.files[-1].IsZombie():
+                raise Exception("Failed to open %s %s correction file" % (self.Lepton, self.Correction))
+            if not self.files[-1].GetListOfKeys().Contains(hist_name):
+                raise Exception("Failed to retrieve %s %s %s correction histogram: %s" % (self.Lepton, self.working_point, self.Correction, hist_name))
 
-        self.hist = self.corr_file.Get(hist_name)
+            self.hists.append(self.files[-1].Get(hist_name))
         pass
 
-    def get_weight(self, lepton):
+    def get_weight(self, period, lepton):
         #All corrections are 2D functions of eta (|eta|) and pT
         eta = lepton.eta
         pt  = lepton.pt
+        hist = self.hists[period]
 
         #determine which axis is which by checking which range is consistent with eta/pT
-        eta_x = self.hist.GetXaxis().GetBinLowEdge(self.hist.GetNbinsX()) < 10.
-        eta_axis = self.hist.GetXaxis() if eta_x else self.hist.GetYaxis()
+        eta_x = hist.GetXaxis().GetBinLowEdge(hist.GetNbinsX()) < 10.
+        eta_axis = hist.GetXaxis() if eta_x else hist.GetYaxis()
         #determine if it uses |eta| or eta by the axis eta range
         eta = eta if eta_axis.GetBinLowEdge(1) < -1. else math.fabs(eta)
 
         x_var = eta if eta_x else pt
         y_var = eta if eta_x else pt
 
-        x_bin = max(1, min(self.hist.GetNbinsX(), self.hist.GetXaxis().FindBin(x_var)))
-        y_bin = max(1, min(self.hist.GetNbinsY(), self.hist.GetYaxis().FindBin(y_var)))
+        x_bin = max(1, min(hist.GetNbinsX(), hist.GetXaxis().FindBin(x_var)))
+        y_bin = max(1, min(hist.GetNbinsY(), hist.GetYaxis().FindBin(y_var)))
 
-        weight = self.hist.GetBinContent(x_bin, y_bin)
-        error = self.hist.GetBinError(x_bin, y_bin)
+        weight = hist.GetBinContent(x_bin, y_bin)
+        error = hist.GetBinError(x_bin, y_bin)
         #Add an additional uncertainty on Embedded lepton scales
         if self.Embed or (self.Lepton == 'Electron' and self.Correction == 'IsoID'):
             if self.Lepton == 'Muon':
@@ -205,14 +214,18 @@ class LeptonSF(Module):
 
         if not hasattr(event, "%s_pt" % (self.Lepton)):
             raise Exception("Lepton branch %s not defined!" % (self.Lepton))
-        
+        if len(self.hists) == 0:
+            raise Exception("No correction histograms are loaded!")
+
         leptons = Collection(event, self.Lepton)
 
         weights = []
         ups = []
         downs = []
+        period = event.MCEra if hasattr(event, "MCEra") else 0
+        period = min(period, len(self.hists) - 1)
         for lepton in leptons:
-            weight, up, down = self.get_weight(lepton)
+            weight, up, down = self.get_weight(period, lepton)
             weights.append(weight)
             ups.append(up)
             downs.append(down)
