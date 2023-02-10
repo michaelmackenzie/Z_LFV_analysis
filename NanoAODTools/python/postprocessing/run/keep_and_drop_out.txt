@@ -61,6 +61,9 @@ keep Pileup_nPU
 keep Pileup_nTrueInt
 keep puWeight*
 
+#MC era definition
+keep MCEra
+
 #prefire info (2016 and 2017 only)
 keep PrefireWeight*
 
