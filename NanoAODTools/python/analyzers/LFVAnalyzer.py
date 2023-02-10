@@ -4,6 +4,10 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.HTSkimmer import
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetSkimmer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetLepCleaner import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetPUIDWeight import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.ZpTWeight import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.SignalpTWeight import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonSF import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.EmbeddingUnfolding import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.SelectionFilter import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenCount import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenLepCount import *
@@ -44,6 +48,9 @@ year      =   sys.argv[3]
 maxEntries= int(sys.argv[4]) if nargs > 4 else None
 firstEntry= int(sys.argv[5]) if nargs > 5 else 0
 if maxEntries < 0: maxEntries = None
+
+# FIXME: period should be randomly selected event by event
+period = 0
 
 #Whether or not to prefetch the file
 prefetch  = False
@@ -313,6 +320,34 @@ if not isData == "data":
       verbose=-1
    )
    modules.append(ZllBuilder)
+
+   ZptCorrection=ZpTWeight(year = year, branch = "GenZll")
+   modules.append(ZptCorrection)
+
+   SignalptCorrection=SignalpTWeight(year = year, branch = "GenZll")
+   modules.append(SignalptCorrection)
+
+   MuonIDWeight=LeptonSF(year = year, period = period, Lepton = 'Muon', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded')
+   modules.append(MuonIDWeight)
+
+   #Iso ID working point is fixed to Tight, working point here refers to Muon ID working point
+   MuonIsoIDWeight=LeptonSF(year = year, period = period, Lepton = 'Muon', Correction = 'IsoID', working_point = 'Medium', Embed = isData == 'Embedded')
+   modules.append(MuonIsoIDWeight)
+
+   ElectronIDWeight=LeptonSF(year = year, period = period, Lepton = 'Electron', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded')
+   modules.append(ElectronIDWeight)
+
+   #Iso ID working point is fixed to Tight, working point here refers to WP90 ID
+   ElectronIsoIDWeight=LeptonSF(year = year, period = period, Lepton = 'Electron', Correction = 'IsoID', working_point = 'Medium', Embed = isData == 'Embedded')
+   modules.append(ElectronIsoIDWeight)
+
+   ElectronRecoIDWeight=LeptonSF(year = year, period = period, Lepton = 'Electron', Correction = 'RecoID', working_point = 'Medium', Embed = isData == 'Embedded')
+   modules.append(ElectronRecoIDWeight)
+
+   if isData == 'Embedded':
+      EmbeddingWeight=EmbeddingUnfolding(year = year)
+      modules.append(EmbeddingWeight)
+
    # RecoElectronMatcher=GenRecoMatcher(
    #                genParticles=['GenElectron'],
    #                recoCollections=['Electron'],

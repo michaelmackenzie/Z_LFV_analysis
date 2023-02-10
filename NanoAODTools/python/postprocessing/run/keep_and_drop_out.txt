@@ -64,6 +64,13 @@ keep puWeight*
 #prefire info (2016 and 2017 only)
 keep PrefireWeight*
 
+#Drell-Yan Z pT re-weighting
+keep ZpTWeight*
+keep SignalpTWeight*
+
+#Embedding unfolding
+keep Embedding*
+
 #Add event period information
 keep run
 keep luminosityBlock

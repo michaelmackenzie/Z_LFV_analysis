@@ -74,6 +74,7 @@ elif mc_data != "":
 if year != "":
     print "Processing only year tag", year
 
+if outputpath[-1] != '/': outputpath += '/'
 print "Using input path %s and output path %s" % (inputpath, outputpath)
 
 #---------------------------------#
@@ -231,7 +232,7 @@ for dirname in list_dirs:
             dataset_dir = '/eos/cms/store/group/phys_smp/ZLFV/' if host == 'lxplus' else '/eos/uscms/store/user/%s/' % (user)
             dataset_dir = dataset_dir + outputpath + outputname[:-5]
             if verbose:
-                print "Making directory %s" % (dataset_dir)
+                print "If needed, making directory %s" % (dataset_dir)
             os.system('[ ! -d %s ] && mkdir %s' % (dataset_dir, dataset_dir))
             # remove previous ntuples
             if not dryrun:

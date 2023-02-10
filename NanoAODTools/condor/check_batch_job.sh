@@ -7,6 +7,7 @@ Help() {
     echo "--dryrun               : prepare but don't submit resubmission job, with --resubmit also used"
     echo "--eosdir               : EOS directory to search for the job output in"
     echo "--tag                  : Dataset tag to use"
+    echo "--vet                  : Dataset tag to ignore"
     echo "--checkfiles           : Do basic checks on the output files"
     echo "--ignorerunning        : Ignore still running jobs"
     echo "--override-outdir      : Override expected output job directory"
@@ -28,6 +29,7 @@ JOBNAME=""
 CHECKFILES=""
 RESUBMIT="" #"" for nothing, "dryrun" to prepare resubmission, anything else (e.g. "d") to perform resubmission
 TAG="" #dataset tag to consider
+VETO="" #dataset tag to ignore
 if [[ "${HOSTNAME}" == *"lxplus"* ]]
 then
     HOST="lxplus"
@@ -127,6 +129,11 @@ do
         iarg=$((iarg + 1))
         eval "var=\${${iarg}}"
         TAG=${var}
+    elif [[ "${var}" == "--veto" ]]
+    then
+        iarg=$((iarg + 1))
+        eval "var=\${${iarg}}"
+        VETO=${var}
     elif [[ "${JOBNAME}" != "" ]]
     then
         echo "Arguments aren't configured correctly!"
@@ -186,6 +193,14 @@ do
         if [ ${VERBOSE} -gt 1 ]
         then
             echo "Skipping file ${FILE} as tag ${TAG} not found"
+        fi
+        continue
+    fi
+    if  [[ "${VETO}" != "" ]] && grep -q "${VETO}" <<< "${FILE}"
+    then
+        if [ ${VERBOSE} -gt 1 ]
+        then
+            echo "Skipping file ${FILE} in job ${JOB} due to veto tag"
         fi
         continue
     fi
