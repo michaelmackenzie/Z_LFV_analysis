@@ -51,58 +51,12 @@ nEvtPerJob = 3 # faster jobs, # in unit of 1e6 , 5-10 are good settings.
 #################################################
 # dataset, nEvtPerJobIn1e6, year, isData, suffix
 
-
-# Single Electron
-samplesDict['2016_SingleElectron'] = [ 
-    bm.JobConfig( '/SingleElectron/Run2016B-02Apr2020_ver2-v1/NANOAOD', nEvtPerJob, "2016", True, 'LFVAnalysis_SingleElectronRun2016B_2016'),
-    bm.JobConfig( '/SingleElectron/Run2016C-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleElectronRun2016C_2016'),
-    bm.JobConfig( '/SingleElectron/Run2016D-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleElectronRun2016D_2016'),
-    bm.JobConfig( '/SingleElectron/Run2016E-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleElectronRun2016E_2016'),
-    bm.JobConfig( '/SingleElectron/Run2016F-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleElectronRun2016F_2016'),
-    bm.JobConfig( '/SingleElectron/Run2016G-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleElectronRun2016G_2016'),
-    bm.JobConfig( '/SingleElectron/Run2016H-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleElectronRun2016H_2016')
-]
-
-samplesDict['2017_SingleElectron'] = [ 
-    bm.JobConfig( '/SingleElectron/Run2017B-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleElectronRun2017B_2017'),
-    bm.JobConfig( '/SingleElectron/Run2017C-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleElectronRun2017C_2017'),
-    bm.JobConfig( '/SingleElectron/Run2017D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleElectronRun2017D_2017'),
-    bm.JobConfig( '/SingleElectron/Run2017E-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleElectronRun2017E_2017'),
-    bm.JobConfig( '/SingleElectron/Run2017F-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleElectronRun2017F_2017')
-]
-
-samplesDict['2018_SingleElectron'] = [
-    bm.JobConfig( '/EGamma/Run2018A-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleElectronRun2018A_2018'),
-    bm.JobConfig( '/EGamma/Run2018B-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleElectronRun2018B_2018'),
-    bm.JobConfig( '/EGamma/Run2018C-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleElectronRun2018C_2018'),
-    bm.JobConfig( '/EGamma/Run2018D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleElectronRun2018D_2018')
-]
-
-# Single Muon
-samplesDict['2016_SingleMuon'] = [ 
-    bm.JobConfig( '/SingleMuon/Run2016B-02Apr2020_ver2-v1/NANOAOD', nEvtPerJob, "2016", True, 'LFVAnalysis_SingleMuonRun2016B_2016'),
-    bm.JobConfig( '/SingleMuon/Run2016C-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleMuonRun2016C_2016'),
-    bm.JobConfig( '/SingleMuon/Run2016D-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleMuonRun2016D_2016'),
-    bm.JobConfig( '/SingleMuon/Run2016E-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleMuonRun2016E_2016'),
-    bm.JobConfig( '/SingleMuon/Run2016F-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleMuonRun2016F_2016'),
-    bm.JobConfig( '/SingleMuon/Run2016G-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleMuonRun2016G_2016'),
-    bm.JobConfig( '/SingleMuon/Run2016H-02Apr2020-v1/NANOAOD'     , nEvtPerJob, "2016", True, 'LFVAnalysis_SingleMuonRun2016H_2016')
-]
-
-samplesDict['2017_SingleMuon'] = [ 
-    bm.JobConfig( '/SingleMuon/Run2017B-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleMuonRun2017B_2017'),
-    bm.JobConfig( '/SingleMuon/Run2017C-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleMuonRun2017C_2017'),
-    bm.JobConfig( '/SingleMuon/Run2017D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleMuonRun2017D_2017'),
-    bm.JobConfig( '/SingleMuon/Run2017E-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleMuonRun2017E_2017'),
-    bm.JobConfig( '/SingleMuon/Run2017F-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", True, 'LFVAnalysis_SingleMuonRun2017F_2017')
-]
-
-samplesDict['2018_SingleMuon'] = [
-    bm.JobConfig( '/SingleMuon/Run2018A-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleMuonRun2018A_2018'),
-    bm.JobConfig( '/SingleMuon/Run2018B-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleMuonRun2018B_2018'),
-    bm.JobConfig( '/SingleMuon/Run2018C-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleMuonRun2018C_2018'),
-    bm.JobConfig( '/SingleMuon/Run2018D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", True, 'LFVAnalysis_SingleMuonRun2018D_2018')
-]
+for dataset in sampleMap._data.keys():
+    if not sampleMap._data[dataset].isdata: continue
+    samplesDict[dataset] = []
+    for sample in sampleMap._data[dataset]:
+        samplesDict[dataset].append(bm.JobConfig(dataset = sample._path, nEvtPerJobIn1e6 = nEvtPerJob, year = sample._year,
+                                                 isData = sample._isdata, suffix = 'LFVAnalysis_%s_%i' % (sample._name, sample._year)))
 
 
 

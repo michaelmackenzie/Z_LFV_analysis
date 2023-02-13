@@ -7,13 +7,18 @@ Help() {
     echo "--summary (-s): print only the job totals in a summary line"
     echo "--verbose (-v): print detailed job information"
     echo "--running (-r): print job info for running jobs"
+    echo "--tag         : print job info for jobs with the given tag"
 }
 
 SUMMARY=""
 VERBOSE=""
 RUNNING=""
-for var in "$@"
+TAG=""
+
+iarg=1
+while [ ${iarg} -le $# ]
 do
+    eval "var=\${${iarg}}"
     if [[ "${var}" == "--help" ]] || [[ "${var}" == "-h" ]]
     then
         Help
@@ -27,15 +32,21 @@ do
     elif [[ "${var}" == "--running" ]] || [[ "${var}" == "-r" ]]
     then
         RUNNING="r"
+    elif [[ "${var}" == "--tag" ]]
+    then
+        iarg=$((iarg + 1))
+	eval "var=\${${iarg}}"
+        TAG="${var}"
     else
         echo "Unknown argument ${var}"
         exit
     fi
+    iarg=$((iarg + 1))
 done
 
 date
 
-condor_q -nobatch | awk -v user=${USER} -v summary=${SUMMARY} -v verbose=${VERBOSE} -v running=${RUNNING} '
+condor_q -nobatch | awk -v user=${USER} -v summary=${SUMMARY} -v verbose=${VERBOSE} -v running=${RUNNING} -v tag=${TAG} '
 {
     if($2 == "Schedd:" && verbose != "") {
 	print $0
@@ -71,9 +82,11 @@ condor_q -nobatch | awk -v user=${USER} -v summary=${SUMMARY} -v verbose=${VERBO
     if(summary != "s") {
 	print "User       Job-ID              Total      Idle   Running      Held         X               dataset                                     script"
 	for(name in names) {
-	    if(running == "" || statuses[name]["R"] > 0) {
-		printf "%-10s %-10s %14i %9i %9i %9i %9i   %-50s %s\n", users[name], name, names[name],
-		    statuses[name]["I"], statuses[name]["R"], statuses[name]["H"], statuses[name]["X"], datasets[name], scripts[name];
+	    if(tag == "" || (datasets[name] ~ tag)) {
+		if(running == "" || statuses[name]["R"] > 0) {
+		    printf "%-10s %-10s %14i %9i %9i %9i %9i   %-50s %s\n", users[name], name, names[name],
+			statuses[name]["I"], statuses[name]["R"], statuses[name]["H"], statuses[name]["X"], datasets[name], scripts[name];
+		}
 	    }
 	}
     }

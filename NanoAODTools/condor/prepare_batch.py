@@ -237,17 +237,6 @@ for dirname in list_dirs:
             # remove previous ntuples
             if not dryrun:
                 os.system('rm %s/*' % (dataset_dir))
-                # seg_ls_dir = 'ls %s' % (dataset_dir)
-                # print "Listing dir: %s" % (seg_ls_dir)
-                # process = subprocess.Popen(seg_ls_dir, stdout=subprocess.PIPE)
-                # stdout, stderr = process.communicate()
-                # prev_files = stdout.split('\n')
-                # for f in prev_files:
-                #     if ".root" in f or ".txt" in f:
-                #         prev_rm = '%s/%s' % (dataset_dir, f)
-                #         if verbose:
-                #             print "Removing file: %s" % (prev_rm)
-                #         os.remove(prev_rm)
                 for data_file in inputlist:
                     if not ".root" in data_file: continue
                     if verbose:
