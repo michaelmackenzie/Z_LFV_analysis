@@ -1,0 +1,21 @@
+# this is a comment
+drop * # start with all
+
+#Gen info
+keep GenPart*
+keep nGenPart*
+keep gen*
+keep genWeight*
+
+#Reco info of interest
+keep nElectron
+keep nMuon
+keep nTau
+keep Tau*
+
+#Add event period information
+keep run
+keep luminosityBlock
+keep event
+
+

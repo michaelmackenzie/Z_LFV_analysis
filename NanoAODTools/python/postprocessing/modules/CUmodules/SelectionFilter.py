@@ -42,16 +42,26 @@ class SelectionFilter(Module):
         self.out.branch("SelectionFilter_EMu"  , 'O')
         self.out.branch("SelectionFilter_MuMu" , 'O')
         self.out.branch("SelectionFilter_EE"   , 'O')
+        self.out.branch("SelectionFilter_LepM" , 'F') #For filtering mass regions downstream
         pass
  
 
     def endFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
-        print "SelectionFilter: Saw %i events: N(mutau) = %i; N(etau) = %i; N(emu) = %i; N(mumu) = %i; N(ee) = %i" % (self.seen, self.mutau[0],
+        print "SelectionFilter: Saw %10i events: N(mutau) = %i; N(etau) = %i; N(emu) = %i; N(mumu) = %i; N(ee) = %i" % (self.seen, self.mutau[0],
                                                                                                                       self.etau[0], self.emu[0],
                                                                                                                       self.mumu[0], self.ee[0])
-        print "SelectionFilter: Passing tight IDs: N(mutau) = %i; N(etau) = %i; N(emu) = %i; N(mumu) = %i; N(ee) = %i" % (self.mutau[1],
-                                                                                                                          self.etau[1], self.emu[1],
-                                                                                                                          self.mumu[1], self.ee[1])
+        print "SelectionFilter: Passing tight IDs    : N(mutau) = %i; N(etau) = %i; N(emu) = %i; N(mumu) = %i; N(ee) = %i" % (self.mutau[1],
+                                                                                                                              self.etau[1], self.emu[1],
+                                                                                                                              self.mumu[1], self.ee[1])
+        #Add a histogram with selection count information
+        h = ROOT.TH1D("events_selection", "events_selection", 10, 0, 10)
+        h.Fill(0.5, self.seen    )
+        h.Fill(1.5, self.emu[0]  )
+        h.Fill(2.5, self.etau[0] )
+        h.Fill(3.5, self.mutau[0])
+        h.Fill(4.5, self.ee[0]   )
+        h.Fill(5.5, self.mumu[0] )
+        h.Write()
         pass
 
 
@@ -190,6 +200,7 @@ class SelectionFilter(Module):
         self.out.fillBranch("SelectionFilter_EMu"  , emu)
         self.out.fillBranch("SelectionFilter_MuMu" , mumu)
         self.out.fillBranch("SelectionFilter_EE"   , ee)
+        self.out.fillBranch("SelectionFilter_LepM" , lepm)
 
         if self.verbose:
             print "SelectionFilter: Event %8i: mutau = %i; etau = %i; emu = %i; mumu = %i; ee = %i" % (self.seen, mutau, etau, emu, mumu, ee)

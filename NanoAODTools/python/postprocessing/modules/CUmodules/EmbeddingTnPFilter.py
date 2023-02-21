@@ -164,6 +164,25 @@ class EmbeddingTnPFilter(Module):
         passed = passed and muon.pfRelIso04_all < IsoID
         return passed
 
+    def form_pairs(self, leptons):
+        pairs = []
+        nlep = len(leptons)
+        min_mass = 60.
+        max_mass = 130.
+        for i in range(nlep-1):
+            for j in range(i+1, nlep):
+                lep1 = leptons[i]
+                lep2 = leptons[j]
+                if lep1.charge*lep2.charge > 0:
+                    continue
+                mass = (lep1.p4() + lep2.p4()).M()
+                if mass < min_mass or mass > max_mass:
+                    continue
+                if lep1.p4().DeltaR(lep2.p4()) < 0.3:
+                    continue
+                pairs.append([i,j])
+        return pairs
+        
     def analyze(self, event):
         """process event, return True (go to next module) or False (fail, go to next event)"""
         self.seen = self.seen + 1
@@ -176,16 +195,24 @@ class EmbeddingTnPFilter(Module):
         PuppiMET   = Object    (event, "PuppiMET")
         trigObjs   = Collection(event, "TrigObj" )
 
-        nElectrons = len(electrons)
-        nMuons     = len(muons    )
+        #count Z-like pairs
+        electron_pairs = self.form_pairs(electrons)
+        muon_pairs     = self.form_pairs(muons    )
 
-        # require exactly two muons or two electrons
-        if not ((nElectrons == 2 and nMuons != 2) or (nElectrons != 2 and nMuons == 2)):
+        nElectrons = len(electrons     )
+        nMuons     = len(muons         )
+        nElePairs  = len(electron_pairs)
+        nMuPairs   = len(muon_pairs    )
+
+        # require exactly one muon or one electron Z pair
+        if not ((nElePairs == 1 and nMuPairs != 1) or (nElePairs != 1 and nMuPairs == 1)):
             return False
 
 
         # determine if this is a di-muon or di-electron event
-        doMuons = nMuons == 2
+        doMuons = nMuPairs == 1
+        lep1_index = muon_pairs[0][0] if doMuons else electron_pairs[0][0]
+        lep2_index = muon_pairs[0][1] if doMuons else electron_pairs[0][1]
 
         #Check triggers
         electronTriggered = False
@@ -218,8 +245,8 @@ class EmbeddingTnPFilter(Module):
             #check if a selected muon matches with the muon triggers of interest
             if (self.verbose > 1 and self.seen % 100 == 0) or (self.verbose > 2 and self.seen % 10 == 0) or self.verbose > 9:
                 print "Event", self.seen, ": printing muon trigger info..."
-            leptonOneTriggered = self.check_trig(trigObjs, muons[0], True)
-            leptonTwoTriggered = self.check_trig(trigObjs, muons[1], True)
+            leptonOneTriggered = self.check_trig(trigObjs, muons[lep1_index], True)
+            leptonTwoTriggered = self.check_trig(trigObjs, muons[lep2_index], True)
             if (self.verbose > 1 and self.seen % 100 == 0) or (self.verbose > 2 and self.seen % 10 == 0) or self.verbose > 9:
                 print " Muon 1 has trigger status =", leptonOneTriggered
                 print " Muon 2 has trigger status =", leptonTwoTriggered
@@ -227,8 +254,8 @@ class EmbeddingTnPFilter(Module):
             #check if a selected muon matches with the muon triggers of interest
             if (self.verbose > 1 and self.seen % 100 == 0) or (self.verbose > 2 and self.seen % 10 == 0) or self.verbose > 9:
                 print "Event", self.seen, ": printing electron trigger info..."
-            leptonOneTriggered = self.check_trig(trigObjs, electrons[0], False)
-            leptonTwoTriggered = self.check_trig(trigObjs, electrons[1], False)
+            leptonOneTriggered = self.check_trig(trigObjs, electrons[lep1_index], False)
+            leptonTwoTriggered = self.check_trig(trigObjs, electrons[lep2_index], False)
             if (self.verbose > 1 and self.seen % 100 == 0) or (self.verbose > 2 and self.seen % 10 == 0) or self.verbose > 9:
                 print " Electron 1 has trigger status =", leptonOneTriggered
                 print " Electron 2 has trigger status =", leptonTwoTriggered
@@ -269,12 +296,12 @@ class EmbeddingTnPFilter(Module):
         passed = True
 
         if doMuons:
-            lep1 = muons[0]
-            lep2 = muons[1]
+            lep1 = muons[lep1_index]
+            lep2 = muons[lep2_index]
             passed = passed and (self.muon_id(lep1, muonId, muonIso) or self.muon_id(lep2, muonId, muonIso)) #at least one must pass the tight ID
         else:
-            lep1 = electrons[0]
-            lep2 = electrons[1]
+            lep1 = electrons[lep1_index]
+            lep2 = electrons[lep2_index]
             passed = passed and (self.elec_id(lep1, eleId) or self.elec_id(lep2, eleId)) #at least one must pass the tight ID
 
         if not passed:

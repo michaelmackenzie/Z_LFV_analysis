@@ -47,8 +47,8 @@ elif year == "2018":
 print "Trigger cuts:", TriggerCuts
 
 #Base lepton selection
-MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.2
-ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.2
+MuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.4
+ElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.5
 
 #configure the modules
 modules=[]
@@ -58,7 +58,7 @@ MuonSelector= LeptonSkimmer(
    Selection=MuonSelection,
    Veto=None,
    minNlep=-1,
-   maxNlep=2,
+   maxNlep=-1,
    verbose=False
 )
 modules.append(MuonSelector)
@@ -67,7 +67,7 @@ ElectronSelector= LeptonSkimmer(
    Selection=ElectronSelection,
    Veto=None,
    minNlep=-1,
-   maxNlep=2,
+   maxNlep=-1,
    verbose=False
 )
 modules.append(ElectronSelector)
