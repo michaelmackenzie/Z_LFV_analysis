@@ -83,4 +83,4 @@ keep event
 keep SelectionFilter_*
 
 #Add generator information
-keep LHE_*
+keep LHE*

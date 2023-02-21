@@ -14,8 +14,15 @@ keep Electron*
 #jets
 keep nJet
 keep Jet*
+drop Jet_bReg*
+drop Jet_cReg*
+drop Jet_electron*
+drop Jet_muon*
+drop Jet_qgl
+
 keep nCorrT1METJet
 keep CorrT1METJet*
+
 keep nGenJet
 keep GenJet*
 keep fixedGridRhoFastjetAll
@@ -96,6 +103,6 @@ keep luminosityBlock
 keep event
 
 #Add generator information
-keep LHE_*
+keep LHE*
 
 
