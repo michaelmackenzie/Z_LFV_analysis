@@ -30,6 +30,7 @@ p.add_argument('--segments' , help='Use job segments rather than a merged ntuple
 p.add_argument('--onlylink' , help='Link segments instead of copying them over', action='store_true', required=False)
 p.add_argument('--mergeseg' , help='Merge existing segment files', action='store_true', required=False)
 p.add_argument('--jsononly' , help='Only process lumi json files', action='store_true', required=False)
+p.add_argument('--skipjson' , help='Skip lumi json files', action='store_true', required=False)
 p.add_argument('--verbose'  , help='Print additional information', action='store_true', required=False)
 
 args = p.parse_args()
@@ -48,6 +49,7 @@ segments   = args.segments
 onlylink   = args.onlylink
 mergeseg   = args.mergeseg
 jsononly   = args.jsononly
+skipjson   = args.skipjson
 verbose    = args.verbose
 
 if copylocal and segments:
@@ -55,6 +57,9 @@ if copylocal and segments:
     exit()
 if onlylink and not segments:
     print "--onlylink is only defined when using --segments!"
+    exit()
+if jsononly and skipjson:
+    print "Can't use --jsononly and --skipjson"
     exit()
 
 if inputpath[-1:] != '/':
@@ -293,7 +298,7 @@ for dirname in list_dirs:
 
     ######################################################
     # Process lumi files, if relevant
-    if isData or isEmbed:
+    if (isData or isEmbed) and not skipjson:
         if host == 'lxplus':
             lumi_command = 'python ../scripts/combine_json.py /eos/cms/store/group/phys_smp/ZLFV/' + inputpath + luminame + '_'
             lumi_command += ' --out_name /eos/cms/store/group/phys_smp/ZLFV/' + outputpath + luminame + '.txt'
