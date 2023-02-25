@@ -52,7 +52,7 @@ condor_q -nobatch | awk -v user=${USER} -v summary=${SUMMARY} -v verbose=${VERBO
 	print $0
     }
     if($2 == user) {
-	if(verbose != "") print $0
+	if(verbose != "" && (tag == "" || ($0 ~ tag))) print $0
         ++total
         split($1,arr,".")
         name=arr[1]

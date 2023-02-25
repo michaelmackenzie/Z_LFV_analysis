@@ -112,6 +112,7 @@ int lumi_from_mini_file(const char* file, const int verbose = 0) {
   for(int iattempt = 0; iattempt < 3; ++iattempt) {
     f = TFile::Open(file, "READ");
     if(f) break;
+    else cout << "Attempt " << iattempt+1 << " failed to open file " << file << endl;
   }
   if(!f) {
     cout << "Failed to open file " << file << endl;

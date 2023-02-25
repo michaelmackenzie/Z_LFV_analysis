@@ -43,7 +43,7 @@ sampleMap.load_samples(sampleMap._data, True)
 
 
 nEvtPerJob = 1e6 # limit by file number, ignoring N(events)
-maxFiles   = 2000 #~80 files per minute
+maxFiles   = 1500 #~50 files per minute
 
 #################################################
 #                                               #
@@ -64,13 +64,13 @@ for dataset in sampleMap._data.keys():
 # submit to batch
 # -----------------------------
 
-samplesToSubmit = samplesDict.keys()
-
+# samplesToSubmit = samplesDict.keys()
+samplesToSubmit = ["2017_embed_mini_mumu", "2017_embed_mini_ee"]
 samplesToSubmit.sort()
 doYears = ["2017"]
 # doYears = ["2016", "2017", "2018"]
 sampleTag = ""
-sampleVeto = "emu"
+sampleVeto = ""
 configs = []
 
 for s in samplesToSubmit:
