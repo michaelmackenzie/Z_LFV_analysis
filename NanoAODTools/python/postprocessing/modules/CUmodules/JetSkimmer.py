@@ -19,6 +19,8 @@ class JetSkimmer(Module):
         self.Selection=Selection,
         self.Veto=Veto,
         self.branchType = {}
+
+        self.doBJets = len(BtagWPs) > 0
         pass
 
     def beginJob(self):
@@ -48,18 +50,17 @@ class JetSkimmer(Module):
                             _rootLeafType2rootBranchType[self.branchType[br]],
                             lenVar="nJet")
 
-        if len(self.BtagWPs[0]) > 0:
-            #       self.out.branch("nBJet",'F')
-            #        self.out.branch("nBJet",'F')        
-        
+        if self.doBJets:
+            print "JetSkimmer: Initializing BJet branches"
             self.out.branch("nBJetMedium",'I')
             self.out.branch("nBJetTight",'I')
         
             for br in ["pt","eta", "phi", self.BtagBranch[0],"btagDeepC", "partonFlavour"]:
                 if wrappedOutputTree._tree.GetBranchStatus('Jet_%s' % (br)):
-                    self.out.branch("%s_%s" % ("BJet", br),_rootLeafType2rootBranchType['Float_t'], lenVar="nBJet")
-                else: print "Jet collection is missing branch %s" % (br)
-            # self.out.branch("%s_partonFlavour" % ("BJet"),_rootLeafType2rootBranchType['Int_t'], lenVar="nBJet")
+                    leaf = wrappedOutputTree._tree.FindLeaf('Jet_%s' % (br))
+                    self.out.branch("%s_%s" % ("BJet", br),
+                                    _rootLeafType2rootBranchType[leaf.GetTypeName()], lenVar="nBJet")
+                else: print "JetSkimmer: Jet collection is missing branch %s" % (br)
             self.out.branch("%s_idx"  % ("BJet"),_rootLeafType2rootBranchType['Int_t'], lenVar="nBJet")
             self.out.branch("%s_WPID" % ("BJet"),_rootLeafType2rootBranchType['Int_t'], lenVar="nBJet")
 
@@ -84,14 +85,13 @@ class JetSkimmer(Module):
         """process event, return True (go to next module) or False (fail, go to next event)"""
         jets = Collection(event, "Jet")
         if self.Selection[0]!=None:
-        #         print self.Selection[0]
             jets = filter( self.Selection[0], jets)
 
         veto=[]
         if self.Veto[0]!=None:
             veto = filter( self.Veto[0], jets)
         if len(veto)>0:
-            print "veto from jets"
+            print "JetSkimmer: Veto on the number of jets"
             return False
 
         if len(jets)<self.nGoodJetMin[0]:
@@ -99,11 +99,12 @@ class JetSkimmer(Module):
             return False
 
         bjets={"pt":[],"eta":[],"phi":[],self.BtagBranch[0]:[],'partonFlavour':[],'idx':[],'WPID':[]}    
-        if len(self.BtagWPs[0]) > 0:
+        if self.doBJets:
             #        nBJet=0; nCJet=0;
-            nBJetMedium=0; nBJetTight=0;
+            nBJet = 0; nBJetMedium=0; nBJetTight=0;
             for idx,jet in enumerate(jets):
                 if getattr(jet,self.BtagBranch[0])>float(self.BtagWPs[0][0]):
+                    nBJet += 1
                     for key in bjets.keys():
                         if(hasattr(jet, key)): bjets[key].append(getattr(jet,key))
                         elif key == 'WPID': bjets[key].append(1)
@@ -125,10 +126,10 @@ class JetSkimmer(Module):
             for obj in jets:
                 out.append(getattr(obj, br))
             self.out.fillBranch("%s_%s" % ("Jet", br), out)
-        if len(self.BtagWPs[0]) > 0:
+        if self.doBJets:
             for key in bjets.keys():
-                # if len(bjets[key]) > 0:
-                if hasattr(self.out, '%s_%s' % ("BJet", key)): self.out.fillBranch("%s_%s" % ("BJet", key), bjets[key]) 
+                if self.out._tree.GetBranchStatus('BJet_%s' % (key)):
+                    self.out.fillBranch("%s_%s" % ("BJet", key), bjets[key]) 
 
             self.out.fillBranch("nBJetMedium",nBJetMedium)
             self.out.fillBranch("nBJetTight",nBJetTight)

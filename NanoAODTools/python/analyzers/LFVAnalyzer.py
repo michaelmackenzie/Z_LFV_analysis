@@ -306,9 +306,9 @@ JetSelector=JetSkimmer(
 modules.append(JetSelector)
 
 HTCalculator= HTSkimmer(
-   minJetPt=20,
-   minJetEta=3.0, #FIXME: Should be max jet eta I believe
-   minJetPUid=jet_pu_id,
+   minJetPt=-1, #Let jet selection criteria come from the jet skimming
+   minJetEta=999,
+   minJetPUid=-1,
    minHT=-1,
    collection="Jet",
    HTname="HT"
