@@ -140,7 +140,14 @@ for dirname in list_dirs:
     if not isdirectory: copy_command = copy_command + dirname
     print copy_command
     if not dryrun:
-        os.system(copy_command)
+        attempts = 1
+        while attempts < 5:
+            ret_val = os.system(copy_command)
+            if ret_val != 0:
+                print "!!! Copy command had return value %i on attempt %i" % (ret_val, attempt)
+                attempts += 1
+            else:
+                break
 
     if dosingle:
         break

@@ -42,8 +42,8 @@ sampleMap = SampleMap()
 sampleMap.load_samples(sampleMap._data, True)
 
 
-nEvtPerJob = 1e6 # limit by file number, ignoring N(events)
-maxFiles   = 1500 #~50 files per minute
+nEvtPerJob  = 1e6 # limit by file number, ignoring N(events)
+maxFiles    = 1500
 
 #################################################
 #                                               #
@@ -65,7 +65,7 @@ for dataset in sampleMap._data.keys():
 # -----------------------------
 
 # samplesToSubmit = samplesDict.keys()
-samplesToSubmit = ["2017_embed_mini_mumu", "2017_embed_mini_ee"]
+samplesToSubmit = ["2017_embed_mini_mumu"]
 samplesToSubmit.sort()
 doYears = ["2017"]
 # doYears = ["2016", "2017", "2018"]
