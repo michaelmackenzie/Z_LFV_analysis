@@ -5,6 +5,7 @@
   The output is again a standard NanoAOD format file, and can be processed with any compatible histogramming tool. It is based on NanoAOD tools. 
 
   The modules are implemented in `NanoAODTools/python/postprocessing/modules/CUmodules/`:
+  - [EmeddingUnfolding.py](NanoAODTools/python/postprocessing/modules/CUmodules/EmbeddingUnfolding.py): Unfold the embedding selection
   - [GenAnalyzer.py](NanoAODTools/python/postprocessing/modules/CUmodules/GenAnalyzer.py): Scans the GenParticle collection and creates the configured decay. eg Z->mue is 23->13,11. For cascade decays we can add
     several modules together.
   - [GenCount.py](NanoAODTools/python/postprocessing/modules/CUmodules/GenCount.py): Counts the number of processed events, storing the total number and the negative number of events in a ROOT histogram in the event output
@@ -15,10 +16,16 @@
   - [GenRecoMatcher.py](NanoAODTools/python/postprocessing/modules/CUmodules/GenRecoMatcher.py): Takes genparticles as inputs and matches them with reco
   - [HTSkimmer.py](NanoAODTools/python/postprocessing/modules/CUmodules/HTSkimmer.py): Creates the HT variable based on configuration.
   - [JetLepCleaner.py](NanoAODTools/python/postprocessing/modules/CUmodules/JetLepCleaner.py): Removes overlapping jets (or leptons) with leptons (or jets).
+  - [JetPUIDWeight.py](NanoAODTools/python/postprocessing/modules/CUmodules/JetPUIDWeight.py): Add jet PU ID corrections
   - [JetSkimmer.py](NanoAODTools/python/postprocessing/modules/CUmodules/JetSkimmer.py): Skims the jet collection
   - [LeptonSkimmer.py](NanoAODTools/python/postprocessing/modules/CUmodules/LeptonSkimmer.py): Skims the lepton collections
+  - [LeptonSF.py](NanoAODTools/python/postprocessing/modules/CUmodules/LeptonSF.py): Add lepton ID corrections
+  - [RandomField.py](NanoAODTools/python/postprocessing/modules/CUmodules/RandomField.py): Add a random number to the output tree, for future splitting
   - [SelectionFilter.py](NanoAODTools/python/postprocessing/modules/CUmodules/SelectionFilter.py): Applies some selection logic to filter events to different channels (e.g. e+mu vs mu+tau) and filter
     out events that don't satisfy any channel selections
+  - [SignalpTWeight.py](NanoAODTools/python/postprocessing/modules/CUmodules/SignalpTWeight.py): Add Z pT corrections to match the signal and Drell-Yan
+  - [TriggerEff.py](NanoAODTools/python/postprocessing/modules/CUmodules/TriggerEff.py): Add single lepton trigger efficiencies
+  - [ZpTWeight.py](NanoAODTools/python/postprocessing/modules/CUmodules/ZpTWeight.py): Add MC --> Data Drell-Yan pT corrections
 
 ## Building instructions:
 ```
@@ -36,7 +43,7 @@ cd $CMSSW_BASE/src/PhysicsTools/NanoAODTools/
 DATASET="<dataset to analyze, e.g. /SingleMuon/Run2016H-02Apr2020-v1/NANOAOD>"
 FILE=`das_client -query="file dataset=${DATASET} <instance=prod/phys03 if needed>" | head -n 1`
 xrdcp -f ${FILE} ./NanoAOD.root
-python python/LFVAnalyzer.py NanoAOD.root <"data", "MC", or "Embedded"> <"2016", "2017", or "2018">
+python python/analyzers/LFVAnalyzer.py NanoAOD.root <"data", "MC", or "Embedded"> <"2016", "2017", or "2018">
 root.exe tree.root
 ```
   
