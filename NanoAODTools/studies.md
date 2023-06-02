@@ -1,4 +1,4 @@
-# Studies related to LFZ Analysis
+# Studies related to LFV Z Analysis
 
 ## Main ntupling
 
