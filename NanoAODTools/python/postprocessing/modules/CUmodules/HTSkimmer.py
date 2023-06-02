@@ -19,10 +19,10 @@ _rootLeafType2rootBranchType = {
 
 
 class HTSkimmer(Module):
-    def __init__(self, minJetPt, minJetEta, minJetPUid, minHT, collection ,HTname):
+    def __init__(self, minJetPt, maxJetEta, minJetPUid, minHT, collection ,HTname):
         self.minJetPt=minJetPt,
         self.minHT=minHT,
-        self.minJetEta=minJetEta,
+        self.maxJetEta=maxJetEta,
         self.minJetPUid=minJetPUid,
         self.collection=collection,
         self.HTname=HTname,
@@ -49,7 +49,7 @@ class HTSkimmer(Module):
         Jets = Collection(event, self.collection[0])
         HT=0
         for jet in Jets:
-          if getattr( jet,"pt" )>self.minJetPt[0] and abs(getattr( jet,"eta" ))<self.minJetEta[0] and (jet.pt > 50. or getattr( jet,"puId" )>=self.minJetPUid[0]):
+          if getattr( jet,"pt" )>self.minJetPt[0] and abs(getattr( jet,"eta" ))<self.maxJetEta[0] and (jet.pt > 50. or getattr( jet,"puId" )>=self.minJetPUid[0]):
              HT+=getattr( jet,"pt" )
         if HT< self.minHT[0]:
            print "HTSkimmer: HT lower than threshold; HT=",HT,"thresh.=",self.minHT[0],"skip"

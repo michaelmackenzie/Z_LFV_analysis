@@ -7,7 +7,9 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetPUIDWeight im
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.ZpTWeight import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.SignalpTWeight import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.MCEra import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.RandomField import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonSF import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.TriggerEff import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.EmbeddingUnfolding import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.SelectionFilter import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenCount import *
@@ -116,6 +118,11 @@ if isData == "MC":
       lumis = []
    MCera = MCEra(lumis = lumis)
    modules.append(MCera)
+
+#Add a random number branch for future use
+randomField = RandomField(seed = 0) #0 to avoid the same seed for all job sections
+modules.append(randomField)
+
    
 #prefire probability, before jet/photon/electron collection is skimmed
 if isData == "MC": #only do on MC, 2016 and 2017
@@ -238,25 +245,24 @@ elif year == "2018":
 # modules.append(jmeCorrections())
 
 # JET MET uncertainties, before jet cleaning is applied
-if isData == "MC": #FIXME: Can this be done with PuppiMET?
+if isData == "MC":
    if year == "2016":
       modules.append(jetmetUncertainties2016())
    elif year == "2017":
       modules.append(jetmetUncertainties2017())
    elif year == "2018":
       modules.append(jetmetUncertainties2018())
+# else: #Data/Embed
+#    if year == "2016":
+#       modules.append(jetmetUncertainties2016Data())
+#    elif year == "2017":
+#       modules.append(jetmetUncertainties2017Data())
+#    elif year == "2018":
+#       modules.append(jetmetUncertainties2018Data())
 
 #Add additional object cleaning
 
 #First skim without Jet PU ID, calculate PU ID weight, then remove those that fail PU ID
-#FIXME: Add each year b-tag WP cuts
-if year == "2016":
-   btagWPs = [0.2217, 0.6321, 0.8953]
-elif year == "2017":
-   btagWPs = [0.1522, 0.4941, 0.8001]
-elif year == "2018":
-   btagWPs = [0.1241, 0.4184, 0.7527]
-
 LooseJetSelector=JetSkimmer( 
    BtagWPs=[], 
    nGoodJetMin=-1, 
@@ -296,6 +302,13 @@ modules.append(JetTauCleaner)
 jetPUIDWeight=JetPUIDWeight(year = year)
 modules.append(jetPUIDWeight)
 
+if year == "2016":
+   btagWPs = [0.2217, 0.6321, 0.8953]
+elif year == "2017":
+   btagWPs = [0.1522, 0.4941, 0.8001]
+elif year == "2018":
+   btagWPs = [0.1241, 0.4184, 0.7527]
+
 JetSelector=JetSkimmer( 
    BtagWPs=btagWPs, 
    nGoodJetMin=-1, 
@@ -307,7 +320,7 @@ modules.append(JetSelector)
 
 HTCalculator= HTSkimmer(
    minJetPt=-1, #Let jet selection criteria come from the jet skimming
-   minJetEta=999,
+   maxJetEta=999,
    minJetPUid=-1,
    minHT=-1,
    collection="Jet",
@@ -341,6 +354,9 @@ if not isData == "data":
    MuonIsoIDWeight=LeptonSF(year = year, Lepton = 'Muon', Correction = 'IsoID', working_point = 'Medium', Embed = isData == 'Embedded')
    modules.append(MuonIsoIDWeight)
 
+   MuonTriggerEff=TriggerEff(year = year, Lepton = 'Muon', Embed = isData == 'Embedded')
+   modules.append(MuonTriggerEff)
+
    ElectronIDWeight=LeptonSF(year = year, Lepton = 'Electron', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded')
    modules.append(ElectronIDWeight)
 
@@ -350,6 +366,9 @@ if not isData == "data":
 
    ElectronRecoIDWeight=LeptonSF(year = year,  Lepton = 'Electron', Correction = 'RecoID', working_point = 'Medium', Embed = isData == 'Embedded')
    modules.append(ElectronRecoIDWeight)
+
+   ElectronTriggerEff=TriggerEff(year = year, Lepton = 'Electron', Embed = isData == 'Embedded')
+   modules.append(ElectronTriggerEff)
 
    if isData == 'Embedded':
       EmbeddingWeight=EmbeddingUnfolding(year = year)
@@ -411,11 +430,11 @@ modules.append(GenElectronCount)
 #configure the pileup module and the json file filtering
 if isData == "MC":
    if year == "2016":
-      modules.append(puAutoWeight_2016())
+      modules.append(puWeight_2016())
    elif year == "2017":
-      modules.append(puAutoWeight_2017())
+      modules.append(puWeight_2017())
    elif year == "2018":
-      modules.append(puAutoWeight_2018())
+      modules.append(puWeight_2018())
    jsonFile=None
 else: #data/embedding
    if year == "2016" :

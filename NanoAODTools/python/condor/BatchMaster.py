@@ -137,7 +137,7 @@ class BatchMaster():
             nJobs = int(math.ceil(nEvents/(1000000.0*cfg._nEvtPerJobIn1e6)))
             nJobs = nFiles if nJobs > nFiles else nJobs
             # enforce a maximum allowed number of files per job, if defined
-            nJobs = int(math.ceil(nFiles/self._maxFilesPerJob)) if self._maxFilesPerJob > 0 and nFiles/nJobs > self._maxFilesPerJob else nJobs
+            nJobs = int(math.ceil(nFiles/(1.*self._maxFilesPerJob))) if self._maxFilesPerJob > 0 and nFiles/(1.*nJobs) > self._maxFilesPerJob else nJobs
         nFilesPerJob = int(math.ceil(float(nFiles)/float(nJobs)))
         sources = [ fileList[i:i+nFilesPerJob] for i in range(0, len(fileList), nFilesPerJob) ]
 

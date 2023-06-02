@@ -64,6 +64,9 @@ keep puWeight*
 #MC era definition
 keep MCEra
 
+#Random field for test/train splitting
+keep RandomField
+
 #prefire info (2016 and 2017 only)
 keep PrefireWeight*
 
