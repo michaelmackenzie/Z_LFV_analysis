@@ -517,9 +517,11 @@ class jetmetUncertaintiesProducer(Module):
 
 # define modules using the syntax 'name = lambda : constructor' to avoid having them loaded when not needed
 jetmetUncertainties2016 = lambda : jetmetUncertaintiesProducer("2016", "Summer16_07Aug2017_V11_MC", [ "Total" ])
+jetmetUncertainties2016Data = lambda : jetmetUncertaintiesProducer("2016", "Summer16_07Aug2017_V11_DATA", [ "Total" ], isData=True)
 jetmetUncertainties2016All = lambda : jetmetUncertaintiesProducer("2016", "Summer16_07Aug2017_V11_MC", [ "All" ])
 
 jetmetUncertainties2017 = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V32_MC", [ "Total" ])
+jetmetUncertainties2017Data = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V32_DATA", [ "Total" ], isData=True)
 jetmetUncertainties2017METv2 = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V32_MC", metBranchName='METFixEE2017')
 jetmetUncertainties2017All = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V32_MC", [ "All" ])
 

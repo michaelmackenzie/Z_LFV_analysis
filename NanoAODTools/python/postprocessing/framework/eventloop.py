@@ -59,6 +59,7 @@ def eventLoop(
         filterOutput=True
 ):
     for m in modules:
+        # progress[1].write("Module %s: beginFile\n" % (str(m.__class__).split('.')[-1].replace("'>","")))
         m.beginFile(inputFile, outputFile, inputTree, wrappedOutputTree)
 
     t0 = time.time()
@@ -73,6 +74,7 @@ def eventLoop(
     if maxEvents > 0:
         entries = min(entries, maxEvents)
 
+    progress[1].write("Beginning event processing loop\n")
     for ie, i in enumerate(range(entries) if eventRange == None else eventRange):
         if maxEvents > 0 and ie >= maxEvents:
             break
@@ -92,7 +94,7 @@ def eventLoop(
         if (ret or not filterOutput) and wrappedOutputTree != None:
             wrappedOutputTree.fill()
         if progress:
-            if ie > 0 and ie % progress[0] == 0:
+            if ie % progress[0] == 0:
                 t1 = time.time()
                 progress[1].write("Processed %8d/%8d entries, %5.2f%% (elapsed time %7.1fs, curr speed %8.3f kHz, avg speed %8.3f kHz), accepted %8d/%8d events (%5.2f%%)\n" % (
                     ie, entries, ie / float(0.01 * entries),

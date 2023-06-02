@@ -5,6 +5,8 @@
 *.swp
 *.swo
 *.root
+*.png
+*.txt
 __init__.py
 FrameworkJobReport.xml
 batch
