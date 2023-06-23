@@ -37,16 +37,36 @@ scram b -j8
 ```
 
 ## Run Locally:
-Process a NanoAOD file using the [LFVAnalyzer.py](NanoAODTools/python/LFVAnalyzer.py):
+
+Process a NanoAOD file using the [LFVAnalyzer.py](NanoAODTools/python/LFVAnalyzer.py) to create a skim:
 ```
 cd $CMSSW_BASE/src/PhysicsTools/NanoAODTools/
 DATASET="<dataset to analyze, e.g. /SingleMuon/Run2016H-02Apr2020-v1/NANOAOD>"
 FILE=`das_client -query="file dataset=${DATASET} <instance=prod/phys03 if needed>" | head -n 1`
 xrdcp -f ${FILE} ./NanoAOD.root
 python python/analyzers/LFVAnalyzer.py NanoAOD.root <"data", "MC", or "Embedded"> <"2016", "2017", or "2018">
-root.exe tree.root
+#output skim file:
+ls -l tree.root
 ```
-  
+
+Split the tree into a tree per di-lepton final state (LFVAnalyzer.py specific):
+```
+cd $CMSSW_BASE/src/PhysicsTools/NanoAODTools/
+SKIMFILE="tree.root"
+SPLITFILE="tree-split.root"
+root.exe -q -b -l "condor/split_output_tree.C(\"${SKIMFILE}\", \"${SPLITFILE}\")"
+ls -l ${SPLITFILE}
+```
+
+Add normalization information:
+```
+cd $CMSSW_BASE/src/PhysicsTools/NanoAODTools/
+NANOFILE="NanoAOD.root"
+SPLITFILE="tree-split.root"
+root.exe -q -b -l "condor/add_norm.C(\"${NANOFILE}\", \"${SPLITFILE}\")"
+ls -l ${SPLITFILE}
+```
+
 ## Run on CRAB:
 ```
 cd $CMSSW_BASE/src
