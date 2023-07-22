@@ -52,7 +52,7 @@ maxEntries= int(sys.argv[4]) if nargs > 4 else None
 firstEntry= int(sys.argv[5]) if nargs > 5 else 0
 if maxEntries < 0: maxEntries = None
 
-debugLevel = 0
+debug_level = 0
 if maxEntries is not None:
    print "--- Using max entries =", maxEntries
    if maxEntries == 1: debug_level = 2
