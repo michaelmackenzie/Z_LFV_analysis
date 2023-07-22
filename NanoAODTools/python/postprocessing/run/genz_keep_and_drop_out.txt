@@ -11,3 +11,9 @@ keep GenZll*
 keep run
 keep luminosityBlock
 keep event
+
+#PDF/theory uncertainty variations
+keep nLHEScaleWeight
+keep LHEScaleWeight
+keep nLHEPdfWeight
+keep LHEPdfWeight

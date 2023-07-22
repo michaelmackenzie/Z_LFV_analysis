@@ -30,7 +30,7 @@ def cmdline(command):
 
 class JobConfig():
     '''Class for storing configuration for each dataset'''
-    def __init__(self, dataset, nEvtPerJobIn1e6, year, isData, suffix, inputDBS = "global", user_redir = None, user_nfiles = 10, user_tag = None):
+    def __init__(self, dataset, nEvtPerJobIn1e6, year, isData, suffix, inputDBS = "global", maxEvtPerDataset = None, user_redir = None, user_nfiles = 10, user_tag = None):
         self._dataset   = dataset
         self._nEvtPerJobIn1e6 = nEvtPerJobIn1e6
         self._inputDBS = inputDBS
@@ -38,6 +38,9 @@ class JobConfig():
         self._user_redir = user_redir
         self._user_nfiles = user_nfiles
         self._user_tag = user_tag
+
+        #maximum processing info
+        self._maxEvtPerDataset = maxEvtPerDataset
         
         # need to pass to executable
         self._year      = year
@@ -140,6 +143,13 @@ class BatchMaster():
             nJobs = int(math.ceil(nFiles/(1.*self._maxFilesPerJob))) if self._maxFilesPerJob > 0 and nFiles/(1.*nJobs) > self._maxFilesPerJob else nJobs
         nFilesPerJob = int(math.ceil(float(nFiles)/float(nJobs)))
         sources = [ fileList[i:i+nFilesPerJob] for i in range(0, len(fileList), nFilesPerJob) ]
+        # check if dataset is larger than maximum dataset size
+        if self._maxEvtPerDataset is not None and self._maxEvtPerDataset > 0 and self._maxEvtPerDataset < nEvents:
+            #reduce number of jobs to keep closer to the maximum
+            last_job = int(math.ceil(self._maxEvtPerDataset / nEvents * 1. * len(sources)))
+            if last_job < len(sources[i]):
+                sources = [ sources[i] for i in range(0, last_job) ]
+            
 
         print "DAS for dataset: ", cfg._dataset
         print "**************************************************"

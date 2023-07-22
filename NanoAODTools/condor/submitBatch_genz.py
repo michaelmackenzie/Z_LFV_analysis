@@ -51,6 +51,25 @@ samplesDict['2018_z'] = [
         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='GenZAnalysis_DY50_2018'),
 ]
 
+# LO Drell-Yan samples for LO PDF uncertainties
+samplesDict['2016_lo_z'] = [
+    bm.JobConfig(
+        dataset='/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext1-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, maxEvtPerDataset = 1e7, year="2016", isData=False, suffix='GenZAnalysis_LO-DY50_2016'),
+]
+
+# samplesDict['2017_lo_z'] = [
+#     bm.JobConfig(
+#         dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8_ext3-v1/NANOAODSIM',
+#         nEvtPerJobIn1e6=nEvtPerJob, maxEvtPerDataset = 1e7, year="2017", isData=False, suffix='GenZAnalysis_LO-DY50_2017'),    
+# ]
+
+samplesDict['2018_lo_z'] = [
+    bm.JobConfig(
+        dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, maxEvtPerDataset = 1e7, year="2018", isData=False, suffix='GenZAnalysis_LO-DY50_2018'),
+]
+
 #################################################
 #                                               #
 #--------------- Running Signal ----------------#
@@ -86,28 +105,55 @@ samplesDict['2016_signal'] = [
 ]
 
 samplesDict['2017_signal'] = [
+    # # v1 signals with low stats and mass cut problem
+    # bm.JobConfig( 
+    #     dataset='/LFVAnalysis_ZEMu_2017_934V2/pellicci-LFVAnalysis_NANOAOD_10218V2-df769e3b6a68f1e897c86e71b2345849/USER',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZEMu_2017', inputDBS="phys03"),
+    # bm.JobConfig( 
+    #     dataset='/LFVAnalysis_ZETau_2017_934V2/pellicci-LFVAnalysis_NANOAOD_10218V2-df769e3b6a68f1e897c86e71b2345849/USER',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZETau_2017', inputDBS="phys03"),
+    # bm.JobConfig( 
+    #     dataset='/LFVAnalysis_ZMuTau_2017_934V2/pellicci-LFVAnalysis_NANOAOD_10218V2-df769e3b6a68f1e897c86e71b2345849/USER',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZMuTau_2017', inputDBS="phys03"),
+    # #v4 samples with higher statistics and mass cut problem
+    # bm.JobConfig( 
+    #     dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017/ZEMu_NANO_2017_200k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_200k/221030_185439/0000/',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZEMu-v3_2017', user_redir = 'root://eoscms.cern.ch/',
+    #     user_nfiles = 1, user_tag = 'Sum'),
+    # bm.JobConfig( 
+    #     dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017/ZETau_NANO_2017_200k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_200k/221030_185449/0000/',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZETau-v3_2017', user_redir = 'root://eoscms.cern.ch/',
+    #     user_nfiles = 1, user_tag = 'Sum'),
+    # bm.JobConfig( 
+    #     dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017/ZMuTau_NANO_2017_200k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_200k/221030_185500/0000/',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZMuTau-v3_2017', user_redir = 'root://eoscms.cern.ch/',
+    #     user_nfiles = 1, user_tag = 'Sum'),
+    # v5 samples with high statistics and no mass cut problem
     bm.JobConfig( 
-        dataset='/LFVAnalysis_ZEMu_2017_934V2/pellicci-LFVAnalysis_NANOAOD_10218V2-df769e3b6a68f1e897c86e71b2345849/USER',
-        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZEMu_2017', inputDBS="phys03"),
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017_ext/ZEMu_NANO_2017_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_400k/230424_161514/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZEMu-v4a_2017', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 50),
     bm.JobConfig( 
-        dataset='/LFVAnalysis_ZETau_2017_934V2/pellicci-LFVAnalysis_NANOAOD_10218V2-df769e3b6a68f1e897c86e71b2345849/USER',
-        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZETau_2017', inputDBS="phys03"),
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017_ext/ZEMu_NANO_2017_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_400k/230424_161514/0001/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZEMu-v4b_2017', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 50),
     bm.JobConfig( 
-        dataset='/LFVAnalysis_ZMuTau_2017_934V2/pellicci-LFVAnalysis_NANOAOD_10218V2-df769e3b6a68f1e897c86e71b2345849/USER',
-        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZMuTau_2017', inputDBS="phys03"),
-    #v4 samples with higher statistics
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017_ext/ZETau_NANO_2017_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_400k/230424_161523/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZETau-v4a_2017', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 50),
     bm.JobConfig( 
-        dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017/ZEMu_NANO_2017_200k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_200k/221030_185439/0000/',
-        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZEMu-v3_2017', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 1, user_tag = 'Sum'),
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017_ext/ZETau_NANO_2017_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_400k/230424_161523/0001/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZETau-v4b_2017', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 50),
     bm.JobConfig( 
-        dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017/ZETau_NANO_2017_200k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_200k/221030_185449/0000/',
-        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZETau-v3_2017', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 1, user_tag = 'Sum'),
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017_ext/ZMuTau_NANO_2017_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_400k/230424_161532/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZMuTau-v4a_2017', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 50),
     bm.JobConfig( 
-        dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017/ZMuTau_NANO_2017_200k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_200k/221030_185500/0000/',
-        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZMuTau-v3_2017', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 1, user_tag = 'Sum'),
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017_ext/ZMuTau_NANO_2017_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_400k/230424_161532/0001/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='GenZAnalysis_ZMuTau-v4b_2017', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 50),
+
 ]
 
 samplesDict['2018_signal'] = [
@@ -139,7 +185,7 @@ samplesDict['2018_signal'] = [
 # submit to batch
 # -----------------------------
 
-samplesToSubmit = [ '2016_signal', '2017_signal', '2018_signal' ]
+samplesToSubmit = ['2016_lo_z', '2018_lo_z']
 # samplesToSubmit = samplesDict.keys()
 samplesToSubmit.sort()
 

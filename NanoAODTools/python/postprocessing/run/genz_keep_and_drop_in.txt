@@ -9,4 +9,12 @@ keep run
 keep luminosityBlock
 keep event
 
+#for pileup weights
 keep Pileup*
+
+#PDF/theory uncertainty variations
+keep LHEScaleWeight
+keep PSWeight
+keep LHEPdfWeight
+keep LHEReweightingWeight
+keep LHEWeight_originalXWGTUP
