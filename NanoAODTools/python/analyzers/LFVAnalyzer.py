@@ -52,6 +52,12 @@ maxEntries= int(sys.argv[4]) if nargs > 4 else None
 firstEntry= int(sys.argv[5]) if nargs > 5 else 0
 if maxEntries < 0: maxEntries = None
 
+debugLevel = 0
+if maxEntries is not None:
+   print "--- Using max entries =", maxEntries
+   if maxEntries == 1: debug_level = 2
+   elif maxEntries < 10: debug_level = 1
+
 
 #Whether or not to prefetch the file
 prefetch  = False
@@ -347,24 +353,24 @@ if not isData == "data":
    SignalptCorrection=SignalpTWeight(year = year, branch = "GenZll")
    modules.append(SignalptCorrection)
 
-   MuonIDWeight=LeptonSF(year = year, Lepton = 'Muon', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded')
+   MuonIDWeight=LeptonSF(year = year, Lepton = 'Muon', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
    modules.append(MuonIDWeight)
 
    #Iso ID working point is fixed to Tight, working point here refers to Muon ID working point
-   MuonIsoIDWeight=LeptonSF(year = year, Lepton = 'Muon', Correction = 'IsoID', working_point = 'Medium', Embed = isData == 'Embedded')
+   MuonIsoIDWeight=LeptonSF(year = year, Lepton = 'Muon', Correction = 'IsoID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
    modules.append(MuonIsoIDWeight)
 
-   MuonTriggerEff=TriggerEff(year = year, Lepton = 'Muon', Embed = isData == 'Embedded')
+   MuonTriggerEff=TriggerEff(year = year, Lepton = 'Muon', Embed = isData == 'Embedded', verbose = debug_level)
    modules.append(MuonTriggerEff)
 
-   ElectronIDWeight=LeptonSF(year = year, Lepton = 'Electron', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded')
+   ElectronIDWeight=LeptonSF(year = year, Lepton = 'Electron', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
    modules.append(ElectronIDWeight)
 
    #Iso ID working point is fixed to Tight, working point here refers to WP90 ID
-   ElectronIsoIDWeight=LeptonSF(year = year, Lepton = 'Electron', Correction = 'IsoID', working_point = 'Medium', Embed = isData == 'Embedded')
+   ElectronIsoIDWeight=LeptonSF(year = year, Lepton = 'Electron', Correction = 'IsoID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
    modules.append(ElectronIsoIDWeight)
 
-   ElectronRecoIDWeight=LeptonSF(year = year,  Lepton = 'Electron', Correction = 'RecoID', working_point = 'Medium', Embed = isData == 'Embedded')
+   ElectronRecoIDWeight=LeptonSF(year = year,  Lepton = 'Electron', Correction = 'RecoID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
    modules.append(ElectronRecoIDWeight)
 
    ElectronTriggerEff=TriggerEff(year = year, Lepton = 'Electron', Embed = isData == 'Embedded')

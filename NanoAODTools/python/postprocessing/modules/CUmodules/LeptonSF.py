@@ -174,6 +174,8 @@ class LeptonSF(Module):
             if not self.files[-1].GetListOfKeys().Contains(hist_name):
                 raise Exception("Failed to retrieve %s %s %s correction histogram: %s" % (self.Lepton, self.working_point, self.Correction, hist_name))
 
+            if self.verbose > 0:
+                print " %s %s file: %s" % (self.Lepton, self.Correction, hist_name)
             self.hists.append(self.files[-1].Get(hist_name))
         pass
 
@@ -183,6 +185,9 @@ class LeptonSF(Module):
         pt  = lepton.pt
         hist = self.hists[period]
 
+        #Electron corrections use eta_sc
+        if self.Lepton == "Electron": eta = eta + lepton.deltaEtaSC
+
         #determine which axis is which by checking which range is consistent with eta/pT
         eta_x = hist.GetXaxis().GetBinLowEdge(hist.GetNbinsX()) < 10.
         eta_axis = hist.GetXaxis() if eta_x else hist.GetYaxis()
@@ -190,7 +195,7 @@ class LeptonSF(Module):
         eta = eta if eta_axis.GetBinLowEdge(1) < -1. else math.fabs(eta)
 
         x_var = eta if eta_x else pt
-        y_var = eta if eta_x else pt
+        y_var = pt  if eta_x else eta
 
         x_bin = max(1, min(hist.GetNbinsX(), hist.GetXaxis().FindBin(x_var)))
         y_bin = max(1, min(hist.GetNbinsY(), hist.GetYaxis().FindBin(y_var)))
@@ -229,6 +234,10 @@ class LeptonSF(Module):
             weights.append(weight)
             ups.append(up)
             downs.append(down)
+            if self.verbose > 1:
+                print " %s %8s: (pt, eta) = (%.1f, %.2f); weight: %.4f (%.4f/%.4f)" % (self.Lepton, self.Correction, lepton.pt,
+                                                                                       lepton.eta + lepton.deltaEtaSC if self.Lepton == "Electron" else lepton.eta,
+                                                                                       weight, up, down)
         self.out.fillBranch("%s_%s_wt"   % (self.Lepton, self.Correction), weights)
         self.out.fillBranch("%s_%s_up"   % (self.Lepton, self.Correction), ups    )
         self.out.fillBranch("%s_%s_down" % (self.Lepton, self.Correction), downs  )
