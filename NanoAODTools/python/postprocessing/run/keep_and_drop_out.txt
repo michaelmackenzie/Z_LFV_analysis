@@ -73,6 +73,7 @@ keep PrefireWeight*
 #Drell-Yan Z pT re-weighting
 keep ZpTWeight*
 keep SignalpTWeight*
+keep SignalMixingWeight*
 
 #Embedding unfolding
 keep Embedding*

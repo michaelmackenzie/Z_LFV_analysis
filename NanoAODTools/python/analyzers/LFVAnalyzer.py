@@ -6,6 +6,7 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetLepCleaner im
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetPUIDWeight import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.ZpTWeight import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.SignalpTWeight import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.SignalMixingWeight import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.MCEra import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.RandomField import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonSF import *
@@ -355,6 +356,9 @@ if not isData == "data":
 
    SignalptCorrection=SignalpTWeight(year = year, branch = "GenZll")
    modules.append(SignalptCorrection)
+
+   SignalMixingCorrection=SignalMixingWeight(year = year, branch = "GenZll")
+   modules.append(SignalMixingCorrection)
 
    MuonIDWeight=LeptonSF(year = year, Lepton = 'Muon', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
    modules.append(MuonIDWeight)
