@@ -17,6 +17,7 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenLepCount impo
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenAnalyzer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenZllAnalyzer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenRecoMatcher import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.BJetIDWeight import *
 # from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.TriggerAnalyzer import *
 # from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonPairCreator import *
 # from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.FunctionWrapper import *
@@ -337,6 +338,8 @@ modules.append(HTCalculator)
 if isData == "MC": #only for MC
    BTagScale= btagSFProducer(era = ('Legacy2016' if year == "2016" else year), algo = 'deepcsv', selectedWPs=['L','T'])
    modules.append(BTagScale)
+   BTagIDScale= BJetIDWeight(year = year, algo = 'deepcsv', WPs = ['L','T'])
+   modules.append(BTagIDScale)
 
 if not isData == "data":
    ZllBuilder=GenZllAnalyzer(
