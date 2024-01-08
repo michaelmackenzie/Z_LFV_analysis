@@ -192,8 +192,10 @@ class PostProcessor:
                 if elist:
                     inTree.SetEntryList(elist)
             else:
+                print 'Initializing reader'
                 # initialize reader
                 inTree = InputTree(inTree, elist)
+                print 'Initialized reader'
 
             # prepare output file
             if not self.noOut:

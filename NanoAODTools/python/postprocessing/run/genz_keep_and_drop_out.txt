@@ -17,3 +17,4 @@ keep nLHEScaleWeight
 keep LHEScaleWeight
 keep nLHEPdfWeight
 keep LHEPdfWeight
+keep LHEWeight_originalXWGTUP

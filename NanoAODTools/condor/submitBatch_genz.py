@@ -57,6 +57,7 @@ samplesDict['2016_lo_z'] = [
         dataset='/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext1-v1/NANOAODSIM',
         nEvtPerJobIn1e6=nEvtPerJob, maxEvtPerDataset = 1e7, year="2016", isData=False, suffix='GenZAnalysis_LO-DY50_2016'),
 ]
+# Parent: /DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v2/MINIAODSIM
 
 # samplesDict['2017_lo_z'] = [
 #     bm.JobConfig(
@@ -69,6 +70,7 @@ samplesDict['2018_lo_z'] = [
         dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
         nEvtPerJobIn1e6=nEvtPerJob, maxEvtPerDataset = 1e7, year="2018", isData=False, suffix='GenZAnalysis_LO-DY50_2018'),
 ]
+# Parent: /DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM
 
 #################################################
 #                                               #
@@ -185,7 +187,7 @@ samplesDict['2018_signal'] = [
 # submit to batch
 # -----------------------------
 
-samplesToSubmit = ['2016_lo_z', '2018_lo_z']
+samplesToSubmit = ['2018_lo_z']
 # samplesToSubmit = samplesDict.keys()
 samplesToSubmit.sort()
 

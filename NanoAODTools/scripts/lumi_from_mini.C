@@ -3,6 +3,7 @@ map<unsigned, vector<pair<unsigned, unsigned>>> mask_;
 map<unsigned, vector<pair<unsigned, unsigned>>> runs_;
 Long64_t entries_ = 0;
 Long64_t npass_ = 0;
+bool skip_fail_ = true;
 
 //-------------------------------------------------------
 // Print the (run, lumi) info out
@@ -109,7 +110,8 @@ int lumi_from_mini_file(const char* file, const int verbose = 0) {
   // open the MINIAOD file
   TFile* f = nullptr;
   // try a few times to open the file
-  for(int iattempt = 0; iattempt < 3; ++iattempt) {
+  const int max_attempts = 2;
+  for(int iattempt = 0; iattempt < max_attempts; ++iattempt) {
     f = TFile::Open(file, "READ");
     if(f) break;
     else cout << "Attempt " << iattempt+1 << " failed to open file " << file << endl;
@@ -158,7 +160,6 @@ int lumi_from_mini_file(const char* file, const int verbose = 0) {
   //update the total running count of uncut entries
   entries_ += entries;
   f->Close();
-  delete lum;
   delete evt;
   return 0;
 }
@@ -172,6 +173,7 @@ int lumi_from_mini(TString file, const char* out = "lumis.txt", const char* mask
     return 3;
   }
 
+  int nfiles(0), nfail(0);
   if(file.EndsWith(".txt")) { //assume a list of files
     ifstream input_list(file.Data());
     if(!input_list.is_open()) {
@@ -179,27 +181,33 @@ int lumi_from_mini(TString file, const char* out = "lumis.txt", const char* mask
       return 10;
     }
     std::string line;
-    int nfiles = 0;
+    //process each line in the file
     while(std::getline(input_list, line)) {
       if(line.size() == 0) continue;
       if(max_files > 0 && nfiles >= max_files) break;
       cout << "File: " << line.c_str() << endl;
       const int status = lumi_from_mini_file(line.c_str(), verbose);
       if(status != 0) {
-        cout << "Processing returned status " << status << endl;
-        return status;
+        if(!skip_fail_) {
+          cout << "Processing returned status " << status << endl;
+          return status;
+        } else ++nfail;
       }
       ++nfiles;
     }
     input_list.close();
-  } else {
+  } else { //assume a single file
     const int status = lumi_from_mini_file(file.Data(), verbose);
     if(status != 0) {
-      cout << "Processing returned status " << status << endl;
-      return status;
+      if(!skip_fail_) {
+        cout << "Processing returned status " << status << endl;
+        return status;
+      } else ++nfail;
     }
+    ++nfiles;
   }
 
+  //print the lumi info out if verbose
   if(verbose > 0) {
     for(auto run : runs_) {
       cout << run.first << endl;
@@ -210,7 +218,10 @@ int lumi_from_mini(TString file, const char* out = "lumis.txt", const char* mask
     }
   }
 
+  //print the lumi info to disk
   print_lumis(out, runs_);
+
+  //write out the event count information
   TString root_name = out;
   root_name.ReplaceAll(".txt" , ".root");
   root_name.ReplaceAll(".json", ".root");
@@ -222,6 +233,7 @@ int lumi_from_mini(TString file, const char* out = "lumis.txt", const char* mask
   hevt->Write();
   fout->Close();
 
+  if(skip_fail_) cout << "Of " << nfiles << " files, " << nfail << " failed processing\n";
   if(verbose > -1) cout << "Saw " << entries_ << " entries, " << npass_ << " passed (" << (npass_*100.)/entries_ << "%)\n";
   return 0;
 }

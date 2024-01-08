@@ -65,10 +65,10 @@ for dataset in sampleMap._data.keys():
 # -----------------------------
 
 # samplesToSubmit = samplesDict.keys()
-samplesToSubmit = ["2017_embed_mini_mumu"]
+samplesToSubmit = ["2017_embed_mini_mumu", "2017_embed_mini_ee"]
 samplesToSubmit.sort()
-doYears = ["2017"]
-# doYears = ["2016", "2017", "2018"]
+# doYears = ["2017"]
+doYears = ["2016", "2017", "2018"]
 sampleTag = ""
 sampleVeto = ""
 configs = []

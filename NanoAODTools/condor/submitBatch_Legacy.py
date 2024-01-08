@@ -262,6 +262,18 @@ samplesDict['2016_vv'] = [
         nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_EWKZ-M50_2016'),
 ]
 
+# Higgs backgrounds
+samplesDict['2016_higgs'] = [
+    #ggF H -> tau tau
+    bm.JobConfig(
+        dataset='/GluGluHToTauTau_M125_13TeV_powheg_pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_ggFH-TauTau_2016'),
+    #ggF H -> WW -> 2l 2nu
+    bm.JobConfig(
+        dataset='/GluGluHToWWTo2L2Nu_M125_13TeV_powheg_pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_ggFH-WW_2016'),
+]
+
 # # qcd
 # samplesDict['2016_qcd'] = [
 #     # 20-30, EM enriched
@@ -345,10 +357,10 @@ samplesDict['2016_vv'] = [
 samplesDict['2017_signal'] = [
     #### z samples ####
     # samples with mass cut bug
-    # bm.JobConfig( 
-    #     dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017/ZEMu_NANO_2017_200k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_200k/221030_185439/0000/',
-    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZEMu-v2_2017', user_redir = 'root://eoscms.cern.ch/',
-    #     user_nfiles = 1, user_tag = 'Sum'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017/ZEMu_NANO_2017_200k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_200k/221030_185439/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZEMu-v2_2017', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'Sum'),
     # bm.JobConfig( 
     #     dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017/ZETau_NANO_2017_200k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_200k/221030_185449/0000/',
     #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZETau-v2_2017', user_redir = 'root://eoscms.cern.ch/',
@@ -520,6 +532,19 @@ samplesDict['2017_vv'] = [
         dataset='/EWKZ2Jets_ZToLL_M-50_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
         nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='LFVAnalysis_EWKZ-M50_2017'),
 ]
+
+# Higgs backgrounds
+samplesDict['2017_higgs'] = [
+    #ggF H -> tau tau
+    bm.JobConfig(
+        dataset='/GluGluHToTauTau_M125_13TeV_powheg_pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8_ext1-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='LFVAnalysis_ggFH-TauTau_2017'),
+    #ggF H -> WW -> 2l 2nu
+    bm.JobConfig(
+        dataset='/GluGluHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='LFVAnalysis_ggFH-WW_2017'),
+]
+
 
 # # qcd
 # samplesDict['2017_qcd'] = [
@@ -720,6 +745,19 @@ samplesDict['2018_vv'] = [
         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_EWKZ-M50_2018'),
 ]
 
+# Higgs backgrounds
+samplesDict['2018_higgs'] = [
+    #ggF H -> tau tau
+    bm.JobConfig(
+        dataset='/GluGluHToTauTau_M125_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_ggFH-TauTau_2018'),
+    #ggF H -> WW -> 2l 2nu
+    bm.JobConfig(
+        dataset='/GluGluHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_ggFH-WW_2018'),
+]
+
+
 # # qcd
 # samplesDict['2018_qcd'] = [
 #     # 15-20, EM enriched
@@ -786,18 +824,20 @@ samplesDict['2018_vv'] = [
 
 # samplestosubmit = ["2016_signal", "2016_top", "2016_z", "2016_w", "2016_vv", "2016_qcd"]
 # samplesToSubmit = ["2016_embed_emu", "2016_embed_etau", "2016_embed_mutau"]
-# samplesToSubmit = ["2017_embed_mumu", "2017_embed_ee", "2018_embed_mumu", "2018_embed_ee"]
+# samplesToSubmit = ["2017_embed_mumu", "2017_embed_ee"]
 # samplesToSubmit = ["2016_SingleElectron", "2016_SingleMuon"]
 # samplesToSubmit = ["2017_signal", "2017_top", "2017_z", "2017_w", "2017_vv", "2017_qcd"]
 # samplesToSubmit = ["2018_signal", "2018_top", "2018_z", "2018_w", "2018_vv", "2018_qcd"]
 # samplesToSubmit = ["2018_signal", "2018_top", "2018_z", "2018_w", "2018_vv", "2018_qcd", "2018_SingleElectron", "2018_SingleMuon"]
 # samplesToSubmit = ["2016_vv", "2017_top", "2017_vv", "2017_z", "2018_top", "2018_vv", "2018_z"]
-samplesToSubmit = samplesDict.keys()
+# samplesToSubmit = ["2017_signal"]
+samplesToSubmit = ["2016_higgs", "2017_higgs", "2018_higgs"]
+# samplesToSubmit = samplesDict.keys()
 
 samplesToSubmit.sort()
-doYears = ["2018"]
-# doYears = ["2016", "2017", "2018"]
-sampleTag = "signal"
+# doYears = ["2018"]
+doYears = ["2016", "2017", "2018"]
+sampleTag = ""
 sampleVeto = ""
 configs = []
 

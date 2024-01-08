@@ -51,12 +51,16 @@ condor_q -nobatch | awk -v user=${USER} -v summary=${SUMMARY} -v verbose=${VERBO
     if($2 == "Schedd:" && verbose != "") {
 	print $0
     }
+    if($2 == "Schedd:") {
+	schedd=$3
+    }
     if($2 == user) {
 	if(verbose != "" && (tag == "" || ($0 ~ tag))) print $0
         ++total
         split($1,arr,".")
         name=arr[1]
         users[name] = $2
+	schedds[name] = schedd
         if(name in names) {
             ++names[name]
         } else {
@@ -80,12 +84,12 @@ condor_q -nobatch | awk -v user=${USER} -v summary=${SUMMARY} -v verbose=${VERBO
 } END {
     print "Jobsub summary: Total of",total,"jobs found for user",user
     if(summary != "s") {
-	print "User       Job-ID              Total      Idle   Running      Held         X               dataset                                     script"
+	print "User       Job-ID              Total      Idle   Running      Held         X               dataset                                   script                 Schedd"
 	for(name in names) {
 	    if(tag == "" || (datasets[name] ~ tag)) {
 		if(running == "" || statuses[name]["R"] > 0) {
-		    printf "%-10s %-10s %14i %9i %9i %9i %9i   %-50s %s\n", users[name], name, names[name],
-			statuses[name]["I"], statuses[name]["R"], statuses[name]["H"], statuses[name]["X"], datasets[name], scripts[name];
+		    printf "%-10s %-10s %14i %9i %9i %9i %9i   %-50s %-20s  %s\n", users[name], name, names[name],
+			statuses[name]["I"], statuses[name]["R"], statuses[name]["H"], statuses[name]["X"], datasets[name], scripts[name], schedds[name];
 		}
 	    }
 	}

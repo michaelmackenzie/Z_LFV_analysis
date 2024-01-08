@@ -144,10 +144,11 @@ class BatchMaster():
         nFilesPerJob = int(math.ceil(float(nFiles)/float(nJobs)))
         sources = [ fileList[i:i+nFilesPerJob] for i in range(0, len(fileList), nFilesPerJob) ]
         # check if dataset is larger than maximum dataset size
-        if self._maxEvtPerDataset is not None and self._maxEvtPerDataset > 0 and self._maxEvtPerDataset < nEvents:
+        if cfg._maxEvtPerDataset is not None and cfg._maxEvtPerDataset > 0 and cfg._maxEvtPerDataset < nEvents:
             #reduce number of jobs to keep closer to the maximum
-            last_job = int(math.ceil(self._maxEvtPerDataset / nEvents * 1. * len(sources)))
-            if last_job < len(sources[i]):
+            nSources = len(sources)
+            last_job = int(math.ceil(cfg._maxEvtPerDataset / (nEvents * 1.) * nSources))
+            if last_job < len(sources):
                 sources = [ sources[i] for i in range(0, last_job) ]
             
 
