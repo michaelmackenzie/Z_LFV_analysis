@@ -15,16 +15,16 @@ ROOT.PyConfig.IgnoreCommandLineOptions = True
 
 
 #---------------------------------#
-p = argparse.ArgumentParser(description='Select whether to download MC or data')
-p.add_argument('--tolxplus' , help='Copy to (True) or from (False) lxplus', required=True)
+p = argparse.ArgumentParser(description='Copy ntuples between LPC and LXPLUS EOS areas')
+p.add_argument('--tolxplus' , help='Copy to (True) or from (False) LXPLUS', required=True)
 p.add_argument('--directory', help='The ntuple directory', default="lfvanalysis_rootfiles/", required=False)
 p.add_argument('--lpcuser'  , help='LPC user EOS space to use', default="", required=False)
 p.add_argument('--mc_data'  , help='Type MC or Data for only MC or Data', default="", required=False)
 p.add_argument('--year'     , help='Specific year to process',default="", required=False)
 p.add_argument('--tag'      , help='Dataset tag to process',default="", required=False)
 p.add_argument('--veto'     , help='Comma separated list of tags to not process (e.g. DY,ttbar,Embed)',default="", required=False)
-p.add_argument('--dryrun'   , help='Setup merging without running', action='store_true', required=False)
-p.add_argument('--dosingle' , help='Merge first dataset only', action='store_true', required=False)
+p.add_argument('--dryrun'   , help='Setup processing without running', action='store_true', required=False)
+p.add_argument('--dosingle' , help='Copy first dataset only', action='store_true', required=False)
 p.add_argument('--segments' , help='Only copy segment directories', action='store_true', required=False)
 p.add_argument('--verbose'  , help='Print additional information', action='store_true', required=False)
 

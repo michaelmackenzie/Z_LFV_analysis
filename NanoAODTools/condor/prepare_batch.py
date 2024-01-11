@@ -4,6 +4,7 @@ import shutil
 import subprocess
 import argparse
 from importlib import import_module
+from math import ceil
 
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 
@@ -29,6 +30,7 @@ p.add_argument('--copylocal', help='Copy files locally to merge', action='store_
 p.add_argument('--segments' , help='Use job segments rather than a merged ntuple', action='store_true', required=False)
 p.add_argument('--onlylink' , help='Link segments instead of copying them over', action='store_true', required=False)
 p.add_argument('--mergeseg' , help='Merge existing segment files', action='store_true', required=False)
+p.add_argument('--maxsize'  , help='Maximum output file size in MB, larger datasets are split into sub-datasets', default="", required=False)
 p.add_argument('--jsononly' , help='Only process lumi json files', action='store_true', required=False)
 p.add_argument('--skipjson' , help='Skip lumi json files', action='store_true', required=False)
 p.add_argument('--verbose'  , help='Print additional information', action='store_true', required=False)
@@ -48,6 +50,7 @@ copylocal  = args.copylocal
 segments   = args.segments
 onlylink   = args.onlylink
 mergeseg   = args.mergeseg
+maxsize    = args.maxsize
 jsononly   = args.jsononly
 skipjson   = args.skipjson
 verbose    = args.verbose
@@ -61,6 +64,11 @@ if onlylink and not segments:
 if jsononly and skipjson:
     print "Can't use --jsononly and --skipjson"
     exit()
+if maxsize != "":
+    maxsize = int(maxsize)
+    print "Using a maximum output file size of", maxsize, "MB"
+else:
+    maxsize = -1
 
 if inputpath[-1:] != '/':
     inputpath = inputpath + '/'
@@ -267,34 +275,76 @@ for dirname in list_dirs:
                 if dosingle:
                     exit()
                 continue
-            #ensure only root files are considered, adding each to the merge command
+            #get the total dataset size in MB
+            dataset_size = 0.
+            ndataset_files = 0
             for data_file in inputlist:
                 if ".root" in data_file:
-                    hadd_command = hadd_command + " " + data_file
-
+                    ndataset_files += 1
+                    file_location = data_file
+                    file_location = file_location.replace("root://cmseos.fnal.gov//", "/eos/uscms/")
+                    file_location = file_location.replace("root://eoscms.cern.ch//", "/eos/cms/")
+                    file_size = os.stat(file_location).st_size / (1024*1024)
+                    dataset_size += file_size
+                    if verbose:
+                        print data_file, "is", file_size, "MB"
+            ndataset_files = int(ndataset_files)
+            if verbose:
+                print "Total dataset size is", dataset_size, "MB with", ndataset_files, "files"
+            # number of datasets to split into based on size
+            nsplit = 1 if maxsize <= 0 or dataset_size <= 0. else min(ndataset_files, ceil(dataset_size / maxsize))
+            nsplit = int(nsplit)
+            nfiles_per_subset = int(ndataset_files if nsplit == 1 else ceil(ndataset_files / float(nsplit)))
+            if verbose:
+                print "Output dataset splitting factor:", nsplit, "-->", nfiles_per_subset, "files per subset"
             print "Merging into output dataset", outputname
-            if not dryrun:
-                os.system(hadd_command)
-            else:
-                print hadd_command
-                if dosingle:
-                    exit()
-                continue
+            # run a merge and copy back command for each output subset of the dataset
+            for isplit in range(nsplit):
+                index_start = int(nfiles_per_subset*isplit)
+                index_end   = int(min(ndataset_files, nfiles_per_subset*(isplit+1)))
+                subset_hadd_command = hadd_command
+                if maxsize > 0:
+                    subset_hadd_command.replace(".root", "-%i.root" % (isplit))
+                #ensure only root files are considered, adding each to the merge command
+                for data_file in inputlist[index_start:index_end]:
+                    if ".root" in data_file:
+                        subset_hadd_command = subset_hadd_command + " " + data_file
+                if nsplit > 1: print " Merging subset dataset", isplit
 
-            #remove the input files if copied over after merging
-            if copylocal:
-                for infile in inputlist:
-                    os.remove(infile)
+                if not dryrun:
+                    os.system(subset_hadd_command)
+                else:
+                    print subset_hadd_command
 
-            # Copy back the merged data:
-            copy_command = 'time xrdcp -f ' + tmp_dir + outputname
-            if host == 'lxplus':
-                copy_command = copy_command + ' root://eoscms.cern.ch//store/group/phys_smp/ZLFV/' + outputpath
-            else:
-                copy_command = copy_command + ' root://cmseos.fnal.gov//store/user/' + user +'/'  + outputpath
-            print copy_command
-            os.system(copy_command)
-            os.remove("%s%s" % (tmp_dir, outputname))
+                #remove the input files if copied over after merging
+                if copylocal:
+                    for infile in inputlist[index_start:index_end]:
+                        if not dryrun:
+                            os.remove(infile)
+                        else:
+                            print "rm", infile
+
+                # Copy back the merged data:
+                if maxsize <= 0:
+                    copy_command = 'time xrdcp -f ' + tmp_dir + outputname
+                    rm_command   = tmp_dir + outputname
+                else:
+                    copy_command = 'time xrdcp -f ' + tmp_dir + outputname
+                    copy_command = copy_command.replace(".root", "-%i.root" % (isplit))
+                    rm_command = tmp_dir + outputname
+                    rm_command = rm_command.replace(".root", "-%i.root" % (isplit))
+                if host == 'lxplus':
+                    copy_command = copy_command + ' root://eoscms.cern.ch//store/group/phys_smp/ZLFV/' + outputpath
+                else:
+                    copy_command = copy_command + ' root://cmseos.fnal.gov//store/user/' + user +'/'  + outputpath
+                print copy_command
+                if not dryrun:
+                    os.system(copy_command)
+                print "Removing", rm_command
+                if not dryrun:
+                    os.remove(rm_command)
+            if dosingle:
+                exit()
 
     ######################################################
     # Process lumi files, if relevant
