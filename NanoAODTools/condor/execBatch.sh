@@ -6,6 +6,7 @@ echo ">>> arguments: $@"
 ### Required parameters #####
 COUNT=$1
 YEAR=$2
+ISDATA=$3
 SUFFIX=$4
 OUTDIR=$5
 ANALYZER=$6
@@ -98,12 +99,12 @@ do
     then
         ISDATA="Embedded"
     fi
-    echo "python python/analyzers/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}"
-    python python/analyzers/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}
+    echo "python python/analyzers/${ANALYZER}.py temp.root ${SUFFIX} ${YEAR}"
+    python python/analyzers/${ANALYZER}.py temp.root ${SUFFIX} ${YEAR}
     if [[ ! -f tree.root ]]; then
         echo "No tree file found, re-running ntupling job"
         ls -l *.root
-        python python/analyzers/${ANALYZER}.py temp.root ${ISDATA} ${YEAR}
+        python python/analyzers/${ANALYZER}.py temp.root ${SUFFIX} ${YEAR}
         if [[ ! -f tree.root ]]; then
             echo "No tree file found, exit code 1, failure in processing"
             ls *.root

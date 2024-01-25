@@ -39,7 +39,7 @@ samplesDict = {}
 
 #Load currently used samples
 sampleMap = SampleMap()
-sampleMap.load_samples(sampleMap._data)
+sampleMap.load_samples(sampleMap._data, add_muon_eg = True)
 
 
 nEvtPerJob = 3 # faster jobs, # in unit of 1e6 , 5-10 are good settings. 
@@ -52,7 +52,7 @@ nEvtPerJob = 3 # faster jobs, # in unit of 1e6 , 5-10 are good settings.
 # dataset, nEvtPerJobIn1e6, year, isData, suffix
 
 for dataset in sampleMap._data.keys():
-    if not ('SingleMuon' in dataset or 'SingleElectron' in dataset): continue
+    if not ('SingleMuon' in dataset or 'SingleElectron' in dataset or 'MuonEG' in dataset): continue
     samplesDict[dataset] = []
     for sample in sampleMap._data[dataset]:
         if not sample._isdata: continue
@@ -831,19 +831,32 @@ samplesDict['2018_higgs'] = [
 # samplesToSubmit = ["2018_signal", "2018_top", "2018_z", "2018_w", "2018_vv", "2018_qcd", "2018_SingleElectron", "2018_SingleMuon"]
 # samplesToSubmit = ["2016_vv", "2017_top", "2017_vv", "2017_z", "2018_top", "2018_vv", "2018_z"]
 # samplesToSubmit = ["2017_signal"]
-samplesToSubmit = ["2016_higgs", "2017_higgs", "2018_higgs"]
-# samplesToSubmit = samplesDict.keys()
+# samplesToSubmit = ["2016_higgs", "2017_higgs", "2018_higgs"]
+samplesToSubmit = samplesDict.keys()
 
 samplesToSubmit.sort()
-# doYears = ["2018"]
-doYears = ["2016", "2017", "2018"]
-sampleTag = ""
-sampleVeto = ""
+doYears = ["2016"]
+# doYears = ["2016", "2017", "2018"]
+sampleTag = ["MuonEG", "signal"]
+sampleVeto = ["embed_ee", "embed_mumu"]
 configs = []
 
 for s in samplesToSubmit:
-    if s[:4] in doYears and (sampleTag == "" or sampleTag in s) and (sampleVeto == "" or sampleVeto not in s):
+    if s[:4] in doYears:
+        tagged = True if len(sampleTag) == 0 else False
+        for tag in sampleTag:
+            tagged = tagged or tag == "" or tag in s
+        if not tagged: continue
+        vetoed = False
+        for tag in sampleVeto:
+            if(tag != "" and tag in s):
+                vetoed = True
+                break
+        if vetoed: continue
         configs += samplesDict[s]
+        if dryRun:
+            for sample in samplesDict[s]:
+                print "Adding sample", sample._suffix, "to the processing list"
 
 if configs == []:
     print "No datasets to submit!"

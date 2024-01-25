@@ -1,34 +1,40 @@
 #!/usr/bin/env python
+
+doOnlyNecessary = False
+
+from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
+
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonSkimmer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.HTSkimmer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetSkimmer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetLepCleaner import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetPUIDWeight import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.ZpTWeight import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.SignalpTWeight import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.SignalMixingWeight import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.MCEra import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.RandomField import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonSF import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.TriggerEff import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.EmbeddingUnfolding import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.SelectionFilter import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenCount import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenLepCount import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenAnalyzer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenZllAnalyzer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenRecoMatcher import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.BJetIDWeight import *
-# from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.TriggerAnalyzer import *
-# from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonPairCreator import *
-# from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.FunctionWrapper import *
-from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
-from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.common.PrefireCorr import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.common.muonScaleResProducer import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetHelperRun2 import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetUncertainties import *
-from PhysicsTools.NanoAODTools.postprocessing.modules.btv.btagSFProducer import *
+
+if not doOnlyNecessary:
+   from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetPUIDWeight import *
+   from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.ZpTWeight import *
+   from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.SignalpTWeight import *
+   from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.SignalMixingWeight import *
+   from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.MCEra import *
+   from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.RandomField import *
+   from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonSF import *
+   from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.TriggerEff import *
+   from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.EmbeddingUnfolding import *
+   from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.BJetIDWeight import *
+   # from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.TriggerAnalyzer import *
+   # from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.LeptonPairCreator import *
+   # from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.FunctionWrapper import *
+   from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
+   from PhysicsTools.NanoAODTools.postprocessing.modules.common.PrefireCorr import *
+   from PhysicsTools.NanoAODTools.postprocessing.modules.common.muonScaleResProducer import *
+   from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetHelperRun2 import *
+   from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetUncertainties import *
+   from PhysicsTools.NanoAODTools.postprocessing.modules.btv.btagSFProducer import *
 
 
 from importlib import import_module
@@ -64,6 +70,28 @@ if maxEntries is not None:
 #Whether or not to prefetch the file
 prefetch  = False
 
+datasetName = isData
+dataRegion = None
+if datasetName not in ["data", "MC", "Embedded"]:
+   if "Embed" in datasetName:
+      isData = "Embedded"
+      baseName = datasetName.split('_')[1]
+      dataRegion = baseName[-1]
+      if dataRegion not in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']:
+         print "Unable to identify data region for sample %s" % (datasetName)
+   elif "Run" in datasetName:
+      isData = "data"
+      baseName = datasetName.split('_')[1]
+      dataRegion = baseName[-1]
+      if dataRegion not in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']:
+         print "Unable to identify data region for sample %s" % (datasetName)
+   else:
+      print "Assuming dataset name %s is an MC dataset" % (datasetName)
+      isData = "MC"
+else:
+   #No dataset name given
+   datasetName = None
+
 if isData not in ["data", "MC", "Embedded"]:
    print "Unknown data flag %s" % (isData)
    print "Defined flags are: data, MC, and Embedded"
@@ -74,18 +102,49 @@ if year not in ["2016", "2017", "2018"]:
    print "Defined years are: 2016, 2017, and 2018"
    exit()
    
+print "Using dataset = %s, dataRegion = %s, isData = %s" % (datasetName, dataRegion, isData)
 
 # branches to read in / write out
 branchsel_in  ="python/postprocessing/run/keep_and_drop_in.txt"
 branchsel_out ="python/postprocessing/run/keep_and_drop_out.txt"
 
+# whether or not to consider e-mu triggers in the e-mu data selection
+UseEmuTrig = True
+
 # filter out untriggered events or with leading lepton below the trigger threshold
 if year == "2016":
-   TriggerCuts="((HLT_IsoMu24 && nMuon > 0) || (HLT_Ele27_WPTight_Gsf && nElectron > 0))"
+   if not UseEmuTrig or 'MuonEG' not in datasetName:
+      TriggerCuts="(HLT_IsoMu24 && nMuon > 0) || (HLT_Ele27_WPTight_Gsf && nElectron > 0)"
+   else:
+      TriggerCuts=""
+   if UseEmuTrig:
+      if 'MuonEG' not in datasetName: TriggerCuts=TriggerCuts + " || "
+      #use _DZ trigger in 2016G-H, no _DZ in B-F
+      if isData is not "data" or dataRegion not in ['G','H']:
+         TriggerCuts=TriggerCuts +     "(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL && nMuon > 0 && nElectron > 0)"
+         TriggerCuts=TriggerCuts + " || (HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL && nMuon > 0 && nElectron > 0)"
+      else:
+         TriggerCuts=TriggerCuts +     "(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ && nMuon > 0 && nElectron > 0)"
+         TriggerCuts=TriggerCuts + " || (HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ && nMuon > 0 && nElectron > 0)"
 elif year == "2017":
-   TriggerCuts="(HLT_IsoMu27 && nMuon > 0) || (HLT_Ele32_WPTight_Gsf_L1DoubleEG && nElectron > 0)"
+   if not UseEmuTrig or 'MuonEG' not in datasetName:
+      TriggerCuts="(HLT_IsoMu27 && nMuon > 0) || (HLT_Ele32_WPTight_Gsf_L1DoubleEG && nElectron > 0)"
+   else:
+      TriggerCuts=""
+   if UseEmuTrig:
+      if 'MuonEG' not in datasetName: TriggerCuts=TriggerCuts + " || "
+      TriggerCuts=TriggerCuts +     "(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ && nMuon > 0 && nElectron > 0)"
+      TriggerCuts=TriggerCuts + " || (HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ && nMuon > 0 && nElectron > 0)"
 elif year == "2018":
-   TriggerCuts="(HLT_IsoMu24 && nMuon > 0) || (HLT_Ele32_WPTight_Gsf && nElectron > 0)"
+   if not UseEmuTrig or 'MuonEG' not in datasetName:
+      TriggerCuts="(HLT_IsoMu24 && nMuon > 0) || (HLT_Ele32_WPTight_Gsf && nElectron > 0)"
+   else:
+      TriggerCuts=""
+   if UseEmuTrig:
+      if 'MuonEG' not in datasetName: TriggerCuts=TriggerCuts + " || "
+      TriggerCuts=TriggerCuts +     "(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ && nMuon > 0 && nElectron > 0)"
+      TriggerCuts=TriggerCuts + " || (HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ && nMuon > 0 && nElectron > 0)"
+
 
 # TriggerCuts = None
 print "Trigger cuts:", TriggerCuts
@@ -117,7 +176,7 @@ GenCounter=GenCount()
 modules.append(GenCounter)
 
 #Randomly assign a data era to MC
-if isData == "MC":
+if isData == "MC" and not doOnlyNecessary:
    if year == "2016":
       lumis = [19.72, 16.14]
    elif year == "2018":
@@ -128,12 +187,13 @@ if isData == "MC":
    modules.append(MCera)
 
 #Add a random number branch for future use
-randomField = RandomField(seed = 0) #0 to avoid the same seed for all job sections
-modules.append(randomField)
+if not doOnlyNecessary:
+   randomField = RandomField(seed = 0) #0 to avoid the same seed for all job sections
+   modules.append(randomField)
 
    
 #prefire probability, before jet/photon/electron collection is skimmed
-if isData == "MC": #only do on MC, 2016 and 2017
+if isData == "MC" and not doOnlyNecessary: #only do on MC, 2016 and 2017
    if year == "2016":
       PrefireCorr = PrefCorr(jetroot="L1prefiring_jetpt_2016BtoH.root",
                              jetmapname="L1prefiring_jetpt_2016BtoH",
@@ -236,16 +296,20 @@ Selection= SelectionFilter(year=year,
                            min_mass = MinMass,
                            max_mass = MaxMass,
                            min_dr = MinDeltaR,
+                           use_emu_trig = UseEmuTrig,
+                           data_region = dataRegion,
+                           dataset = datasetName,
                            verbose=0)
 modules.append(Selection)
 
 # Rochester corrections for muons
-if year == "2016":
-   modules.append(muonScaleRes2016())
-elif year == "2017":
-   modules.append(muonScaleRes2017())
-elif year == "2018":
-   modules.append(muonScaleRes2018())
+if not doOnlyNecessary:
+   if year == "2016":
+      modules.append(muonScaleRes2016())
+   elif year == "2017":
+      modules.append(muonScaleRes2017())
+   elif year == "2018":
+      modules.append(muonScaleRes2018())
 
 # # JET MET corrections, before jet cleaning is applied
 # #FIXME: Get correct run period for Data/Embedding
@@ -253,7 +317,7 @@ elif year == "2018":
 # modules.append(jmeCorrections())
 
 # JET MET uncertainties, before jet cleaning is applied
-if isData == "MC":
+if isData == "MC" and not doOnlyNecessary:
    if year == "2016":
       modules.append(jetmetUncertainties2016())
    elif year == "2017":
@@ -307,8 +371,9 @@ JetTauCleaner=JetLepCleaner(
 )
 modules.append(JetTauCleaner)   
 
-jetPUIDWeight=JetPUIDWeight(year = year)
-modules.append(jetPUIDWeight)
+if not doOnlyNecessary:
+   jetPUIDWeight=JetPUIDWeight(year = year)
+   modules.append(jetPUIDWeight)
 
 if year == "2016":
    btagWPs = [0.2217, 0.6321, 0.8953]
@@ -336,7 +401,7 @@ HTCalculator= HTSkimmer(
 )
 modules.append(HTCalculator)
 
-if isData == "MC": #only for MC
+if isData == "MC" and not doOnlyNecessary: #only for MC
    BTagScale= btagSFProducer(era = ('Legacy2016' if year == "2016" else year), algo = 'deepcsv', selectedWPs=['L','T'])
    modules.append(BTagScale)
    BTagIDScale= BJetIDWeight(year = year, algo = 'deepcsv', WPs = ['L','T'])
@@ -350,42 +415,42 @@ if not isData == "data":
       verbose=-1
    )
    modules.append(ZllBuilder)
+   if not doOnlyNecessary:
+      ZptCorrection=ZpTWeight(year = year, branch = "GenZll")
+      modules.append(ZptCorrection)
 
-   ZptCorrection=ZpTWeight(year = year, branch = "GenZll")
-   modules.append(ZptCorrection)
+      SignalptCorrection=SignalpTWeight(year = year, branch = "GenZll")
+      modules.append(SignalptCorrection)
 
-   SignalptCorrection=SignalpTWeight(year = year, branch = "GenZll")
-   modules.append(SignalptCorrection)
+      SignalMixingCorrection=SignalMixingWeight(year = year, branch = "GenZll")
+      modules.append(SignalMixingCorrection)
 
-   SignalMixingCorrection=SignalMixingWeight(year = year, branch = "GenZll")
-   modules.append(SignalMixingCorrection)
+      MuonIDWeight=LeptonSF(year = year, Lepton = 'Muon', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
+      modules.append(MuonIDWeight)
 
-   MuonIDWeight=LeptonSF(year = year, Lepton = 'Muon', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
-   modules.append(MuonIDWeight)
+      #Iso ID working point is fixed to Tight, working point here refers to Muon ID working point
+      MuonIsoIDWeight=LeptonSF(year = year, Lepton = 'Muon', Correction = 'IsoID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
+      modules.append(MuonIsoIDWeight)
 
-   #Iso ID working point is fixed to Tight, working point here refers to Muon ID working point
-   MuonIsoIDWeight=LeptonSF(year = year, Lepton = 'Muon', Correction = 'IsoID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
-   modules.append(MuonIsoIDWeight)
+      MuonTriggerEff=TriggerEff(year = year, Lepton = 'Muon', Embed = isData == 'Embedded', verbose = debug_level)
+      modules.append(MuonTriggerEff)
 
-   MuonTriggerEff=TriggerEff(year = year, Lepton = 'Muon', Embed = isData == 'Embedded', verbose = debug_level)
-   modules.append(MuonTriggerEff)
+      ElectronIDWeight=LeptonSF(year = year, Lepton = 'Electron', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
+      modules.append(ElectronIDWeight)
 
-   ElectronIDWeight=LeptonSF(year = year, Lepton = 'Electron', Correction = 'ID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
-   modules.append(ElectronIDWeight)
+      #Iso ID working point is fixed to Tight, working point here refers to WP90 ID
+      ElectronIsoIDWeight=LeptonSF(year = year, Lepton = 'Electron', Correction = 'IsoID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
+      modules.append(ElectronIsoIDWeight)
 
-   #Iso ID working point is fixed to Tight, working point here refers to WP90 ID
-   ElectronIsoIDWeight=LeptonSF(year = year, Lepton = 'Electron', Correction = 'IsoID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
-   modules.append(ElectronIsoIDWeight)
+      ElectronRecoIDWeight=LeptonSF(year = year,  Lepton = 'Electron', Correction = 'RecoID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
+      modules.append(ElectronRecoIDWeight)
 
-   ElectronRecoIDWeight=LeptonSF(year = year,  Lepton = 'Electron', Correction = 'RecoID', working_point = 'Medium', Embed = isData == 'Embedded', verbose = debug_level)
-   modules.append(ElectronRecoIDWeight)
+      ElectronTriggerEff=TriggerEff(year = year, Lepton = 'Electron', Embed = isData == 'Embedded')
+      modules.append(ElectronTriggerEff)
 
-   ElectronTriggerEff=TriggerEff(year = year, Lepton = 'Electron', Embed = isData == 'Embedded')
-   modules.append(ElectronTriggerEff)
-
-   if isData == 'Embedded':
-      EmbeddingWeight=EmbeddingUnfolding(year = year)
-      modules.append(EmbeddingWeight)
+      if isData == 'Embedded':
+         EmbeddingWeight=EmbeddingUnfolding(year = year)
+         modules.append(EmbeddingWeight)
 
    # RecoElectronMatcher=GenRecoMatcher(
    #                genParticles=['GenElectron'],
@@ -442,12 +507,13 @@ modules.append(GenElectronCount)
 
 #configure the pileup module and the json file filtering
 if isData == "MC":
-   if year == "2016":
-      modules.append(puWeight_2016())
-   elif year == "2017":
-      modules.append(puWeight_2017())
-   elif year == "2018":
-      modules.append(puWeight_2018())
+   if not doOnlyNecessary:
+      if year == "2016":
+         modules.append(puWeight_2016())
+      elif year == "2017":
+         modules.append(puWeight_2017())
+      elif year == "2018":
+         modules.append(puWeight_2018())
    jsonFile=None
 else: #data/embedding
    if year == "2016" :

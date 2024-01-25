@@ -31,7 +31,8 @@ class SampleMap():
         self._data = {}
         # self.load_samples(self._data)
 
-    def load_data(self, data):
+    #-----------------------------------------------------------------------------------
+    def load_data(self, data, add_muon_eg = False):
         #################################################
         #                                               #
         #---------------  Running data   ---------------#
@@ -85,7 +86,41 @@ class SampleMap():
             DataSample(name = 'SingleMuonRun2018C',  year = 2018, isdata = True, path = '/SingleMuon/Run2018C-02Apr2020-v1/NANOAOD'),
             DataSample(name = 'SingleMuonRun2018D',  year = 2018, isdata = True, path = '/SingleMuon/Run2018D-02Apr2020-v1/NANOAOD'),
         ]
+        if add_muon_eg:
+            self.load_muon_eg_data(data)
 
+    #-----------------------------------------------------------------------------------
+    def load_muon_eg_data(self, data):
+        #################################################
+        #                                               #
+        #---------------  Running data   ---------------#
+        #                                               #
+        #################################################
+
+        data['2016_MuonEG'] = [
+            DataSample(name = "MuonEGRun2016B", year = 2016, isdata = True, path = '/MuonEG/Run2016B-02Apr2020_ver2-v1/NANOAOD'),
+            DataSample(name = "MuonEGRun2016C", year = 2016, isdata = True, path = '/MuonEG/Run2016C-02Apr2020-v1/NANOAOD'     ),
+            DataSample(name = "MuonEGRun2016D", year = 2016, isdata = True, path = '/MuonEG/Run2016D-02Apr2020-v1/NANOAOD'     ),
+            DataSample(name = "MuonEGRun2016E", year = 2016, isdata = True, path = '/MuonEG/Run2016E-02Apr2020_17Jul2018-v1/NANOAOD'     ),
+            DataSample(name = "MuonEGRun2016F", year = 2016, isdata = True, path = '/MuonEG/Run2016F-02Apr2020-v1/NANOAOD'     ),
+            DataSample(name = "MuonEGRun2016G", year = 2016, isdata = True, path = '/MuonEG/Run2016G-02Apr2020-v1/NANOAOD'     ),
+            DataSample(name = "MuonEGRun2016H", year = 2016, isdata = True, path = '/MuonEG/Run2016H-02Apr2020-v1/NANOAOD'     ),
+        ]
+        data['2017_MuonEG'] = [ 
+            DataSample(name = 'MuonEGRun2017B',  year = 2017, isdata = True, path = '/MuonEG/Run2017B-02Apr2020-v1/NANOAOD'),
+            DataSample(name = 'MuonEGRun2017C',  year = 2017, isdata = True, path = '/MuonEG/Run2017C-02Apr2020-v1/NANOAOD'),
+            DataSample(name = 'MuonEGRun2017D',  year = 2017, isdata = True, path = '/MuonEG/Run2017D-02Apr2020-v1/NANOAOD'),
+            DataSample(name = 'MuonEGRun2017E',  year = 2017, isdata = True, path = '/MuonEG/Run2017E-02Apr2020-v1/NANOAOD'),
+            DataSample(name = 'MuonEGRun2017F',  year = 2017, isdata = True, path = '/MuonEG/Run2017F-02Apr2020-v1/NANOAOD'),
+        ]
+        data['2018_MuonEG'] = [ 
+            DataSample(name = 'MuonEGRun2018A',  year = 2018, isdata = True, path = '/MuonEG/Run2018A-02Apr2020-v1/NANOAOD'),
+            DataSample(name = 'MuonEGRun2018B',  year = 2018, isdata = True, path = '/MuonEG/Run2018B-02Apr2020-v1/NANOAOD'),
+            DataSample(name = 'MuonEGRun2018C',  year = 2018, isdata = True, path = '/MuonEG/Run2018C-02Apr2020-v1/NANOAOD'),
+            DataSample(name = 'MuonEGRun2018D',  year = 2018, isdata = True, path = '/MuonEG/Run2018D-02Apr2020-v1/NANOAOD'),
+        ]
+
+    #-----------------------------------------------------------------------------------
     def load_embed(self, data, include_mini = False):
         #################################################
         #                                               #
@@ -356,7 +391,8 @@ class SampleMap():
                            year=2017, isdata=False, name='Embed-MINI-MuMu-F', inputDBS="phys03"),
             ]
             
-    def load_samples(self, data, include_mini = False):
-        self.load_data(data)
+    #-----------------------------------------------------------------------------------
+    def load_samples(self, data, include_mini = False, add_muon_eg = False):
+        self.load_data(data, add_muon_eg)
         self.load_embed(data, include_mini)
 
