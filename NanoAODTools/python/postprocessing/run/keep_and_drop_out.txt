@@ -31,8 +31,8 @@ keep Photon_electronVeto
 
 #Triggers
 keep HLT_IsoMu*
-keep HLT_Mu50
-keep HLT_Ele*_WPTight_Gsf*
+keep HLT_Mu*
+keep HLT_Ele*
 keep TrigObj_*
 
 

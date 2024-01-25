@@ -44,9 +44,6 @@ keep genWeight*
 
 #Add Trigger information
 keep HLT_*
-keep HLT_Mu*
-keep HLT_IsoMu*
-keep HLT_Ele*_WPTight_Gsf*
 keep nTrigObj
 keep TrigObj*
 

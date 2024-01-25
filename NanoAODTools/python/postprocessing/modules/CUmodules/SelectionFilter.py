@@ -15,11 +15,15 @@ _rootLeafType2rootBranchType = {
 
 
 class SelectionFilter(Module):
-    def __init__(self, year, min_mass=50, max_mass=-1, min_dr=0.3, verbose=0):
+    def __init__(self, year, min_mass=50, max_mass=-1, min_dr=0.3, use_emu_trig=False, apply_trigger=True, data_region=None, dataset=None, verbose=0):
         self.year = year
         self.min_mass = min_mass
         self.max_mass = max_mass
         self.min_dr = min_dr
+        self.use_emu_trig = use_emu_trig
+        self.apply_trigger = apply_trigger
+        self.data_region = data_region
+        self.dataset = dataset
         self.verbose = verbose
         self.seen = 0
         self.mutau = [0,0]
@@ -108,28 +112,60 @@ class SelectionFilter(Module):
         #Check triggers
         electronTriggered = False
         muonTriggered     = False
+        emuTriggered      = False
+        mueTriggered      = False
         elec_trig_pt      = 33.
         muon_trig_pt      = 25.
+        emu_trig_e_pt     = 23.
+        mue_trig_e_pt     = 12.
+        emu_trig_mu_pt    =  8.
+        mue_trig_mu_pt    = 23.
 
         #FIXME: Should we consider the Mu50 trigger?
         muonHighTriggered = False #HLT.Mu50
         if self.year == "2016":
             electronTriggered = HLT.Ele27_WPTight_Gsf
             muonTriggered     = HLT.IsoMu24
+            if self.data_region is None or self.data_region not in ['G', 'H']:
+                emuTriggered      = HLT.Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL
+                mueTriggered      = HLT.Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL
+            else:
+                emuTriggered      = HLT.Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ
+                mueTriggered      = HLT.Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
             elec_trig_pt = 28.
         elif self.year == "2017":
             electronTriggered = HLT.Ele32_WPTight_Gsf_L1DoubleEG
             muonTriggered     = HLT.IsoMu27
+            emuTriggered      = HLT.Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ
+            mueTriggered      = HLT.Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
             muon_trig_pt = 28.
         elif self.year == "2018":
             electronTriggered = HLT.Ele32_WPTight_Gsf
             muonTriggered     = HLT.IsoMu24
+            emuTriggered      = HLT.Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL
+            mueTriggered      = HLT.Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL
+
+        # #Default the e-mu trigger to _DZ when available, as no _DZ becomes pre-scaled during 2016
+        # #for MC, continue to use the no _DZ version in 2016, as the H->ll' analysis did
+        # is_MC = hasattr(event, "nGenJet") #neither data nor Embedded samples
+        # if hasattr(HLT, "Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL"):
+        #     emuTriggered = HLT.Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL
+        # if hasattr(HLT, "Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ") and (not is_MC or self.year != "2016"):
+        #     emuTriggered = HLT.Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ
+        # if hasattr(HLT, "Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL"):
+        #     mueTriggered = HLT.Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL
+        # if hasattr(HLT, "Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ") and (not is_MC or self.year != "2016"):
+        #     mueTriggered = HLT.Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
 
         if self.verbose > 1:
-            print " Muon triggered =", muonTriggered, "(low) and", muonHighTriggered, "(high); Electron triggered =", electronTriggered
+            print " Muon triggered =", muonTriggered, "(low) and", muonHighTriggered, "(high); Electron triggered =", electronTriggered,\
+                "; emu triggered =", emuTriggered, "; mue triggered =", mueTriggered
 
         #initial trigger filter
-        if not (electronTriggered or muonTriggered or muonHighTriggered):
+        isTriggered = not self.apply_trigger or electronTriggered or muonTriggered
+        if self.use_emu_trig and emu: #only relevant for e-mu data
+            isTriggered = isTriggered or emuTriggered or mueTriggered
+        if not isTriggered:
             return False
 
         #Finally apply some additional event filtering
@@ -175,19 +211,41 @@ class SelectionFilter(Module):
         if math.fabs(lep1.p4().DeltaR(lep2.p4())) < min_delta_r:
             return False
 
-        #Next check the triggers
-        isTriggered = False
-        #check electron triggers
-        isTriggered = isTriggered or (abs(lep1_fl) == 11 and lep1.pt > elec_trig_pt and electronTriggered)
-        isTriggered = isTriggered or (abs(lep2_fl) == 11 and lep2.pt > elec_trig_pt and electronTriggered)
-        #check muon triggers
-        isTriggered = isTriggered or (abs(lep1_fl) == 13 and lep1.pt > muon_trig_pt and muonTriggered)
-        isTriggered = isTriggered or (abs(lep2_fl) == 13 and lep2.pt > muon_trig_pt and muonTriggered)
-        isTriggered = isTriggered or (abs(lep1_fl) == 13 and lep1.pt > 50 and muonHighTriggered)
-        isTriggered = isTriggered or (abs(lep2_fl) == 13 and lep2.pt > 50 and muonHighTriggered)
+        #Next check the triggers given the selection being used and the trigger thresholds
+        isTriggered = not self.apply_trigger
 
+        #check electron triggers
+        pass_ele_trig = False
+        pass_ele_trig = pass_ele_trig or (abs(lep1_fl) == 11 and lep1.pt > elec_trig_pt and electronTriggered)
+        pass_ele_trig = pass_ele_trig or (abs(lep2_fl) == 11 and lep2.pt > elec_trig_pt and electronTriggered)
+        #check muon triggers
+        pass_muon_trig = False
+        pass_muon_trig = pass_muon_trig or (abs(lep1_fl) == 13 and lep1.pt > muon_trig_pt and muonTriggered)
+        pass_muon_trig = pass_muon_trig or (abs(lep2_fl) == 13 and lep2.pt > muon_trig_pt and muonTriggered)
+        pass_muon_trig = pass_muon_trig or (abs(lep1_fl) == 13 and lep1.pt > 50 and muonHighTriggered)
+        pass_muon_trig = pass_muon_trig or (abs(lep2_fl) == 13 and lep2.pt > 50 and muonHighTriggered)
+        #check emu triggers
+        pass_emu_trig = False
+        if self.use_emu_trig and emu:
+            electron = lep1 if abs(lep1_fl) == 11 else lep2
+            muon     = lep2 if abs(lep1_fl) == 11 else lep1
+            pass_emu_trig = pass_emu_trig or (emuTriggered and muon.pt > emu_trig_mu_pt and electron.pt > emu_trig_e_pt)
+            pass_emu_trig = pass_emu_trig or (mueTriggered and muon.pt > mue_trig_mu_pt and electron.pt > mue_trig_e_pt)
+
+        #take an OR of all triggers
+        isTriggered = pass_ele_trig or pass_muon_trig or pass_emu_trig
         if not isTriggered:
             return False
+
+        #if using the MuonEG dataset, only pass the event if it's e-mu triggered and e-mu data
+        if self.dataset is not None and 'MuonEGRun' in self.dataset:
+            if not emu:
+                return False
+            if self.apply_trigger and not pass_emu_trig:
+                return False
+            #These events will come from the other datasets, where we can select them with e-mu trigger if needed there
+            if self.apply_trigger and (pass_muon_trig or pass_ele_trig):
+                return False
 
         if self.verbose > 1:
             print " Event survived trigger threshold filtering"
