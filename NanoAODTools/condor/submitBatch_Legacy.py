@@ -76,7 +76,9 @@ for dataset in sampleMap._data.keys():
     for sample in sampleMap._data[dataset]:
         samplesDict[dataset].append(bm.JobConfig(dataset = sample._path, nEvtPerJobIn1e6 = nEvtPerJob, year = sample._year,
                                                  isData = sample._isdata, suffix = 'LFVAnalysis_%s_%i' % (sample._name, sample._year),
-                                                 inputDBS = sample._inputDBS))
+                                                 inputDBS = sample._inputDBS,
+                                                 user_nfiles = sample._user_nfiles, user_redir = sample._user_redir,
+                                                 user_tag = sample._user_tag, user_file = sample._user_file))
 
 
 #################################################
@@ -108,15 +110,15 @@ samplesDict['2016_signal'] = [
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2016_ext/ZEMu_NANO_2016_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2016_400k/230409_095223/0000/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZEMu-v3_2016', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 50),
+        user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2016_ext/ZETau_NANO_2016_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2016_400k/230409_095230/0000/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZETau-v3_2016', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 50),
+        user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2016_ext/ZMuTau_NANO_2016_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2016_400k/230409_095239/0000/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZMuTau-v3_2016', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 50),
+        user_nfiles = 1, user_tag = 'MERGE'),
     # # #### h samples ####
     # bm.JobConfig( 
     #     dataset='/LFVAnalysis_HEMu_2016_8028V1/mimacken-LFVAnalysis_NANOAOD_8028V1-d11e799790792310589ef5ee63b17d7a/USER',
@@ -373,27 +375,27 @@ samplesDict['2017_signal'] = [
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017_ext/ZEMu_NANO_2017_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_400k/230424_161514/0000/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZEMu-v3a_2017', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 50),
+        user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017_ext/ZEMu_NANO_2017_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_400k/230424_161514/0001/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZEMu-v3b_2017', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 50),
+        user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017_ext/ZETau_NANO_2017_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_400k/230424_161523/0000/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZETau-v3a_2017', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 50),
+        user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017_ext/ZETau_NANO_2017_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_400k/230424_161523/0001/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZETau-v3b_2017', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 50),
+        user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017_ext/ZMuTau_NANO_2017_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_400k/230424_161532/0000/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZMuTau-v3a_2017', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 50),
+        user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017_ext/ZMuTau_NANO_2017_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_400k/230424_161532/0001/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZMuTau-v3b_2017', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 50),
+        user_nfiles = 1, user_tag = 'MERGE'),
     # #### h samples ####
     # bm.JobConfig( 
     #     dataset='/LFVAnalysis_HEMu_2017_934V2/pellicci-LFVAnalysis_NANOAOD_10218V2-df769e3b6a68f1e897c86e71b2345849/USER',
@@ -588,27 +590,27 @@ samplesDict['2018_signal'] = [
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2018_ext/ZEMu_NANO_2018_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2018_400k/230503_130955/0000/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZEMu-v3a_2018', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 50),
+        user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2018_ext/ZEMu_NANO_2018_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2018_400k/230503_130955/0001/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZEMu-v3b_2018', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 50),
+        user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2018_ext/ZETau_NANO_2018_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2018_400k/230503_131032/0000/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZETau-v3a_2018', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 50),
+        user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2018_ext/ZETau_NANO_2018_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2018_400k/230503_131032/0001/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZETau-v3b_2018', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 50),
+        user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2018_ext/ZMuTau_NANO_2018_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2018_400k/230503_131050/0000/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZMuTau-v3a_2018', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 50),
+        user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2018_ext/ZMuTau_NANO_2018_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2018_400k/230503_131050/0001/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZMuTau-v3b_2018', user_redir = 'root://eoscms.cern.ch/',
-        user_nfiles = 50),
+        user_nfiles = 1, user_tag = 'MERGE'),
     # #### h samples ####
     # bm.JobConfig( 
     #     dataset='/LFVAnalysis_HEMu_2018_10218V1/pellicci-LFVAnalysis_NANOAOD_10218V1-a7880b551d3b12f0ed185e04212304eb/USER',
@@ -837,7 +839,7 @@ samplesToSubmit = samplesDict.keys()
 samplesToSubmit.sort()
 doYears = ["2016"]
 # doYears = ["2016", "2017", "2018"]
-sampleTag = ["MuonEG", "signal"]
+sampleTag = ["embed"]
 sampleVeto = ["embed_ee", "embed_mumu"]
 configs = []
 

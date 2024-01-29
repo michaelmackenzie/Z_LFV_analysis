@@ -210,6 +210,10 @@ do
         NRUNNING=$((1 + $NRUNNING))
         if [[ "${IGNORERUNNING}" != "" ]]
         then
+            if [ ${VERBOSE} -gt 2 ]
+            then
+                echo "Stdout file ${STDLOG} does not exist"
+            fi
             continue
         fi
         if [ ${VERBOSE} -gt -1 ]
@@ -269,6 +273,10 @@ do
             fi
         fi
     else
+        if [ ${VERBOSE} -gt 3 ]
+        then
+            echo "File ${FILE} in job ${JOB} was found (${ROOTFILE})"
+        fi
         NPASSED=$((1 + $NPASSED))
         if [[ "${FORCE}" != "" ]]
         then

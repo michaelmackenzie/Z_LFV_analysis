@@ -160,7 +160,7 @@ for dirname in list_dirs:
     if verbose:
         print "Using output name", outputname
     #determine if the file is data or embedding for special processing (e.g. lumi files)
-    isData = "SingleElectron" in dirname or "SingleMuon" in dirname
+    isData = "SingleElectron" in dirname or "SingleMuon" in dirname or 'MuonEG' in dirname
     isEmbed = "Embed-" in dirname
 
     #skip datasets not being considered in the processing
