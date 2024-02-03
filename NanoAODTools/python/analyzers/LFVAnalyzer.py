@@ -110,6 +110,8 @@ branchsel_out ="python/postprocessing/run/keep_and_drop_out.txt"
 
 # whether or not to consider e-mu triggers in the e-mu data selection
 UseEmuTrig = True
+if UseEmuTrig:
+   print "*** Including e-mu trigger events ***"
 
 # filter out untriggered events or with leading lepton below the trigger threshold
 if year == "2016":
