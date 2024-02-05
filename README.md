@@ -35,8 +35,8 @@ Process a NanoAOD file using the [LFVAnalyzer.py](NanoAODTools/python/LFVAnalyze
 cd $CMSSW_BASE/src/PhysicsTools/NanoAODTools/
 DATASET="<dataset to analyze, e.g. /SingleMuon/Run2016H-02Apr2020-v1/NANOAOD>"
 FILE=`das_client -query="file dataset=${DATASET} <instance=prod/phys03 if needed>" | head -n 1`
-xrdcp -f ${FILE} ./NanoAOD.root
-python python/LFVAnalyzer.py NanoAOD.root <"data", "MC", or "Embedded"> <"2016", "2017", or "2018">
+xrdcp -f root://cms-xrd-global.cern.ch/${FILE} ./NanoAOD.root
+python python/analyzer/LFVAnalyzer.py NanoAOD.root <"data", "MC", or "Embedded"> <"2016", "2017", or "2018">
 root.exe tree.root
 ```
   
