@@ -2,7 +2,6 @@
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenZllAnalyzer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.EmbeddingEMuStudy import *
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
-from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
 
 
 from importlib import import_module

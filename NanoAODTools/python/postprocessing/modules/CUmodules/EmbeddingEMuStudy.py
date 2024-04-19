@@ -128,8 +128,8 @@ class EmbeddingEMuStudy(Module):
             self.cut_flow.Fill("PtCut",1)
             if math.fabs(lv1.Eta()) > 2.4 or math.fabs(lv2.Eta()) > 2.4:
                 return False
-            if math.fabs(lv1.Eta()) > 2.2 and math.fabs(lv2.Eta()) > 2.2:
-                return False
+            # if math.fabs(lv1.Eta()) > 2.2 and math.fabs(lv2.Eta()) > 2.2:
+            #     return False
             self.cut_flow.Fill("EtaCut",1)
         #tau_e tau_mu cuts
         else:

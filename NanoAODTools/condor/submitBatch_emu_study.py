@@ -40,12 +40,14 @@ nEvtPerJob = 8 # faster jobs, # in unit of 1e6 , 5-10 are good settings.
 nEvtPerJob = 0.5 #~25k events per file, ~50-100 files per dataset --> ~5-10 jobs/dataset
 
 for dataset in sampleMap._data.keys():
-    if 'embed_emu' in dataset:
-        samplesDict[dataset] = []
-        for sample in sampleMap._data[dataset]:
-            samplesDict[dataset].append(bm.JobConfig(dataset = sample._path, nEvtPerJobIn1e6 = nEvtPerJob, year = sample._year,
-                                                     isData = sample._isdata, suffix = 'EMuStudy_%s_%i' % (sample._name, sample._year),
-                                                     inputDBS = sample._inputDBS))
+    if 'embed_emu' not in dataset: continue
+    samplesDict[dataset] = []
+    for sample in sampleMap._data[dataset]:
+        samplesDict[dataset].append(bm.JobConfig(dataset = sample._path, nEvtPerJobIn1e6 = nEvtPerJob, year = sample._year,
+                                                 isData = sample._isdata, suffix = 'EMuStudy_%s_%i' % (sample._name, sample._year),
+                                                 inputDBS = sample._inputDBS,
+                                                 user_nfiles = sample._user_nfiles, user_redir = sample._user_redir,
+                                                 user_tag = sample._user_tag, user_file = sample._user_file))
 
 #################################################
 #                                               #
@@ -80,8 +82,8 @@ samplesToSubmit = samplesDict.keys()
 samplesToSubmit.sort()
 # samplesToSubmit = ["2018_embed_emu"]
 
-doYears = ["2016", "2017", "2018"]
-# doYears = ["2018"]
+# doYears = ["2016", "2017", "2018"]
+doYears = ["2016"]
 configs = []
 
 for s in samplesToSubmit:
@@ -89,12 +91,13 @@ for s in samplesToSubmit:
         configs += samplesDict[s]
 
 batchMaster = bm.BatchMaster(
-    analyzer    = analyzer,
-    config_list = configs, 
-    stage_dir   = stage_dir,
-    output_dir  = output_dir,
-    executable  = executable,
-    location    = location
+    analyzer       = analyzer,
+    config_list    = configs, 
+    stage_dir      = stage_dir,
+    output_dir     = output_dir,
+    executable     = executable,
+    location       = location,
+    maxFilesPerJob = 100
 )
 
 #ensure there's a symbolic link 'batch' to put the tarball in

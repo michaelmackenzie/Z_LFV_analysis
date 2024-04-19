@@ -11,6 +11,7 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.JetLepCleaner im
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.SelectionFilter import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenCount import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenLepCount import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.ObjectCounter import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenAnalyzer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenZllAnalyzer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.CUmodules.GenRecoMatcher import *
@@ -109,18 +110,22 @@ branchsel_in  ="python/postprocessing/run/keep_and_drop_in.txt"
 branchsel_out ="python/postprocessing/run/keep_and_drop_out.txt"
 
 # whether or not to consider e-mu triggers in the e-mu data selection
-UseEmuTrig = True
+UseEmuTrig = False
 if UseEmuTrig:
    print "*** Including e-mu trigger events ***"
 
+KillChannels = ["mumu", "ee"] #FIXME: Remove this filter
+for channel in KillChannels:
+   print "*** WARNING! Killing selection channel", channel
+
 # filter out untriggered events or with leading lepton below the trigger threshold
 if year == "2016":
-   if not UseEmuTrig or 'MuonEG' not in datasetName:
+   if not UseEmuTrig or datasetName is None or 'MuonEG' not in datasetName:
       TriggerCuts="(HLT_IsoMu24 && nMuon > 0) || (HLT_Ele27_WPTight_Gsf && nElectron > 0)"
    else:
       TriggerCuts=""
    if UseEmuTrig:
-      if 'MuonEG' not in datasetName: TriggerCuts=TriggerCuts + " || "
+      if datasetName is None or 'MuonEG' not in datasetName: TriggerCuts=TriggerCuts + " || "
       #use _DZ trigger in 2016G-H, no _DZ in B-F
       if isData is not "data" or dataRegion not in ['G','H']:
          TriggerCuts=TriggerCuts +     "(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL && nMuon > 0 && nElectron > 0)"
@@ -129,21 +134,21 @@ if year == "2016":
          TriggerCuts=TriggerCuts +     "(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ && nMuon > 0 && nElectron > 0)"
          TriggerCuts=TriggerCuts + " || (HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ && nMuon > 0 && nElectron > 0)"
 elif year == "2017":
-   if not UseEmuTrig or 'MuonEG' not in datasetName:
+   if not UseEmuTrig or datasetName is None or 'MuonEG' not in datasetName:
       TriggerCuts="(HLT_IsoMu27 && nMuon > 0) || (HLT_Ele32_WPTight_Gsf_L1DoubleEG && nElectron > 0)"
    else:
       TriggerCuts=""
    if UseEmuTrig:
-      if 'MuonEG' not in datasetName: TriggerCuts=TriggerCuts + " || "
+      if datasetName is None or 'MuonEG' not in datasetName: TriggerCuts=TriggerCuts + " || "
       TriggerCuts=TriggerCuts +     "(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ && nMuon > 0 && nElectron > 0)"
       TriggerCuts=TriggerCuts + " || (HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ && nMuon > 0 && nElectron > 0)"
 elif year == "2018":
-   if not UseEmuTrig or 'MuonEG' not in datasetName:
+   if not UseEmuTrig or datasetName is None or 'MuonEG' not in datasetName:
       TriggerCuts="(HLT_IsoMu24 && nMuon > 0) || (HLT_Ele32_WPTight_Gsf && nElectron > 0)"
    else:
       TriggerCuts=""
    if UseEmuTrig:
-      if 'MuonEG' not in datasetName: TriggerCuts=TriggerCuts + " || "
+      if datasetName is None or 'MuonEG' not in datasetName: TriggerCuts=TriggerCuts + " || "
       TriggerCuts=TriggerCuts +     "(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ && nMuon > 0 && nElectron > 0)"
       TriggerCuts=TriggerCuts + " || (HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ && nMuon > 0 && nElectron > 0)"
 
@@ -164,8 +169,10 @@ JetSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<3.0 and (l.pt >= 50.
 #Loose light lepton selection, to remove overlap with taus
 LooseMuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.4 and l.looseId and l.pfRelIso04_all < 0.5
 LooseElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.5 and l.mvaFall17V2noIso_WPL and l.pfRelIso03_all < 0.5
-#Loose jet selection, to calculate PU ID weight
-LooseJetSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<3.0 and (l.pt >= 50. or l.puId>-1) and l.jetId>=jet_id
+# LooseMuonSelection     = lambda l : l.pt>10 and math.fabs(l.eta)<2.4
+# LooseElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.5
+#Loose jet selection, to calculate PU ID weight (no PU ID applied)
+LooseJetSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<3.0 and l.jetId>=jet_id
 
 #Event selection cuts
 MaxMass   = 175 #-1 = no cut
@@ -262,6 +269,13 @@ TauElectronCleaner=JetLepCleaner(
 )
 modules.append(TauElectronCleaner)
 
+
+#count leptons identified with the loose selection
+LooseLepCounter = ObjectCounter(
+   Objects=['Electron', 'Muon'],
+   Tag='Loose')
+modules.append(LooseLepCounter)
+
 #tigher muon/electron selection
 MuonSelector= LeptonSkimmer(
    LepFlavour='Muon',
@@ -301,7 +315,8 @@ Selection= SelectionFilter(year=year,
                            use_emu_trig = UseEmuTrig,
                            data_region = dataRegion,
                            dataset = datasetName,
-                           verbose=0)
+                           verbose=0,
+                           kill_channels = KillChannels)
 modules.append(Selection)
 
 # Rochester corrections for muons

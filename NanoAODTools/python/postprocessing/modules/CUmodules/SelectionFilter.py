@@ -15,7 +15,8 @@ _rootLeafType2rootBranchType = {
 
 
 class SelectionFilter(Module):
-    def __init__(self, year, min_mass=50, max_mass=-1, min_dr=0.3, use_emu_trig=False, apply_trigger=True, data_region=None, dataset=None, verbose=0):
+    def __init__(self, year, min_mass=50, max_mass=-1, min_dr=0.3, use_emu_trig=False, apply_trigger=True, data_region=None, dataset=None, verbose=0,
+                 kill_channels = []):
         self.year = year
         self.min_mass = min_mass
         self.max_mass = max_mass
@@ -25,6 +26,7 @@ class SelectionFilter(Module):
         self.data_region = data_region
         self.dataset = dataset
         self.verbose = verbose
+        self.kill_channels = kill_channels
         self.seen = 0
         self.mutau = [0,0]
         self.etau = [0,0]
@@ -250,6 +252,17 @@ class SelectionFilter(Module):
         if self.verbose > 1:
             print " Event survived trigger threshold filtering"
 
+        # Check if this channel is being filtered out in this ntupling
+
+        for channel in self.kill_channels:
+            if channel == "mumu"  and mumu : return False
+            if channel == "ee"    and ee   : return False
+            if channel == "emu"   and emu  : return False
+            if channel == "etau"  and etau : return False
+            if channel == "mutau" and mutau: return False
+
+        if self.verbose > 1:
+            print " Event survived channel filtering"
 
         #Accept event
 

@@ -266,14 +266,38 @@ samplesDict['2016_vv'] = [
 
 # Higgs backgrounds
 samplesDict['2016_higgs'] = [
-    #ggF H -> tau tau
+    #H -> tau tau
     bm.JobConfig(
         dataset='/GluGluHToTauTau_M125_13TeV_powheg_pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
         nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_ggFH-TauTau_2016'),
-    #ggF H -> WW -> 2l 2nu
+    bm.JobConfig(
+        dataset='/VBFHToTauTau_M125_13TeV_powheg_pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_VBFH-TauTau_2016'),
+    bm.JobConfig(
+        dataset='/WminusHToTauTau_M125_13TeV_powheg_pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_WminusH-TauTau_2016'),
+    bm.JobConfig(
+        dataset='/WplusHToTauTau_M125_13TeV_powheg_pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_WplusH-TauTau_2016'),
+    bm.JobConfig(
+        dataset='/ZHToTauTau_M125_13TeV_powheg_pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZH-TauTau_2016'),
+    #H -> WW -> 2l 2nu
     bm.JobConfig(
         dataset='/GluGluHToWWTo2L2Nu_M125_13TeV_powheg_pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
         nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_ggFH-WW_2016'),
+    bm.JobConfig(
+        dataset='/VBFHToWWTo2L2Nu_M125_13TeV_powheg_pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_VBFH-WW_2016'),
+    bm.JobConfig( #Note: This sample doesn't force WW -> 2l2nu
+        dataset='/HWminusJ_HToWW_M125_13TeV_powheg_pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_WminusH-WW_2016'),
+    bm.JobConfig( #Note: This sample doesn't force WW -> 2l2nu
+        dataset='/HWplusJ_HToWW_M125_13TeV_powheg_pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_WplusH-WW_2016'),
+    bm.JobConfig(
+        dataset='/GluGluZH_HToWWTo2L2Nu_M125_13TeV_powheg_pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZH-WW_2016'),
 ]
 
 # # qcd
@@ -537,14 +561,38 @@ samplesDict['2017_vv'] = [
 
 # Higgs backgrounds
 samplesDict['2017_higgs'] = [
-    #ggF H -> tau tau
+    #H -> tau tau
     bm.JobConfig(
         dataset='/GluGluHToTauTau_M125_13TeV_powheg_pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8_ext1-v1/NANOAODSIM',
         nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='LFVAnalysis_ggFH-TauTau_2017'),
-    #ggF H -> WW -> 2l 2nu
+    bm.JobConfig(
+        dataset='/VBFHToTauTau_M125_13TeV_powheg_pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='LFVAnalysis_VBFH-TauTau_2017'),
+    bm.JobConfig(
+        dataset='/WminusHToTauTau_M125_13TeV_powheg_pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='LFVAnalysis_WminusH-TauTau_2017'),
+    bm.JobConfig(
+        dataset='/WplusHToTauTau_M125_13TeV_powheg_pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='LFVAnalysis_WplusH-TauTau_2017'),
+    bm.JobConfig(
+        dataset='/ZHToTauTau_M125_13TeV_powheg_pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZH-TauTau_2017'),
+    #H -> WW -> 2l 2nu
     bm.JobConfig(
         dataset='/GluGluHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
         nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='LFVAnalysis_ggFH-WW_2017'),
+    bm.JobConfig(
+        dataset='/VBFHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='LFVAnalysis_VBFH-WW_2017'),
+    bm.JobConfig( #Note: This sample doesn't force WW -> 2l2nu
+        dataset='/HWminusJ_HToWW_M125_13TeV_powheg_pythia8_TuneCP5/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='LFVAnalysis_WminusH-WW_2017'),
+    bm.JobConfig( #Note: This sample doesn't force WW -> 2l2nu
+        dataset='/HWplusJ_HToWW_M125_13TeV_powheg_pythia8_TuneCP5/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='LFVAnalysis_WplusH-WW_2017'),
+    bm.JobConfig(
+        dataset='/HZJ_HToWWTo2L2Nu_M125_13TeV_powheg_jhugen714_pythia8_TuneCP5/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZH-WW_2017'),
 ]
 
 
@@ -749,14 +797,38 @@ samplesDict['2018_vv'] = [
 
 # Higgs backgrounds
 samplesDict['2018_higgs'] = [
-    #ggF H -> tau tau
+    #H -> tau tau
     bm.JobConfig(
         dataset='/GluGluHToTauTau_M125_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_ggFH-TauTau_2018'),
-    #ggF H -> WW -> 2l 2nu
+    bm.JobConfig(
+        dataset='/VBFHToTauTau_M125_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21_ext1-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_VBFH-TauTau_2018'),
+    bm.JobConfig(
+        dataset='/WminusHToTauTau_M125_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_WminusH-TauTau_2018'),
+    bm.JobConfig(
+        dataset='/WplusHToTauTau_M125_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_WplusH-TauTau_2018'),
+    bm.JobConfig(
+        dataset='/ZHToTauTau_M125_13TeV_powheg_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZH-TauTau_2018'),
+    #H -> WW -> 2l 2nu
     bm.JobConfig(
         dataset='/GluGluHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_ggFH-WW_2018'),
+    bm.JobConfig(
+        dataset='/VBFHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_VBFH-WW_2018'),
+    bm.JobConfig( #Note: This sample doesn't force WW -> 2l2nu
+        dataset='/WminusHToWW_2LOSFilter_M125_NNPDF31_TuneCP5_PSweights_13TeV_powheg_JHUGen735_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_WminusH-WW_2018'),
+    bm.JobConfig( #Note: This sample doesn't force WW -> 2l2nu
+        dataset='/WplusHToWW_2LOSFilter_M125_NNPDF31_TuneCP5_PSweights_13TeV_powheg_JHUGen735_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_WplusH-WW_2018'),
+    bm.JobConfig(
+        dataset='/HZJ_HToWW2L2NuInclusiveZ_M125_NNPDF31_TuneCP5_PSweights_13TeV_powheg_JHUGen735_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZH-WW_2018'),
 ]
 
 
@@ -824,6 +896,9 @@ samplesDict['2018_higgs'] = [
 # submit to batch
 # -----------------------------
 
+#Default to all samples
+samplesToSubmit = samplesDict.keys()
+
 # samplestosubmit = ["2016_signal", "2016_top", "2016_z", "2016_w", "2016_vv", "2016_qcd"]
 # samplesToSubmit = ["2016_embed_emu", "2016_embed_etau", "2016_embed_mutau"]
 # samplesToSubmit = ["2017_embed_mumu", "2017_embed_ee"]
@@ -834,13 +909,12 @@ samplesDict['2018_higgs'] = [
 # samplesToSubmit = ["2016_vv", "2017_top", "2017_vv", "2017_z", "2018_top", "2018_vv", "2018_z"]
 # samplesToSubmit = ["2017_signal"]
 # samplesToSubmit = ["2016_higgs", "2017_higgs", "2018_higgs"]
-samplesToSubmit = samplesDict.keys()
 
 samplesToSubmit.sort()
-doYears = ["2016"]
-# doYears = ["2016", "2017", "2018"]
-sampleTag = ["embed"]
-sampleVeto = ["embed_ee", "embed_mumu"]
+# doYears = ["2016"]
+doYears = ["2016", "2017", "2018"]
+sampleTag = []
+sampleVeto = ["MuonEG", "embed_ee", "embed_mumu"]
 configs = []
 
 for s in samplesToSubmit:

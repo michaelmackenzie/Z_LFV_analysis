@@ -9,7 +9,7 @@ Help() {
     echo "--tag                  : Dataset tag to use"
     echo "--vet                  : Dataset tag to ignore"
     echo "--checkfiles           : Do basic checks on the output files"
-    echo "--ignorerunning        : Ignore still running jobs"
+    echo "--ignorerunning (-i)   : Ignore still running jobs"
     echo "--override-outdir      : Override expected output job directory"
     echo "--memory               : Override default job memory in resubmission"
     echo "--runningtime          : Override default job running time in resubmission"
@@ -83,7 +83,7 @@ do
     elif [[ "${var}" == "--force" ]]
     then
         FORCE="d"
-    elif [[ "${var}" == "--ignorerunning" ]]
+    elif [[ "${var}" == "--ignorerunning" ]] || [[ "${var}" == "-i" ]]
     then
         IGNORERUNNING="d"
     elif [[ "${var}" == "--eosdir" ]]

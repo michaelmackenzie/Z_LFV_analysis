@@ -5,10 +5,10 @@ drop * # start with all
 keep nTau
 keep Tau*
 
-keep nElectron
+keep nElectron*
 keep Electron*
 
-keep nMuon
+keep nMuon*
 keep Muon*
 
 keep nJet

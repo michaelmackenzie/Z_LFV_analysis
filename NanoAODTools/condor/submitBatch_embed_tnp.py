@@ -133,6 +133,14 @@ samplesDict['2018_z'] = [
         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='EmbedTnPAnalysis_DY50_2018'),
 ]
 
+# UL samples
+samplesDict['2018_ul_z'] = [
+    bm.JobConfig(
+        dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18NanoAODv9-106X_upgrade2018_realistic_v16_L1v1-v2/NANOAODSIM',
+        nEvtPerJobIn1e6=1, maxEvtPerDataset = 5e7, year="2018", isData=False, suffix='EmbedTnPAnalysis_ULDY50_2018'),
+]
+
+
 # -----------------------------
 # submit to batch
 # -----------------------------
@@ -142,11 +150,19 @@ samplesToSubmit = samplesDict.keys()
 samplesToSubmit.sort()
 
 # doYears = ["2016", "2017", "2018"]
-doYears = ["2016"]
+doYears = ["2018"]
+tags = ["ul_z"]
+vetoes = []
 configs = []
 
 for s in samplesToSubmit:
     if s[:4] in doYears:
+        tagged = True if len(tags) == 0 else False
+        for tag in tags: tagged = tagged or tag in s
+        if not tagged: continue
+        vetoed = False
+        for veto in vetoes: vetoed = vetoed or veto in s
+        if vetoed: continue
         configs += samplesDict[s]
 
 batchMaster = bm.BatchMaster(
