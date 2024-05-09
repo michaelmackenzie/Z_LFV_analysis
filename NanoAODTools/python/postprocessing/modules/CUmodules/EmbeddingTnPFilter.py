@@ -47,6 +47,10 @@ class EmbeddingTnPFilter(Module):
         self.out.branch("one_triggered"       , "O");
         self.out.branch("one_id1"             , "I");
         self.out.branch("one_id2"             , "I");
+        self.out.branch("one_gen_pt"          , "F");
+        self.out.branch("one_gen_eta"         , "F");
+        self.out.branch("one_gen_phi"         , "F");
+        self.out.branch("one_gen_flavor"      , "I");
         self.out.branch("two_pt"              , "F");
         self.out.branch("two_eta"             , "F");
         self.out.branch("two_sc_eta"          , "F");
@@ -56,6 +60,10 @@ class EmbeddingTnPFilter(Module):
         self.out.branch("two_triggered"       , "O");
         self.out.branch("two_id1"             , "I");
         self.out.branch("two_id2"             , "I");
+        self.out.branch("two_gen_pt"          , "F");
+        self.out.branch("two_gen_eta"         , "F");
+        self.out.branch("two_gen_phi"         , "F");
+        self.out.branch("two_gen_flavor"      , "I");
         pass
  
 
@@ -117,7 +125,7 @@ class EmbeddingTnPFilter(Module):
                         return result
         return 0
 
-    def fill_branches(self, one, two, isMuons):
+    def fill_branches(self, one, two, gen_one, gen_two, isMuons):
         self.out.fillBranch("pair_ismuon"    , isMuons)
         self.out.fillBranch("pair_mass"      , (one.p4() + two.p4()).M())
         self.out.fillBranch("pair_pt"        , (one.p4() + two.p4()).Pt())
@@ -132,6 +140,14 @@ class EmbeddingTnPFilter(Module):
             self.out.fillBranch("one_ecorr"      , 0.)
         self.out.fillBranch("one_phi"        , one.phi)
         self.out.fillBranch("one_q"          , one.charge)
+        self.out.fillBranch("one_gen_pt"     , gen_one.pt )
+        self.out.fillBranch("one_gen_eta"    , gen_one.eta)
+        self.out.fillBranch("one_gen_phi"    , gen_one.phi)
+        if hasattr(gen_one, "pdgId"):
+            self.out.fillBranch("one_gen_flavor" , abs(gen_one.pdgId))
+        else:
+            self.out.fillBranch("one_gen_flavor" , 0)
+
         self.out.fillBranch("two_pt"         , two.pt)
         self.out.fillBranch("two_eta"        , two.eta)
         if not isMuons:
@@ -142,6 +158,13 @@ class EmbeddingTnPFilter(Module):
             self.out.fillBranch("two_ecorr"      , 0.)
         self.out.fillBranch("two_phi"        , two.phi)
         self.out.fillBranch("two_q"          , two.charge)
+        self.out.fillBranch("two_gen_pt"     , gen_two.pt )
+        self.out.fillBranch("two_gen_eta"    , gen_two.eta)
+        self.out.fillBranch("two_gen_phi"    , gen_two.phi)
+        if hasattr(gen_one, "pdgId"):
+            self.out.fillBranch("two_gen_flavor" , abs(gen_two.pdgId))
+        else:
+            self.out.fillBranch("two_gen_flavor" , 0)
 
     # electron ID check
     def elec_id(self, electron, WP):
@@ -330,11 +353,25 @@ class EmbeddingTnPFilter(Module):
         if (self.verbose > 1 and self.seen % 100 == 0) or (self.verbose > 2 and self.seen % 10 == 0) or self.verbose > 9:
             print "passing event", self.seen
 
+        # Identify the associate gen particles
+        if hasattr(event, "nGenPart"):
+            gens = Collection(event, "GenPart" )
+            if lep1.genPartIdx >= 0:
+                gen_one = gens[lep1.genPartIdx]
+            else:
+                gen_one = lep1
+            if lep2.genPartIdx >= 0:
+                gen_two = gens[lep2.genPartIdx]
+            else:
+                gen_two = lep2
+        else:
+            gen_one = lep1
+            gen_two = lep2
 
         self.out.fillBranch("nElectrons", nElectrons)
         self.out.fillBranch("nMuons", nMuons)
         self.out.fillBranch("event_met_pfmet", PuppiMET.pt)
-        self.fill_branches(lep1, lep2, doMuons)
+        self.fill_branches(lep1, lep2, gen_one, gen_two, doMuons)
         self.out.fillBranch("one_triggered", leptonOneTriggered)
         self.out.fillBranch("two_triggered", leptonTwoTriggered)
 

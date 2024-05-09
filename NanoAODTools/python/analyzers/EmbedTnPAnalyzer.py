@@ -89,11 +89,11 @@ if not isData == "data":
 #configure the pileup module and the json file filtering
 if isData == "MC":
    if year == "2016":
-      modules.append(puAutoWeight_2016())
+      modules.append(puWeight_2016())
    elif year == "2017":
-      modules.append(puAutoWeight_2017())
+      modules.append(puWeight_2017())
    elif year == "2018":
-      modules.append(puAutoWeight_2018())
+      modules.append(puWeight_2018())
    jsonFile=None
 else: #data/embedding
    if year == "2016" :

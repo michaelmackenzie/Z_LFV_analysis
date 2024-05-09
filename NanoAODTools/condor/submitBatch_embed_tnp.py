@@ -105,7 +105,9 @@ for dataset in sampleMap._data.keys():
         for sample in sampleMap._data[dataset]:
             samplesDict[dataset].append(bm.JobConfig(dataset = sample._path, nEvtPerJobIn1e6 = nEvtPerJob, year = sample._year,
                                                      isData = sample._isdata, suffix = 'EmbedTnPAnalysis_%s_%i' % (sample._name, sample._year),
-                                                     inputDBS = sample._inputDBS))
+                                                     inputDBS = sample._inputDBS,
+                                                     user_nfiles = sample._user_nfiles, user_redir = sample._user_redir,
+                                                     user_tag = sample._user_tag, user_file = sample._user_file))
 
 
 #################################################
@@ -149,10 +151,10 @@ samplesToSubmit = samplesDict.keys()
 # samplesToSubmit = ["2018_embed_ee", "2018_embed_mumu"]
 samplesToSubmit.sort()
 
-# doYears = ["2016", "2017", "2018"]
-doYears = ["2018"]
-tags = ["ul_z"]
-vetoes = []
+doYears = ["2016", "2017", "2018"]
+# doYears = ["2017","2018"]
+tags = ["z", "embed"]
+vetoes = ["ul_z"]
 configs = []
 
 for s in samplesToSubmit:
