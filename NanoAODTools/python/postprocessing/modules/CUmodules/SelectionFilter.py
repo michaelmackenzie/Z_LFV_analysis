@@ -235,7 +235,7 @@ class SelectionFilter(Module):
             pass_emu_trig = pass_emu_trig or (mueTriggered and muon.pt > mue_trig_mu_pt and electron.pt > mue_trig_e_pt)
 
         #take an OR of all triggers
-        isTriggered = pass_ele_trig or pass_muon_trig or pass_emu_trig
+        isTriggered = not self.apply_trigger or pass_ele_trig or pass_muon_trig or pass_emu_trig
         if not isTriggered:
             return False
 

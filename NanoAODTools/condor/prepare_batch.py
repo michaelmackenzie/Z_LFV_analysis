@@ -126,17 +126,22 @@ if host == 'lxplus':
     #FIXME: remove non-root files from search list
     command = 'eos root://eoscms.cern.ch ls /store/group/phys_smp/ZLFV/%s' % (inputpath)
 else:
-    command = 'eos root://cmseos.fnal.gov ls /store/user/%s/%s' % (user, inputpath)
-
+    # command = 'eos root://cmseos.fnal.gov ls /store/user/%s/%s' % (user, inputpath)
+    command = 'ls /eos/uscms/store/user/%s/%s' % (user, inputpath) #FIXME: eos <redir> ls doesn't work in Singularity
 if verbose:
     print "Running command", command
 process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+if verbose:
+    print "Sent command"
 stdout, stderr = process.communicate()
 list_dirs = stdout.split('\n')
 
 list_processed = []
 
 #process each input dataset, skipping files of already processed datasets
+if verbose:
+    print "Found directory list with %i entries" % (len(list_dirs))
+
 for dirname in list_dirs:
     if verbose:
         print "Found file", dirname
@@ -195,7 +200,8 @@ for dirname in list_dirs:
         if host == 'lxplus': #can't use wildcard in lxplus 'ls' command
             inputname  = outputname + "_"
         else:
-            inputname  = outputname + "_*.root"
+            # inputname  = outputname + "_*.root"
+            inputname  = outputname  #FIXME: eos <redir> ls doesn't work in Singularity
     outputname = outputname.replace("output_" ,"")
     luminame = 'lumis_'+outputname
 
@@ -207,12 +213,15 @@ for dirname in list_dirs:
             else:
                 lscommand = 'eos root://eoscms.cern.ch ls /store/group/phys_smp/ZLFV/%s' % (inputpath)
         else:
-            lscommand = 'eos root://cmseos.fnal.gov ls /store/user/%s/%s%s' % (user, inputpath, inputname)
+            # lscommand = 'eos root://cmseos.fnal.gov ls /store/user/%s/%s%s' % (user, inputpath, inputname)
+            lscommand = 'ls /eos/uscms/store/user/%s/%s' % (user, inputpath)  #FIXME: eos <redir> ls doesn't work in Singularity
         if verbose: print "ls command:", lscommand
         process = subprocess.Popen(lscommand.split(), stdout=subprocess.PIPE)
         stdout, stderr = process.communicate()
         inputlist = stdout.split('\n')
-        if host == 'lxplus': inputlist = [l for l in inputlist if inputname in l and '.root' in l]
+        if verbose: print inputlist
+        inputlist = [l for l in inputlist if inputname in l and '.root' in l]
+        if verbose: print inputlist
         if mergeseg: inputlist = [inputname + l for l in inputlist]
         if usedirect:
             if host == 'lxplus':

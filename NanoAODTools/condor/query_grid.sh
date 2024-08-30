@@ -84,19 +84,19 @@ condor_q -nobatch | awk -v user=${USER} -v summary=${SUMMARY} -v verbose=${VERBO
 } END {
     print "Jobsub summary: Total of",total,"jobs found for user",user
     if(summary != "s") {
-	print "User       Job-ID              Total      Idle   Running      Held         X               dataset                                   script                 Schedd"
+	print "User       Job-ID        Total     Idle  Running     Held        X               dataset                                   script                 Schedd"
 	for(name in names) {
 	    if(tag == "" || (datasets[name] ~ tag)) {
 		if(running == "" || statuses[name]["R"] > 0) {
-		    printf "%-10s %-10s %14i %9i %9i %9i %9i   %-50s %-20s  %s\n", users[name], name, names[name],
+		    printf "%-10s %-10s %8i %8i %8i %8i %8i   %-50s %-20s  %s\n", users[name], name, names[name],
 			statuses[name]["I"], statuses[name]["R"], statuses[name]["H"], statuses[name]["X"], datasets[name], scripts[name], schedds[name];
 		}
 	    }
 	}
     }
-    print "Job script               :     Total      Idle   Running      Held         X"
+    print "Job script          :    Total     Idle  Running     Held        X"
     for(script in counts) {
-	printf "%-25s: %9i %9i %9i %9i %9i\n", script, counts[script], script_statuses[script]["I"], script_statuses[script]["R"],
+	printf "%-20s: %8i %8i %8i %8i %8i\n", script, counts[script], script_statuses[script]["I"], script_statuses[script]["R"],
 	    script_statuses[script]["H"], script_statuses[script]["X"];
     }
  }'

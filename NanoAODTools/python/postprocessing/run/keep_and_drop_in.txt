@@ -36,6 +36,7 @@ keep MET_*
 keep PuppiMET*
 keep GenMET*
 keep RawMET*
+keep RawPuppiMET*
 
 #Gen info
 keep Gen*

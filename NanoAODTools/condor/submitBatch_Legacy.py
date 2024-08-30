@@ -4,7 +4,7 @@ from sample_map import *
 
 import os, sys
 
-dryRun = False
+dryRun = True
 
 # -----------------------------
 # Specify parameters
@@ -119,6 +119,30 @@ samplesDict['2016_signal'] = [
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2016_ext/ZMuTau_NANO_2016_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2016_400k/230409_095239/0000/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZMuTau-v3_2016', user_redir = 'root://eoscms.cern.ch/',
         user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZETau_NANO_2016_v04_00/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_00/240723_145418/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZETau-v3b_2016', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZETau_NANO_2016_v04_01/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_01/240723_145425/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZETau-v3c_2016', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZETau_NANO_2016_v04_02/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_02/240723_145433/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZETau-v3d_2016', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZMuTau_NANO_2016_v04_00/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_00/240723_205251/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZMuTau-v3b_2016', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZMuTau_NANO_2016_v04_01/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_01/240723_205258/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZMuTau-v3c_2016', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZMuTau_NANO_2016_v04_02/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_02/240723_205305/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZMuTau-v3d_2016', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
     # # #### h samples ####
     # bm.JobConfig( 
     #     dataset='/LFVAnalysis_HEMu_2016_8028V1/mimacken-LFVAnalysis_NANOAOD_8028V1-d11e799790792310589ef5ee63b17d7a/USER',
@@ -197,7 +221,7 @@ samplesDict['2016_w'] = [
         nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_Wlnu-4J_2016'),
 ]
 
-# z
+# Z
 samplesDict['2016_z'] = [
     bm.JobConfig(
         dataset='/DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
@@ -206,14 +230,17 @@ samplesDict['2016_z'] = [
     bm.JobConfig(
         dataset='/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext2-v1/NANOAODSIM',
         nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_DY50-amc_2016'),
+]
 
-    # bm.JobConfig(
-    #     dataset='/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext1-v1/NANOAODSIM',
-    #     nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_DY50_2016'),
+# LO Z
+samplesDict['2016_lo_z'] = [
+    bm.JobConfig(
+        dataset='/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext1-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_DY50-LO_2016'),
 
-    # bm.JobConfig(
-    #     dataset='/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext2-v1/NANOAODSIM',
-    #     nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_DY50-ext_2016'),    
+    bm.JobConfig(
+        dataset='/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext2-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=False, suffix='LFVAnalysis_DY50-LO-ext_2016'),    
 ]
 
 # di(tri)-boson
@@ -413,12 +440,36 @@ samplesDict['2017_signal'] = [
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZETau-v3b_2017', user_redir = 'root://eoscms.cern.ch/',
         user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZETau_NANO_2017_v04_00/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_00/240724_210240/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZETau-v3c_2017', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZETau_NANO_2017_v04_01/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_01/240724_210247/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZETau-v3d_2017', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZETau_NANO_2017_v04_02/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_02/240724_200029/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZETau-v3e_2017', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017_ext/ZMuTau_NANO_2017_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_400k/230424_161532/0000/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZMuTau-v3a_2017', user_redir = 'root://eoscms.cern.ch/',
         user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2017_ext/ZMuTau_NANO_2017_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2017_400k/230424_161532/0001/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZMuTau-v3b_2017', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZMuTau_NANO_2017_v04_00/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_00/240725_202810/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZMuTau-v3c_2017', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZMuTau_NANO_2017_v04_01b/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_01b/240726_165923/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZMuTau-v3d_2017', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZMuTau_NANO_2017_v04_02/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_02/240725_202824/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZMuTau-v3e_2017', user_redir = 'root://eoscms.cern.ch/',
         user_nfiles = 1, user_tag = 'MERGE'),
     # #### h samples ####
     # bm.JobConfig( 
@@ -496,7 +547,7 @@ samplesDict['2017_w'] = [
         nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=False, suffix='LFVAnalysis_Wlnu-4J_2017'),
 ]
 
-# z
+# Z
 samplesDict['2017_z'] = [
     bm.JobConfig(
         dataset='/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8_ext1-v1/NANOAODSIM',
@@ -652,12 +703,36 @@ samplesDict['2018_signal'] = [
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZETau-v3b_2018', user_redir = 'root://eoscms.cern.ch/',
         user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZETau_NANO_2018_v04_00/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_00/240727_131644/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZETau-v3c_2018', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZETau_NANO_2018_v04_01/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_01/240727_131655/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZETau-v3d_2018', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZETau_NANO_2018_v04_02/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_02/240727_131703/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZETau-v3e_2018', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2018_ext/ZMuTau_NANO_2018_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2018_400k/230503_131050/0000/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZMuTau-v3a_2018', user_redir = 'root://eoscms.cern.ch/',
         user_nfiles = 1, user_tag = 'MERGE'),
     bm.JobConfig( 
         dataset='/store/group/phys_smp/ZLFV/MC_generation/Legacy2018_ext/ZMuTau_NANO_2018_400k/CRAB_UserFiles/ZLFVAnalysis_NANO_2018_400k/230503_131050/0001/',
         nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZMuTau-v3b_2018', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZMuTau_NANO_2018_v04_00/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_00/240727_235236/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZMuTau-v3c_2018', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZMuTau_NANO_2018_v04_01/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_01/240728_003254/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZMuTau-v3d_2018', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 1, user_tag = 'MERGE'),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZMuTau_NANO_2018_v04_02/CRAB_UserFiles/ZLFVAnalysis_NANO_v04_02/240728_023809/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZMuTau-v3e_2018', user_redir = 'root://eoscms.cern.ch/',
         user_nfiles = 1, user_tag = 'MERGE'),
     # #### h samples ####
     # bm.JobConfig( 
@@ -732,7 +807,7 @@ samplesDict['2018_w'] = [
         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_Wlnu-4J_2018'),
 ]
 
-# z
+# Z
 samplesDict['2018_z'] = [
     bm.JobConfig(
         dataset='/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21_ext1-v1/NANOAODSIM',
@@ -741,10 +816,13 @@ samplesDict['2018_z'] = [
     bm.JobConfig(
         dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21_ext2-v1/NANOAODSIM',
         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_DY50-amc_2018'),
+]
 
-    # bm.JobConfig(
-    #     dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
-    #     nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_DY50_2018'),
+# LO Z
+samplesDict['2018_lo_z'] = [
+    bm.JobConfig(
+        dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_DY50-LO_2018'),
 ]
 
 # di(tri)-boson + EWK V + W+Gamma
@@ -832,65 +910,66 @@ samplesDict['2018_higgs'] = [
 ]
 
 
-# # qcd
-# samplesDict['2018_qcd'] = [
-#     # 15-20, EM enriched
-#     bm.JobConfig(
-#         dataset='/QCD_Pt-15to20_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21_ext1-v1/NANOAODSIM',
-#         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich15to20_2018'),
+# qcd
+samplesDict['2018_qcd'] = [
+    # # 15-20, EM enriched
+    # bm.JobConfig(
+    #     dataset='/QCD_Pt-15to20_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21_ext1-v1/NANOAODSIM',
+    #     nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich15to20_2018'),
 
-#     # 20-30, EM enriched
-#     bm.JobConfig(
-#         dataset='/QCD_Pt-20to30_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
-#         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich20to30_2018'),
+    # # 20-30, EM enriched
+    # bm.JobConfig(
+    #     dataset='/QCD_Pt-20to30_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+    #     nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich20to30_2018'),
 
-#     # 30-50, EM enriched
-#     bm.JobConfig(
-#         dataset='/QCD_Pt-30to50_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21_ext1-v1/NANOAODSIM',
-#         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich30to50_2018'),
+    # # 30-50, EM enriched
+    # bm.JobConfig(
+    #     dataset='/QCD_Pt-30to50_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21_ext1-v1/NANOAODSIM',
+    #     nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich30to50_2018'),
 
-#     # 50-80, EM enriched
-#     bm.JobConfig(
-#         dataset='/QCD_Pt-50to80_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
-#         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich50to80_2018'),
+    # # 50-80, EM enriched
+    # bm.JobConfig(
+    #     dataset='/QCD_Pt-50to80_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+    #     nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich50to80_2018'),
 
-#     # 80-120, EM enriched
-#     bm.JobConfig(
-#         dataset='/QCD_Pt-80to120_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
-#         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich80to120_2018'),
+    # # 80-120, EM enriched
+    # bm.JobConfig(
+    #     dataset='/QCD_Pt-80to120_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+    #     nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich80to120_2018'),
 
-#     # 120-170, EM enriched
-#     bm.JobConfig(
-#         dataset='/QCD_Pt-120to170_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
-#         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich120to170_2018'),
+    # # 120-170, EM enriched
+    # bm.JobConfig(
+    #     dataset='/QCD_Pt-120to170_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+    #     nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich120to170_2018'),
 
-#     # 170-300, EM enriched
-#     bm.JobConfig(
-#         dataset='/QCD_Pt-170to300_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
-#         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich170to300_2018'),
+    # # 170-300, EM enriched
+    # bm.JobConfig(
+    #     dataset='/QCD_Pt-170to300_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+    #     nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich170to300_2018'),
 
-#     # 300-inf, EM enriched
-#     bm.JobConfig(
-#         dataset='/QCD_Pt-300toInf_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
-#         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich300toInf_2018'),
+    # # 300-inf, EM enriched
+    # bm.JobConfig(
+    #     dataset='/QCD_Pt-300toInf_EMEnriched_TuneCP5_13TeV_pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+    #     nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDEMEnrich300toInf_2018'),
 
 
+    # # Double EM enriched
 
-#     # 30-40
-#     # bm.JobConfig(
-#     #     dataset='', #None found in DAS...
-#     #     nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDDoubleEMEnrich30to40_2018'),
+    # # 30-40
+    # # bm.JobConfig(
+    # #     dataset='', #None found in DAS...
+    # #     nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDDoubleEMEnrich30to40_2018'),
 
-#     # 30-inf
-#     bm.JobConfig(
-#         dataset='/QCD_Pt-30toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
-#         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDDoubleEMEnrich30toInf_2018'),
+    # 30-inf
+    bm.JobConfig(
+        dataset='/QCD_Pt-30toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDDoubleEMEnrich30toInf_2018'),
 
-#     # 40-inf
-#     bm.JobConfig(
-#         dataset='/QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
-#         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDDoubleEMEnrich40toInf_2018'),
-# ]
+    # 40-inf
+    bm.JobConfig(
+        dataset='/QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=False, suffix='LFVAnalysis_QCDDoubleEMEnrich40toInf_2018'),
+]
 
 # -----------------------------
 # submit to batch
@@ -907,8 +986,8 @@ samplesToSubmit = samplesDict.keys()
 # samplesToSubmit = ["2018_signal", "2018_top", "2018_z", "2018_w", "2018_vv", "2018_qcd"]
 # samplesToSubmit = ["2018_signal", "2018_top", "2018_z", "2018_w", "2018_vv", "2018_qcd", "2018_SingleElectron", "2018_SingleMuon"]
 # samplesToSubmit = ["2016_vv", "2017_top", "2017_vv", "2017_z", "2018_top", "2018_vv", "2018_z"]
-# samplesToSubmit = ["2017_signal"]
-# samplesToSubmit = ["2016_higgs", "2017_higgs", "2018_higgs"]
+# samplesToSubmit = ["2016_embed_mumu", "2016_SingleMuon", "2017_embed_mumu", "2017_SingleMuon"]
+samplesToSubmit = ["2018_SingleMuon"]
 
 samplesToSubmit.sort()
 # doYears = ["2016"]

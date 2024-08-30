@@ -42,6 +42,8 @@ keep Flag_*
 keep MET_*
 keep PuppiMET*
 keep GenMET_*
+keep RawMET_*
+keep RawPuppiMET_*
 keep Gen*
 keep nGen*
 keep HT

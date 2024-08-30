@@ -55,7 +55,7 @@ class BatchMaster():
     '''A tool for submitting batch jobs'''
     def __init__(self, analyzer, config_list, stage_dir, output_dir,
                  executable='execBatch.sh', location='lpc', maxFilesPerJob = -1,
-                 memory = 4800, disk = 5000000, queue = 'tomorrow'):
+                 memory = 4800, disk = 5000000, queue = 'tomorrow', os_pref = 'SL7'):
         self._current     = os.path.abspath('.')
 
         self._analyzer       = analyzer
@@ -69,6 +69,7 @@ class BatchMaster():
         self._memory         = memory
         self._disk           = disk
         self._queue          = queue
+        self._os             = os_pref
 
     #-------------------------------------------------------------------------------------------------------------------
     def split_jobs_for_cfg(self, cfg):
@@ -201,6 +202,8 @@ class BatchMaster():
             batch_tmp.write('Requirements          = OpSys == "LINUX"&& (Arch != "DUMMY" )\n')
             batch_tmp.write('request_disk          = %i\n' % (self._disk)) # 10 GB to xrdcp temp nanoAOD xrootd reading
             batch_tmp.write('request_memory        = %i\n' % (self._memory))
+            batch_tmp.write('+DesiredOS            = \"%s\"' % (self._os))
+            #Alternate OS choice specification: +ApptainerImage = "/cvmfs/singularity.opensciencegrid.org/cmssw/cms:rhel7"
             if self._location == 'lxplus':
                 # batch_tmp.write('+MaxRuntime           = 1440\n') #FIXME: remove if not needed
                 batch_tmp.write('+JobFlavour           = \"%s\"\n' % (self._queue)) #see https://twiki.cern.ch/twiki/bin/view/ABPComputing/LxbatchHTCondor#Queue_Flavours

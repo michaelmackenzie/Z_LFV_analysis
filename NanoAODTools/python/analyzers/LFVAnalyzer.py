@@ -114,7 +114,8 @@ UseEmuTrig = False
 if UseEmuTrig:
    print "*** Including e-mu trigger events ***"
 
-KillChannels = ["mumu", "ee"] #FIXME: Remove this filter
+KillChannels = []
+# KillChannels = ["mumu", "ee"] #FIXME: Remove this filter
 for channel in KillChannels:
    print "*** WARNING! Killing selection channel", channel
 
