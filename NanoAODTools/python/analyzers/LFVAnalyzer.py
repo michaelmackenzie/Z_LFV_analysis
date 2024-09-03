@@ -114,8 +114,13 @@ UseEmuTrig = False
 if UseEmuTrig:
    print "*** Including e-mu trigger events ***"
 
+ZPrime = True
+if ZPrime:
+   print "*** Assuming Z prime processing ***"
+
 KillChannels = []
-# KillChannels = ["mumu", "ee"] #FIXME: Remove this filter
+if ZPrime:
+   KillChannels = ["mumu", "ee", "mutau", "etau"] #FIXME: Remove this filter
 for channel in KillChannels:
    print "*** WARNING! Killing selection channel", channel
 
@@ -176,8 +181,8 @@ LooseElectronSelection = lambda l : l.pt>10 and math.fabs(l.eta)<2.5 and l.mvaFa
 LooseJetSelection      = lambda l : l.pt>20 and math.fabs(l.eta)<3.0 and l.jetId>=jet_id
 
 #Event selection cuts
-MaxMass   = 175 #-1 = no cut
-MinMass   =  35 #wider window to estimate event migration systematic uncertainties
+MaxMass   = 175 if not ZPrime else -1 #-1 = no cut
+MinMass   =  35 if not ZPrime else 65 #wider window to estimate event migration systematic uncertainties
 MinDeltaR = 0.3 # delta R between the leptons
 
 #configure the modules
