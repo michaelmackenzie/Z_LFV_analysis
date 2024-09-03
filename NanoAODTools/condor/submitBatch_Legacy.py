@@ -4,7 +4,7 @@ from sample_map import *
 
 import os, sys
 
-dryRun = True
+dryRun = False
 
 # -----------------------------
 # Specify parameters
@@ -153,6 +153,17 @@ samplesDict['2016_signal'] = [
     # bm.JobConfig( 
     #     dataset='/LFVAnalysis_HMuTau_2016_8028V1/mimacken-LFVAnalysis_NANOAOD_8028V1-d11e799790792310589ef5ee63b17d7a/USER',
     #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_HMuTau_2016', inputDBS="phys03"),
+]
+
+samplesDict['2016_zprime'] = [
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZEMu_NANO_2016_M500_100k4/CRAB_UserFiles/ZLFVAnalysis_NANO_M500_100k4/240830_140542/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZPrime-M500_2016', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 5),
+    # bm.JobConfig( 
+    #     dataset='/store/group/phys_smp/ZLFV/MC_generation/',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2016", isData=False, suffix='LFVAnalysis_ZPrime-M_2016', user_redir = 'root://eoscms.cern.ch/',
+    #     user_nfiles = 5),
 ]
 
 # top
@@ -483,6 +494,17 @@ samplesDict['2017_signal'] = [
     #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_HMuTau_2017', inputDBS="phys03"),
 ]
 
+samplesDict['2017_zprime'] = [
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZEMu_NANO_2017_M100_100k4/CRAB_UserFiles/ZLFVAnalysis_NANO_M100_100k4/240830_171613/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZPrime-M100_2017', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 5),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZEMu_NANO_2017_M500_100k4/CRAB_UserFiles/ZLFVAnalysis_NANO_M500_100k4/240830_173217/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2017", isData=False, suffix='LFVAnalysis_ZPrime-M500_2017', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 5),
+]
+
 # top
 samplesDict['2017_top'] = [
     # semilep tt 
@@ -746,6 +768,41 @@ samplesDict['2018_signal'] = [
     #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_HMuTau_2018', inputDBS="phys03"),
 ]
 
+samplesDict['2018_zprime'] = [
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZEMu_NANO_2018_M100_100k4/CRAB_UserFiles/ZLFVAnalysis_NANO_M100_100k4/240830_135648/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZPrime-M100_2018', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 5),
+    # bm.JobConfig( 
+    #     dataset='/store/group/phys_smp/ZLFV/MC_generation/ZEMu_NANO_M200_2018_100k4/CRAB_UserFiles/ZLFVAnalysis_NANO_M200_2018_100k4/240710_144622/0000/',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZPrime-M200_2018', user_redir = 'root://eoscms.cern.ch/',
+    #     user_nfiles = 50),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZEMu_NANO_2018_M300_100k4/CRAB_UserFiles/ZLFVAnalysis_NANO_M300_100k4/240830_170925/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZPrime-M300_2018', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 5),
+    # bm.JobConfig( 
+    #     dataset='/store/group/phys_smp/ZLFV/MC_generation/ZEMu_NANO_M400_2018_100k4/CRAB_UserFiles/ZLFVAnalysis_NANO_M400_2018_100k4/240710_144531/0000/',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZPrime-M400_2018', user_redir = 'root://eoscms.cern.ch/',
+    #     user_nfiles = 50),
+    bm.JobConfig( 
+        dataset='/store/group/phys_smp/ZLFV/MC_generation/ZEMu_NANO_2018_M500_100k4/CRAB_UserFiles/ZLFVAnalysis_NANO_M500_100k4/240830_124627/0000/',
+        nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZPrime-M500_2018', user_redir = 'root://eoscms.cern.ch/',
+        user_nfiles = 5),
+    # bm.JobConfig( 
+    #     dataset='/store/group/phys_smp/ZLFV/MC_generation/ZEMu_NANO_M600_2018_100k4/CRAB_UserFiles/ZLFVAnalysis_NANO_M600_2018_100k4/240710_144439/0000/',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZPrime-M600_2018', user_redir = 'root://eoscms.cern.ch/',
+    #     user_nfiles = 50),
+    # bm.JobConfig( 
+    #     dataset='/store/group/phys_smp/ZLFV/MC_generation/ZEMu_NANO_M800_2018_100k4/CRAB_UserFiles/ZLFVAnalysis_NANO_M800_2018_100k4/240710_143659/0000/',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZPrime-M800_2018', user_redir = 'root://eoscms.cern.ch/',
+    #     user_nfiles = 50),
+    # bm.JobConfig( 
+    #     dataset='/store/group/phys_smp/ZLFV/MC_generation/ZEMu_NANO_M1000_2018_100k4/CRAB_UserFiles/ZLFVAnalysis_NANO_M1000_2018_100k4/240710_143332/0000/',
+    #     nEvtPerJobIn1e6=nEvtSigPerJob, year="2018", isData=False, suffix='LFVAnalysis_ZPrime-M1000_2018', user_redir = 'root://eoscms.cern.ch/',
+    #     user_nfiles = 50),
+]
+
 # top
 samplesDict['2018_top'] = [
     # semilep tt 
@@ -987,7 +1044,7 @@ samplesToSubmit = samplesDict.keys()
 # samplesToSubmit = ["2018_signal", "2018_top", "2018_z", "2018_w", "2018_vv", "2018_qcd", "2018_SingleElectron", "2018_SingleMuon"]
 # samplesToSubmit = ["2016_vv", "2017_top", "2017_vv", "2017_z", "2018_top", "2018_vv", "2018_z"]
 # samplesToSubmit = ["2016_embed_mumu", "2016_SingleMuon", "2017_embed_mumu", "2017_SingleMuon"]
-samplesToSubmit = ["2018_SingleMuon"]
+samplesToSubmit = ["2016_zprime", "2017_zprime", "2018_zprime"]
 
 samplesToSubmit.sort()
 # doYears = ["2016"]
@@ -1033,11 +1090,12 @@ if not os.path.exists("batch") :
         if not os.path.exists("~/private/batch") :
             os.makedirs("~/private/batch")
         os.symlink("~/private/batch", "batch")
+        print "Created symbolic link to ~/private/batch"
     else: #LPC
         if not os.path.exists("~/nobackup/batch") :
             os.makedirs("~/nobackup/batch")
         os.symlink("~/nobackup/batch", "batch")
-    print "Created symbolic link to ~/nobackup/batch"
+        print "Created symbolic link to ~/nobackup/batch"
 
 if not os.path.isfile('%s/batch_exclude.txt' % (os.getenv('CMSSW_BASE'))):
     os.system('cp batch_exclude.txt ${CMSSW_BASE}/')
